@@ -5,4 +5,6 @@ module.exports = function(app){
     res.render('index.jade');
   });
 
+  require('./api/routes')(app, '/api');
+
 }; 
