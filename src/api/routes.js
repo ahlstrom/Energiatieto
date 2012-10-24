@@ -1,8 +1,5 @@
 "use strict";
-var queryStr = require('url').parse,
-	param = function(req, name) {
-		return queryStr(req.url, true).query[name];
-	};
+var param = require('../lib/urladdon').param;
 
 module.exports = function(app, prefix) {
   app.get(prefix + '/solarProfile', function(req, res){

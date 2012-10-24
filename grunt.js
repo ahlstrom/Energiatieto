@@ -17,7 +17,7 @@ module.exports = function(grunt) {
       files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js', 'src/**/*.js']
     },
     qunit: {
-      files: ['test/**/*.html']
+      files: ['test/client/**/*.html']
     },
     concat: {
       dist: {
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: '<config:lint.files>',
-      tasks: 'lint qunit'
+      tasks: 'lint functional qunit'
     },
     jshint: {
       options: {
@@ -47,14 +47,52 @@ module.exports = function(grunt) {
         undef: true,
         boss: true,
         eqnull: true,
-        node: true
+        node: true,
+        predef: [
+          // MOCHA
+          "describe",
+          "it",
+          // PHANTOMJS
+          "document"
+        ]
       },
       globals: {}
     },
-    uglify: {}
+    casperjs: {
+      files: ['test/functional/**/*.js']
+    },
+    uglify: {},
+    simplemocha: {
+      node: {
+        src: 'test/server/**/*.spec.js',
+        options: {
+          globals: ['should'],
+          timeout: 3000,
+          ignoreLeaks: false,
+          ui: 'bdd',
+          reporter: 'tap'
+        }
+      },
+      functional: {
+        src: 'test/functional/**/*.spec.js',
+        options: {
+          globals: ['should'],
+          timeout: 3000,
+          ignoreLeaks: false,
+          ui: 'bdd',
+          reporter: 'tap'
+        }
+      }
+    }
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'lint qunit mocha concat min');
+
+  grunt.registerTask('mocha', 'simplemocha');
+
+  grunt.loadNpmTasks('grunt-simple-mocha');
+
+  grunt.loadTasks('tasks');
 
 };
