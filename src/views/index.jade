@@ -1,3 +1,67 @@
+!!!
 head
-	title Hello, Energiatieto!
+    title Energiatieto
+    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.css')
 body
+    div(class='navbar navbar-fixed-top')
+        div(class='navbar-inner')
+            div(class='container')
+
+    div(class='container')
+        div(class='row')
+            div(class='hero-unit')
+                h1 Energiatieto
+
+        div(class='row')
+            div(class='span6')
+
+                form(class='form-horizontal span4 offset1')
+                    div(class='control-group')
+                        label(class='control-label') Rakennusvuosi
+                        div(class='controls')
+                            input(type='text', class='input-medium')
+
+                    div(class='control-group')
+                        label(class='control-label') Henkilöluku
+                        div(class='controls')
+                            select(class='input-medium')
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                                option 6
+
+                    div(class='control-group')
+                        label(class='control-label') Pinta-ala(m2)
+                        div(class='controls')
+                            input(type='text', class='input-medium')
+
+                    div(class='control-group')
+                        label(class='control-label') Rakennus
+                        div(class='controls')
+                            select(class='input-medium')
+                                option Rakennus 1
+                                option Rakennus 2
+                                option Rakennus 3
+                                option Rakennus 4
+                                option Rakennus 5
+                                option Rakennus 6
+
+                    div(class='control-group')
+                        label(class='control-label') Keskisäteily
+                        div(class='controls')
+                            input(type='text', class='input-medium')
+
+                    div(class='control-group')
+                        label(class='control-label') Katon pinta-ala (m2)
+                        div(class='controls')
+                            input(type='text', class='input-medium')
+
+            div(class='span6')
+                div(id='kulutus', class='chart')
+                    h3 kulutus
+                div(id='tuotanto', class='chart')
+                    h3 tuotanto
+                div(id='erotus', class='chart')
+                    h3 erotus

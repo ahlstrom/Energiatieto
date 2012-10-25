@@ -28,7 +28,7 @@ describe('index page', function() {
                 pg.evaluate(function() { return document.title; }, callbackify(callback));
             },
             function(result, callback) {
-                assert.equal(result, "Hello, Energiatieto!");
+                assert.equal(result, "Energiatieto");
                 done();
             }
         ]);
