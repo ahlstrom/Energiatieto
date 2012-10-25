@@ -14,7 +14,9 @@ module.exports = function(grunt) {
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
     },
     lint: {
-      files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js', 'src/**/*.js']
+      grunt: ['grunt.js'],
+      server: ['lib/**/*.js', 'test/**/*.js', 'src/**/*.js'],
+      client: ['public/js/**/*.js']
     },
     qunit: {
       files: ['test/client/**/*.html']
@@ -47,16 +49,29 @@ module.exports = function(grunt) {
         undef: true,
         boss: true,
         eqnull: true,
-        node: true,
-        predef: [
-          // MOCHA
-          "describe",
-          "it",
-          // PHANTOMJS
-          "document"
-        ]
+        node: true
       },
-      globals: {}
+      globals: {},
+      server: {
+        options: {
+          node: true,
+          predef: [
+            // MOCHA
+            "describe",
+            "it",
+            // PHANTOMJS
+            "document"
+          ]
+        }
+      },
+      client: {
+        options: {
+          browser: true,
+          predef: [
+            "window", "d3"
+          ]
+        }
+      }
     },
     casperjs: {
       files: ['test/functional/**/*.js']
