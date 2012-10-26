@@ -11,13 +11,12 @@ module.exports = function(app, express) {
 
         app.use(app.router);
 
-        var staticdir = __dirname + '/../public';
-
         console.log('environment: ' + app.settings.env);
+
+        app.use(express['static'](__dirname + '/../public'));
+
         if ('development' === app.settings.env) {
-            app.use(express['static'](staticdir));
-        } else {
-            app.use(express['static'](staticdir + '/dist'));
+            app.use('/js', express['static'](__dirname + '/js'));
         }
 
     });
