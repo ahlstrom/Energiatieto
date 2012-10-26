@@ -4,7 +4,7 @@ requirejs.config({
             exports: 'd3'
         },
         'backbone': {
-            deps: ['underscore'],
+            deps: ['jquery', 'underscore'],
             exports: 'Backbone'
         },
         'handlebars': {
