@@ -13,10 +13,12 @@ module.exports = function(app, express) {
 
         console.log('environment: ' + app.settings.env);
 
-        app.use(express['static'](__dirname + '/../public'));
+
 
         if ('development' === app.settings.env) {
             app.use(express['static'](__dirname + '/app'));
+        } else {
+            app.use(express['static'](__dirname + '/../public/dist'));
         }
 
     });

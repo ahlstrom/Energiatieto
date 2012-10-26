@@ -98,6 +98,25 @@ module.exports = function(grunt) {
           reporter: 'tap'
         }
       }
+    },
+    requirejs: {
+      dir: 'public/dist',
+      appDir: 'src/app',
+      mainConfigFile: 'src/app/requirejs.config.js',
+      modules: [
+        {
+          name: 'main'
+        }
+      ],
+      pragmasOnSave: {
+        //removes Handlebars.Parser code (used to compile template strings) set
+        //it to `false` if you need to parse template strings even after build
+        excludeHbsParser : true,
+        // kills the entire plugin set once it's built.
+        excludeHbs: true,
+        // removes i18n precompiler, handlebars and json2
+        excludeAfterBuild: true
+      }
     }
   });
 
@@ -109,6 +128,8 @@ module.exports = function(grunt) {
   grunt.registerTask('run', 'lint qunit functional concat min start');
 
   grunt.loadNpmTasks('grunt-simple-mocha');
+
+  grunt.loadNpmTasks('grunt-requirejs');
 
   grunt.loadTasks('tasks');
 
