@@ -16,7 +16,7 @@ module.exports = function(app, express) {
         app.use(express['static'](__dirname + '/../public'));
 
         if ('development' === app.settings.env) {
-            app.use('/js', express['static'](__dirname + '/js'));
+            app.use(express['static'](__dirname + '/app'));
         }
 
     });
