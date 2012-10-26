@@ -23,18 +23,18 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', '<file_strip_banner:lib/<%= pkg.name %>.js>'],
-        dest: 'dist/<%= pkg.name %>.js'
+        src: ['public/lib/**/*.js', 'public/js/**/*.js'],
+        dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
     min: {
       dist: {
-        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'dist/<%= pkg.name %>.min.js'
+        src: ['<config:concat.dist.dest>'],
+        dest: 'public/dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
       }
     },
     watch: {
-      files: '<config:lint.files>',
+      files: ['lib/**/*.js', 'test/**/*.js', 'src/**/*.js', 'public/js/**/*.js'],
       tasks: 'lint functional qunit'
     },
     jshint: {
@@ -102,9 +102,11 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit mocha concat min');
+  grunt.registerTask('default', 'lint qunit functional concat min');
 
   grunt.registerTask('mocha', 'simplemocha');
+
+  grunt.registerTask('run', 'lint qunit functional concat min start');
 
   grunt.loadNpmTasks('grunt-simple-mocha');
 
