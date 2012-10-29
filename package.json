@@ -5,6 +5,7 @@
     "express": "2.5.x"
    ,"jade": ">= 0.0.1"
    ,"async": ">= 0.1.22"
+   ,"grunt-requirejs": "0.2.14"
   },
   "engines": {
     "node": "0.8.x",
