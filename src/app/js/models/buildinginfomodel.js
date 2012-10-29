@@ -1,4 +1,8 @@
-define(["backbone", "underscore"], function(Backbone, _) {
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module);
+}
+
+define(["backbone", "underscore", "../algorithm/facade"], function(Backbone, _, Algorithm) {
     return Backbone.Model.extend({
         defaults: {
             // init with a 12-item array that contains zeroes
@@ -10,19 +14,11 @@ define(["backbone", "underscore"], function(Backbone, _) {
         },
         modelChanged: function() {
             if(!this.hasChanged("data")) {
-                this.randomizeData();
-            };
-        },
-        randomizeData: function() {
-            var max = 50;
-            var points = 12;
-            var newData = [];
-            for (var i = 0; i < points; i++) {
-                newData.push(Math.random() * max);
-            };
-            this.set({
-                data: newData
-            });
+                var data = new Algorithm(this.attributes).calculate();
+                this.set({
+                    data: data
+                });
+            }
         }
     });
 });
