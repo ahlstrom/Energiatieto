@@ -12,6 +12,8 @@ define([], function() {
             return this.interpolate(1970, 1980, 13, 11, year);
         } else if (year >= 1950) {
             return this.interpolate(1950, 1970, 20, 13, year);
+        } else {
+            return 0;
         }
     };
     this.interpolate = function(from, to, valFrom, valTo, at) {
