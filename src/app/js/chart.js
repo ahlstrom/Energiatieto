@@ -15,7 +15,7 @@ define(["d3"], function(d3) {
                     return 0;
                 } else {
                     return (d / maxHeight) * height;
-                };
+                }
             };
         };
 

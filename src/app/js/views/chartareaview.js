@@ -1,7 +1,7 @@
 define([
         "backbone.marionette", 
         "hbs!./chartareaview.tmpl",
-        "./chartview",
+        "./chartview"
     ], function(Marionette, tmpl, ChartView) {
 
     return Marionette.Layout.extend({
