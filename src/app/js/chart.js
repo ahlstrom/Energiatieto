@@ -24,7 +24,7 @@ define(["d3"], function(d3) {
                     return 0;
                 } else {
                     return (d / maxHeight) * getColumnMaxHeight();
-                };
+                }
             };
         };
 
@@ -64,7 +64,7 @@ define(["d3"], function(d3) {
                 var exp = Math.pow(10, labelDecimals);
                 return Math.round(value * exp) / exp;
             }
-        }
+        };
 
         this.draw = function() {
             var data = dataSource.getData();

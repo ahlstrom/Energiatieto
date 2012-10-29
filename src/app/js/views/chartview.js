@@ -26,7 +26,7 @@ define([
             modelChanged: function() {
                 if (this.chart) {
                     this.chart.redraw();
-                };
+                }
             }
         });
 });
