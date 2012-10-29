@@ -25,10 +25,10 @@ require.config({
         'backbone': '../lib/backbone/backbone-0.9.2',
         'backbone.modelbinder': '../lib/backbone/backbone.modelbinder-0.1.6',
         'backbone.marionette': '../lib/marionette/backbone.marionette.bundle-1.0.0-beta3',
-        'hbs': '../lib/hbs/hbs-0.2.1',
+        'hbs': '../lib/hbs/hbs-0.4.0',
         'i18nprecompile': '../lib/hbs/i18nprecompile',
         'handlebars': '../lib/handlebars/handlebars-1.0.rc.1',
-        'marionette.handlebars': '../lib/marionette/backbone.marionette.handlebars-0.2.0'
+        'backbone.marionette.handlebars': '../lib/marionette/backbone.marionette.handlebars-0.2.0'
     },
-    deps: ['marionette.handlebars','main']
+    deps: ['backbone.marionette.handlebars']
 });
