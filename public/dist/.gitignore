@@ -1,0 +1,5 @@
+lib
+*.js
+*.txt
+!js/main.js
+js/*.js
