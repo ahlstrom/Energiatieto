@@ -19,8 +19,8 @@ module.exports = function(grunt) {
     },
     lint: {
       grunt: ['grunt.js'],
-      server: ['lib/**/*.js', 'test/**/*.js', 'src/**/*.js'],
-      client: ['public/js/**/*.js']
+      server: ['test/**/*.js', 'src/*.js', 'src/lib/**/*.js', 'src/api/**/*.js', 'src/views/**/*.js'],
+      client: ['src/app/js/**/*.js']
     },
     qunit: {
       files: ['test/client/**/*.html']
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['lib/**/*.js', 'test/**/*.js', 'src/**/*.js', 'public/js/**/*.js'],
-      tasks: 'lint functional qunit'
+      tasks: 'lint functional'
     },
     jshint: {
       options: {
@@ -101,6 +101,9 @@ module.exports = function(grunt) {
           ui: 'bdd',
           reporter: 'tap'
         }
+      },
+      client: {
+        src: 'test/client/**/*.spec.js'
       }
     },
     requirejs: {
@@ -151,7 +154,7 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit functional concat min');
+  grunt.registerTask('default', 'lint functional requirejs');
 
   grunt.registerTask('deploy', 'requirejs shell');
 
