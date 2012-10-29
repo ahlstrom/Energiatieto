@@ -3,6 +3,10 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
+  var log = function() {
+    console.log(this);
+  };
+
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
@@ -129,11 +133,27 @@ module.exports = function(grunt) {
         // removes i18n precompiler, handlebars and json2
         excludeAfterBuild: true
       }
+    },
+    shell: {
+      git_add_dist: {
+        command: 'git add public/dist',
+        stdout: true
+      },
+      git_commit_new_rel: {
+        command: 'git commit -m \'Deploy v<%= pkg.version %>\'',
+        stdout: true
+      },
+      git_push_to_heroku: {
+        command: 'git push heroku master',
+        stdout: true
+      }
     }
   });
 
   // Default task.
   grunt.registerTask('default', 'lint qunit functional concat min');
+
+  grunt.registerTask('deploy', 'requirejs shell');
 
   grunt.registerTask('mocha', 'simplemocha');
 
@@ -142,6 +162,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-simple-mocha');
 
   grunt.loadNpmTasks('grunt-requirejs');
+
+  grunt.loadNpmTasks('grunt-shell');
 
   grunt.loadTasks('tasks');
 

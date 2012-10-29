@@ -25,3 +25,11 @@ foreman start
 Which will start the app in *production* mode.
 
 **Building & testing**
+
+**Deployment**
+
+Deployment assumes that a [heroku remote](https://devcenter.heroku.com/articles/git#creating-a-heroku-remote) has been configured for the repository.
+
+```
+grunt deploy
+```
