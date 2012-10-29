@@ -138,17 +138,24 @@ module.exports = function(grunt) {
       }
     },
     shell: {
+      git_checkout_new_branch: {
+        command: 'git checkout -B deploy',
+        stdout: true
+      },
       git_add_dist: {
         command: 'git add public/dist',
         stdout: true
       },
       git_commit_new_rel: {
-        command: 'git commit -m \'Deploy v<%= pkg.version %>\'',
+        command: 'git commit -m \'Automated deployment via grunt\'',
         stdout: true
       },
       git_push_to_heroku: {
-        command: 'git push heroku master',
-        stdout: true
+        command: 'git push heroku deploy:master',
+        stdout: log
+      },
+      git_checkout_master: {
+        command: 'git checkout master'
       }
     }
   });
@@ -156,7 +163,7 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', 'lint functional requirejs');
 
-  grunt.registerTask('deploy', 'requirejs shell');
+  grunt.registerTask('deploy', 'lint functional requirejs shell');
 
   grunt.registerTask('mocha', 'simplemocha');
 
