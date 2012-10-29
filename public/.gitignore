@@ -1,0 +1,7 @@
+!dist/lib/bootstrap
+dist/index.html
+dist/lib/*
+dist/*.js
+dist/*.txt
+!dist/js/main.js
+dist/js/*
