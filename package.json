@@ -5,13 +5,18 @@
     "express": "2.5.x"
    ,"jade": ">= 0.0.1"
    ,"async": ">= 0.1.22"
-   ,"phantom": "git://github.com/amir20/phantomjs-node.git#phantom-1.7-fix"
-   ,"grunt-simple-mocha": "0.2.0"
-   ,"mocha": "1.6.0"
-   ,"grunt-requirejs":"0.2.14"
   },
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
+  },
+  "bundleDependencies": [
+    "grunt-requirejs"
+  ],
+  "devDependencies": {
+   "phantom": "git://github.com/amir20/phantomjs-node.git#phantom-1.7-fix"
+   ,"grunt-simple-mocha": "0.2.0"
+   ,"mocha": "1.6.0"
+   
   }
 }
