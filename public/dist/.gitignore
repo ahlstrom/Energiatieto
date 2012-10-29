@@ -1,6 +1,0 @@
-!lib/bootstrap
-lib/[^bootstrap]
-*.js
-*.txt
-!js/main.js
-js/*
