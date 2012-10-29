@@ -2,7 +2,9 @@
 head
     title Energiatieto
     link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.css')
-    script(type='text/javascript', src='/lib/require/require-2.1.1.js', data-main='/requirejs.config.js')
+    script(type='text/javascript', src='/lib/require/require-2.1.1.js')
+    script(type='text/javascript', src='requirejs.config.js')
+    script require(['main']);
     style 
         .chart rect {
             stroke: white;
