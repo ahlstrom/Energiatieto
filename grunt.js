@@ -100,14 +100,26 @@ module.exports = function(grunt) {
       }
     },
     requirejs: {
+      mainConfigFile: 'src/app/requirejs.config.js',
+      // this paths config must be here, otherwise almond won't work
+      paths: {
+
+      },
+      almond: true,
+      insertRequire: ['main'],
       dir: 'public/dist',
       appDir: 'src/app',
-      mainConfigFile: 'src/app/requirejs.config.js',
-      modules: [
-        {
-          name: 'main'
-        }
-      ],
+      inlineText: true,
+      modules: [{
+        name: 'main'
+      }],
+      deps: [ 'backbone.marionette.handlebars' ],
+      hbs: {
+        templateExtension: 'hbs'
+      },
+      pragmas: {
+        doExclude: true
+      },
       pragmasOnSave: {
         //removes Handlebars.Parser code (used to compile template strings) set
         //it to `false` if you need to parse template strings even after build
