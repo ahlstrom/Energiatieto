@@ -332,6 +332,9 @@
     "grunt-simple-mocha": {
       "version": "0.2.0"
     },
+    "underscore": {
+      "version": "1.4.2"
+    },
     "mocha": {
       "version": "1.6.0",
       "dependencies": {
