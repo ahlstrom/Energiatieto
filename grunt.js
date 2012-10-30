@@ -103,7 +103,10 @@ module.exports = function(grunt) {
         }
       },
       client: {
-        src: 'test/client/**/*.spec.js'
+        src: 'test/client/**/*.spec.js',
+        options: {
+          reporter: 'nyan'
+        }
       }
     },
     requirejs: {

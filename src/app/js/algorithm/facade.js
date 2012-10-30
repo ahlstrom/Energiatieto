@@ -5,8 +5,11 @@ if (typeof define !== 'function') {
 define([
         'underscore', 
         './heating',
-        './options'
-    ], function(_, heating, Options) {
+        './options',
+        './building',
+        './energysystem',
+        './persons'
+    ], function(_, heating, Options, Building, System, Persons) {
     return (function() {
         var arrayWith = function(val, num) {
             return _.map(_.range(num), function() { return val; });
@@ -29,20 +32,20 @@ define([
             if (!opts.isValid()) {
                 return this.empty;
             }
-            var heat = this.heatingRequirements(
-                    options.buildYear,
-                    options.floorArea,
-                    options.avgHeight
-                );
-            return heat;
-        };
-        this.heatingRequirements = function(buildYear, floorArea, avgHeightInCm) {
-            var volume = (floorArea * avgHeightInCm) / 100.0,
-                heat = heating.byYear(buildYear);
-
+            var sys = this.constructSystem(opts.asMap());
             return _.map(_.range(12), function(num) {
-                return heating.byMonth(num) * volume * heat;
+                return sys.getMonthlyConsumption(num);
             });
+        };
+        this.constructSystem = function(options) {
+            var bldg = new Building(
+                options.buildYear, 
+                options.floorArea, 
+                options.avgHeight
+            );
+            var prs = new Persons(options.peopleCount);
+
+            return new System([ bldg, prs ]);
         };
 
         return this;
