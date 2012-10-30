@@ -7,6 +7,7 @@ var Algorithm = require(basedir + 'facade'),
     heating   = require(basedir + 'heating'),
     System    = require(basedir + 'energysystem'),
     Building  = require(basedir + 'building'),
+    Persons   = require(basedir + 'persons'),
     assert    = require('assert');
 
 describe('algorithm', function() {
@@ -129,4 +130,22 @@ describe('building', function() {
         // heating consumption is zero in the summer
         assert.equal(0, bldng.getDailyConsumption(200));
     });
+});
+
+describe('persons', function() {
+    it('always consume the same amount of energy', function() {
+        var prs = new Persons(3);
+        assert.equal(prs.getDailyConsumption(0), prs.getDailyConsumption(200));
+    });
+
+    it('consume the same amount of energy per person', function() {
+        assert.equal(
+            new Persons(1).getDailyConsumption(0) * 3,
+            new Persons(3).getDailyConsumption(0));
+    });
+
+    it('consume 1505kWh per person per year', function() {
+        assert.equal(1505000, Math.round(new Persons(1).getDailyConsumption(0) * 365));
+    });
+
 });
