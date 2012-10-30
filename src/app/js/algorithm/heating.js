@@ -16,6 +16,14 @@ define([], function() {
             return 0;
         }
     };
+    this.byMonth = function(month) {
+        var energy = [638,606,576,372,120,0,0,0,115,333,453,569];
+        if (month < 0 || month > 11) {
+            return 0;
+        } else {
+            return energy[month];
+        }
+    };
     this.interpolate = function(from, to, valFrom, valTo, at) {
         var range       = to - from,
             amount      = at - from,
