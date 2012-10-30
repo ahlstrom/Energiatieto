@@ -116,13 +116,14 @@ define(["d3"], function(d3) {
 
             chart
                 .selectAll("text")
-                .data(getQuantiles(horizLinesCount, data))                
+                .data(getQuantiles(horizLinesCount, data))
                 .text(formatValue);
 
             chart.selectAll("rect")
                  .data(data)
                  .transition()
                  .duration(500)
+                 .delay(function(d, i) { return i * 20; })
                  .attr("height", newHeightFn(data))
                  .attr("y", newyCoordFn(data));                
         };

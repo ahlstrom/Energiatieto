@@ -5,8 +5,10 @@ if (typeof define !== 'function') {
 define([
         'underscore', 
         './heating',
-        './options'
-    ], function(_, heating, Options) {
+        './options',
+        './building',
+        './energysystem'
+    ], function(_, heating, Options, Building, System) {
     return (function() {
         var arrayWith = function(val, num) {
             return _.map(_.range(num), function() { return val; });
@@ -37,11 +39,11 @@ define([
             return heat;
         };
         this.heatingRequirements = function(buildYear, floorArea, avgHeightInCm) {
-            var volume = (floorArea * avgHeightInCm) / 100.0,
-                heat = heating.byYear(buildYear);
+            var bldg = new Building(buildYear, floorArea, avgHeightInCm);
+            var sys = new System([ bldg ]);
 
             return _.map(_.range(12), function(num) {
-                return heating.byMonth(num) * volume * heat;
+                return sys.getMonthlyConsumption(num);
             });
         };
 
