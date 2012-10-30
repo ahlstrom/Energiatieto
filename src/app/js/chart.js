@@ -61,8 +61,7 @@ define(["d3"], function(d3) {
             if (value <= 0)
                 return "";
             else {
-                var exp = Math.pow(10, labelDecimals);
-                return Math.round(value * exp) / exp;
+                return Math.round(value / 1000);
             }
         };
 
