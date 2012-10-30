@@ -15,12 +15,6 @@ describe('algorithm', function() {
         var res = Algorithm.calculate();
         assert.equal(res.length, 12);
     });
-    it('can give heating requirements by month based on build year and dimensions', function() {
-        var res = Algorithm.heatingRequirements(1960, 68, 250);
-        assert.equal(res[6], 0);
-        assert.equal(Math.round(res[0]), 1789590);
-        assert.equal(Math.round(res[11]), 1596045);
-    });
 });
 
 describe('options', function() {
