@@ -1,4 +1,4 @@
-define(["d3"], function(d3) {
+define(["d3", "jquery", "tipsy"], function(d3, $) {
     return function(element, dataSource) {
         var height = 100;
         var width = 300;
@@ -107,10 +107,16 @@ define(["d3"], function(d3) {
                 .datum(function(d) {
                     return series[d];
                 })
+                .attr("title", function(d) {
+                    return d;
+                })
                 .attr("y", newyCoordFn(total))
                 .attr("x", function(d, i) { return paddingLeft + i * columnWidth; })
                 .attr("width", columnWidth)
-                .attr("height", newHeightFn(total));
+                .attr("height", newHeightFn(total))
+                .each(function() {
+                    $(this).tipsy({ gravity: 's' });
+                });
 
             chart
                 .selectAll("text")
@@ -144,7 +150,10 @@ define(["d3"], function(d3) {
                  .duration(500)
                  .delay(function(d, i) { return i * 20; })
                  .attr("height", newHeightFn(data))
-                 .attr("y", newyCoordFn(data));
+                 .attr("y", newyCoordFn(data))
+                 .attr("title", function(d) {
+                    return Math.round(d / 1000) + 'kWh';
+                });
         };
     };
 });

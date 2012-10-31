@@ -28,7 +28,8 @@ require.config({
         'hbs': '../lib/hbs/hbs-0.4.0',
         'i18nprecompile': '../lib/hbs/i18nprecompile',
         'handlebars': '../lib/handlebars/handlebars-1.0.rc.1',
-        'backbone.marionette.handlebars': '../lib/marionette/backbone.marionette.handlebars-0.2.0'
+        'backbone.marionette.handlebars': '../lib/marionette/backbone.marionette.handlebars-0.2.0',
+        'tipsy': '../lib/tipsy/tipsy-1.0.0a'
     },
     deps: ['backbone.marionette.handlebars']
 });
