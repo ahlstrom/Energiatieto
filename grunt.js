@@ -154,7 +154,7 @@ module.exports = function(grunt) {
         stdout: true
       },
       git_push_to_heroku: {
-        command: 'git push heroku deploy:master',
+        command: 'git push heroku deploy:master -f',
         stdout: log
       },
       git_checkout_master: {
