@@ -65,12 +65,15 @@ define(["d3"], function(d3) {
             }
         };
 
+        var layers;
+
         this.draw = function() {
-            var data = dataSource.getData();
+            var series = dataSource.getData();
+            var total = series.total;
 
             var columnAreaWidth = width - paddingLeft;
             var columnAreaHeight = height - paddingTop;
-            var columnWidth = columnAreaWidth / data.length;
+            var columnWidth = columnAreaWidth / dataSource.numDataPoints();
 
             chart
                 .selectAll("line")
@@ -83,21 +86,35 @@ define(["d3"], function(d3) {
                 .attr("y2", function(d) { return d; })
                 .style("stroke-width", 1)
                 .style("stroke", "rgb(160,160,160)")
-                .attr("shape-rendering", "crispEdges");                
+                .attr("shape-rendering", "crispEdges");
 
-            chart
-                 .selectAll("rect")
-                 .data(data)
-                 .enter()
-                 .append("rect")
-                 .attr("y", newyCoordFn(data))
-                 .attr("x", function(d, i) { return paddingLeft + i * columnWidth; })
-                 .attr("width", columnWidth)
-                 .attr("height", newHeightFn(data));
+            layers = chart
+                .selectAll("g.layer")
+                .data(dataSource.getSeries())
+                .enter()
+                .append("g")
+                .attr("class", function(d) {
+                    return "layer " + d;
+                });
+
+            layers
+                .selectAll("rect")
+                .data(function(d) {
+                    return series[d]; 
+                })
+                .enter()
+                .append("rect")
+                .datum(function(d) {
+                    return series[d];
+                })
+                .attr("y", newyCoordFn(total))
+                .attr("x", function(d, i) { return paddingLeft + i * columnWidth; })
+                .attr("width", columnWidth)
+                .attr("height", newHeightFn(total));
 
             chart
                 .selectAll("text")
-                .data(getQuantiles(horizLinesCount, data))
+                .data(getQuantiles(horizLinesCount, total))
                 .enter()
                 .append("text")
                 .text(formatValue)
@@ -111,20 +128,23 @@ define(["d3"], function(d3) {
         };
 
         this.redraw = function() {
-            var data = dataSource.getData();
+            var series = dataSource.getData();
+            var data = series.total;
 
             chart
                 .selectAll("text")
                 .data(getQuantiles(horizLinesCount, data))
                 .text(formatValue);
 
-            chart.selectAll("rect")
-                 .data(data)
+            layers.selectAll("rect")
+                 .data(function(d) {
+                    return series[d];
+                 })
                  .transition()
                  .duration(500)
                  .delay(function(d, i) { return i * 20; })
                  .attr("height", newHeightFn(data))
-                 .attr("y", newyCoordFn(data));                
+                 .attr("y", newyCoordFn(data));
         };
     };
 });
