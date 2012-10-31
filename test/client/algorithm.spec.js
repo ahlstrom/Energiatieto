@@ -28,6 +28,24 @@ describe('options', function() {
             floorArea: 68
         }).isValid());
     });
+    it('is not valid if option present but not numeric', function() {
+        assert(!new Options({
+            buildYear: 1950,
+            avgHeight: 'a',
+            floorArea: 68
+        }).isValid());
+    });
+
+    it('ignores non-required values', function() {
+        assert(new Options({
+            buildYear: 1950,
+            avgHeight: '12',
+            floorArea: 68,
+            foo: {
+                bar: 'a'
+            }
+        }).isValid());
+    });
 
     it('returns an empty map if not valid', function() {
         assert.deepEqual({}, new Options({
@@ -58,6 +76,14 @@ describe('options', function() {
             avgHeight: "359",
             floorArea: "72"
         }).asMap());
+    });
+
+    it('is not valid if any of required values is below zero', function() {
+        assert(!new Options({
+            buildYear: 1912,
+            avgHeight: 359,
+            floorArea: -72
+        }).isValid());
     });
 });
 
