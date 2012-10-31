@@ -14,8 +14,16 @@ define([
         var arrayWith = function(val, num) {
             return _.map(_.range(num), function() { return val; });
         };
+        var consumptionFromSystem = function(sys, type) {
+            return _.map(_.range(12), function(num) {
+                return sys.getMonthlyConsumption(num, type);
+            });
+        };
 
-        this.empty = arrayWith(0, 12);
+        this.empty = {
+            total: arrayWith(0, 12),
+            water: arrayWith(0, 12)
+        };
 
         this.randomizeData = function() {
             var max = 50;
@@ -33,9 +41,10 @@ define([
                 return this.empty;
             }
             var sys = this.constructSystem(opts.asMap());
-            return _.map(_.range(12), function(num) {
-                return sys.getMonthlyConsumption(num);
-            });
+            return {
+                total: consumptionFromSystem(sys),
+                water: consumptionFromSystem(sys, 'water')
+            };
         };
         this.constructSystem = function(options) {
             var bldg = new Building(

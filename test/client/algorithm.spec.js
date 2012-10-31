@@ -13,7 +13,7 @@ var Algorithm = require(basedir + 'facade'),
 describe('algorithm', function() {
     it('should give twelve datapoints', function() {
         var res = Algorithm.calculate();
-        assert.equal(res.length, 12);
+        assert.equal(res.total.length, 12);
     });
 });
 
@@ -139,6 +139,21 @@ describe('energysystem', function() {
         assert.equal(465, sys.getMonthlyConsumption(0));
         assert.equal(3135, sys.getMonthlyConsumption(3));
     });
+
+    it('can get monthly consumption by consumption type', function() {
+        var MockConsumer = function(cnmtype) {
+            return {
+                consumptionType: cnmtype,
+                getDailyConsumption: function(day, type) { if (!type || type == cnmtype) { return day; } else { return 0; } }
+            };
+        };
+        var sys = new System([ new MockConsumer(), new MockConsumer('water') ]);
+
+        assert.equal(930, sys.getMonthlyConsumption(0));
+        assert.equal(465, sys.getMonthlyConsumption(0, 'water'));
+        assert.equal(3135, sys.getMonthlyConsumption(3, 'water'));
+    });
+
 });
 
 describe('building', function() {
@@ -149,6 +164,14 @@ describe('building', function() {
 
         // heating consumption is zero in the summer
         assert.equal(0, bldng.getDailyConsumption(200));
+    });
+
+    it('should only consume heat', function() {
+        var bldng = new Building(1956, 68, 250);
+
+        // heating consumption is zero in the summer
+        assert.equal(0, bldng.getDailyConsumption(0, 'water'));
+        assert(bldng.getDailyConsumption(0, 'heat') > 0);
     });
 });
 
