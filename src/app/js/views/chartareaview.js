@@ -1,8 +1,9 @@
 define([
         "backbone.marionette", 
         "hbs!./chartareaview.tmpl",
-        "./chartview"
-    ], function(Marionette, tmpl, ChartView) {
+        "./chartview",
+        "../models/buildinginfomodel"
+    ], function(Marionette, tmpl, ChartView, BuildingInfoModel) {
 
     return Marionette.Layout.extend({
         template: {
@@ -20,11 +21,11 @@ define([
             }));
             
             this.production.show(new ChartView({
-                model: this.model
+                model: new BuildingInfoModel({})
             }));
 
             this.sum.show(new ChartView({
-                model: this.model
+                model: new BuildingInfoModel({})
             }));
         }
     });
