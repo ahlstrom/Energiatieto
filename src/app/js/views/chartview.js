@@ -1,13 +1,9 @@
 define([
         "backbone.marionette", 
         "hbs!./chartview.tmpl",
-        "chart"
-    ], function(Marionette, tmpl, Chart) {
-        var ModelDataSource = function(model, property) {
-            this.getData = function() {
-                return model.get(property);
-            };
-        };
+        "chart",
+        "../models/multiseriesdatasource"
+    ], function(Marionette, tmpl, Chart, MultiSeriesDataSource) {
         return Marionette.ItemView.extend({
             template: {
                 type: 'handlebars',
@@ -18,9 +14,12 @@ define([
                 this.bindTo(this.model, "change", this.modelChanged);
             },
             onShow: function() {
+                var model = this.model;
                 this.chart = new Chart(
                     this.$("svg")[0],
-                    new ModelDataSource(this.model, "data")
+                    new MultiSeriesDataSource(function() {
+                        return model.get("data");
+                    })
                 ).draw();
             },
             modelChanged: function() {
