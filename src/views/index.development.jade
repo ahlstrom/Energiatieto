@@ -6,8 +6,10 @@ head
     script(type='text/javascript', src='requirejs.config.js')
     script require(['main']);
     style 
-        .chart rect {
-            stroke: white;
+        .chart g.total {
             fill: steelblue;
+         }
+        .chart g.water {
+            fill: orange;
          }
 body
