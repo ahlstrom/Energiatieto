@@ -3,6 +3,15 @@ define([
     "hbs!./controlformview.tmpl",
     'backbone.modelbinder'
     ], function(Marionette, tmpl, ModelBinder) {
+        var roundValueConverter = function(direction, value) {
+            var result = Math.round(value);
+            if (isNaN(result)) {
+                return null;
+            } else {
+                return result;
+            }
+        };
+
         return Marionette.ItemView.extend({
             template: {
                 type: 'handlebars',
@@ -12,20 +21,9 @@ define([
                 this.modelBinder = new ModelBinder();
             },
             onRender: function() {
-                this.modelBinder.bind(this.model, this.el, {
-                    averageRadiation: {
-                        selector: 'input[name=averageRadiation]',
-                        converter: function(direction, value) {
-                            return Math.round(value);
-                        }
-                    },
-                    roofArea: {
-                        selector: 'input[name=roofArea]',
-                        converter: function(direction, value) {
-                            return Math.round(value);
-                        }
-                    }
-                });
+                var bindings = ModelBinder.createDefaultBindings(this.el, 'name');
+                bindings.averageRadiation.converter = bindings.roofArea.converter = roundValueConverter;
+                this.modelBinder.bind(this.model, this.el, bindings);
             }
         });
 });
