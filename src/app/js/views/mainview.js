@@ -1,14 +1,18 @@
 define([
+        "backbone",
         "backbone.marionette", 
         "hbs!./mainview.tmpl",
         "./controlformview",
-        "./chartareaview"
+        "./chartareaview",
+        "./mapview"
     ], 
     function(
+        Backbone,
         Marionette, 
         tmpl,
         ControlFormView,
-        ChartAreaView) {
+        ChartAreaView,
+        MapView) {
 
     var MainView = Marionette.Layout.extend({
         template: {
@@ -17,7 +21,8 @@ define([
         },
         regions: {
             form: '.control-form',
-            charts: '.chart-area'
+            charts: '.chart-area',
+            map: '.map'
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -27,8 +32,12 @@ define([
             this.ChartArea = new ChartAreaView({
                 model: this.model
             });
+            this.mapView = new MapView({
+                model: this.model
+            });
         },
         onShow: function() {
+            this.map.show(this.mapView);
             this.form.show(this.ControlForm);
             this.charts.show(this.ChartArea);
         }

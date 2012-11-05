@@ -3,9 +3,11 @@ head
     title Energiatieto
     link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.css')
     link(rel='stylesheet', href='/lib/tipsy/tipsy-1.0.0a.css')
+    script(type='text/javascript') 
+        window.googleMapsApiKey = '#{process.env["google.maps.api.key"]}';
     script(type='text/javascript', src='/lib/require/require-2.1.1.js')
     script(type='text/javascript', src='requirejs.config.js')
-    script require(['main']);
+    script(type='text/javascript') require(['main']);
     style 
         .chart g.total {
             fill: steelblue;

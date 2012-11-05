@@ -12,7 +12,20 @@ define([
                 this.modelBinder = new ModelBinder();
             },
             onRender: function() {
-                this.modelBinder.bind(this.model, this.el);
+                this.modelBinder.bind(this.model, this.el, {
+                    averageRadiation: {
+                        selector: 'input[name=averageRadiation]',
+                        converter: function(direction, value) {
+                            return Math.round(value);
+                        }
+                    },
+                    roofArea: {
+                        selector: 'input[name=roofArea]',
+                        converter: function(direction, value) {
+                            return Math.round(value);
+                        }
+                    }
+                });
             }
         });
 });
