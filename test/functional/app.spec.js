@@ -1,12 +1,13 @@
 "use strict";
 
 var phantom = require('./helpers/phantom'),
-    assert  = require('assert');
+    assert  = require('assert'),
+    url     = 'http://localhost:5050';
 
 describe('index page', function() {
     it('should have a correct title', function(done) {
         phantom
-            .withUrl('http://localhost:5050')
+            .withUrl(url)
             .evaluate(function() {
                 return document.title;
             })
@@ -17,8 +18,7 @@ describe('index page', function() {
     });
 
     it('should show a graph when proper input is presented', function(done) {
-        var ph = phantom
-                .withUrl('http://localhost:5050');
+        var ph = phantom.withUrl(url);
 
         ph.waitFor(function() {
             /*jslint browser: true */
