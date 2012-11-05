@@ -13,18 +13,18 @@ module.exports = function(grunt) {
             }
         });
 
-
         grunt.task.run('simplemocha');
         grunt.task.run('shutdown-functional-server');
     });
     grunt.registerTask("shutdown-functional-server", "Shutdown the functional test server.", function(prop) {
-        var done = this.async();
+        this.requires('simplemocha');
+        var dn = this.async();
 
         child.on('exit', function (code, signal) {
-          done();
+          dn();
         });
         
-        child.kill('SIGHUP');
+        child.kill('SIGTERM');
 
     });    
 };
