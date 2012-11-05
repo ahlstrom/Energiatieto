@@ -1,10 +1,17 @@
 "use strict";
 
+var _      = require('underscore'),
+    config = require('../config');
+
+_.each(config, function(value, key) {
+    process.env[key] = value;
+});
+
 var express = require('express');
 
 var app = express.createServer();
 
-var config = require('./config.js')(app, express);
+require('./config.js')(app, express);
 
 require('./routes')(app);
 
