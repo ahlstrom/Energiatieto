@@ -1,8 +1,10 @@
 define([
     "backbone.marionette", 
     "hbs!./controlformview.tmpl",
-    'backbone.modelbinder'
-    ], function(Marionette, tmpl, ModelBinder) {
+    "backbone.modelbinder",
+    "./forms/heatingselector",
+    "./forms/widgetconfabulator"
+    ], function(Marionette, tmpl, ModelBinder, HeatingSelector, WidgetConfabulator) {
         var roundValueConverter = function(direction, value) {
             var result = Math.round(value);
             if (isNaN(result)) {
@@ -12,13 +14,19 @@ define([
             }
         };
 
-        return Marionette.ItemView.extend({
+        return Marionette.Layout.extend({
             template: {
                 type: 'handlebars',
                 template: tmpl
             },
             triggers: {
                 "click .delete": "delete"
+            },
+            modelEvents: {
+                "change:dropdown": "dropdownChanged"
+            },
+            regions: {
+                "subview": ".sub-view"
             },
             initialize: function(options) {
                 this.modelBinder = new ModelBinder();
@@ -33,6 +41,21 @@ define([
             },
             onClose: function() {
                 this.modelBinder.unbind();
+            },
+            dropdownChanged: function() {
+                switch(this.model.get("dropdown")) {
+                    case "1":
+                        this.subview.show(new HeatingSelector({
+                            model: this.model
+                        }));
+                        break;
+                    case "2":
+                        this.subview.show(new WidgetConfabulator());
+                        break;
+                    default:
+                        this.subview.reset();
+                        break;
+                }
             }
         });
 });
