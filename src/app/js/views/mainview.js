@@ -2,17 +2,19 @@ define([
         "backbone",
         "backbone.marionette", 
         "hbs!./mainview.tmpl",
-        "./controlformview",
+        "./controlformcollectionview",
         "./chartareaview",
-        "./mapview"
+        "./mapview",
+        "../models/selectedbuildings"
     ], 
     function(
         Backbone,
         Marionette, 
         tmpl,
-        ControlFormView,
+        ControlFormCollectionView,
         ChartAreaView,
-        MapView) {
+        MapView,
+        SelectedBuildingsCollection) {
 
     var MainView = Marionette.Layout.extend({
         template: {
@@ -25,20 +27,22 @@ define([
             map: '.map'
         },
         initialize: function(options) {
+            var coll = new SelectedBuildingsCollection();
+
             _.bindAll(this);
-            this.ControlForm = new ControlFormView({
-                model: this.model
+            this.ControlFormCollection = new ControlFormCollectionView({
+                collection: coll
             });
             this.ChartArea = new ChartAreaView({
                 model: this.model
             });
             this.mapView = new MapView({
-                model: this.model
+                collection: coll
             });
         },
         onShow: function() {
             this.map.show(this.mapView);
-            this.form.show(this.ControlForm);
+            this.form.show(this.ControlFormCollection);
             this.charts.show(this.ChartArea);
         }
     });

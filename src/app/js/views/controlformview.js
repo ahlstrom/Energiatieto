@@ -17,13 +17,22 @@ define([
                 type: 'handlebars',
                 template: tmpl
             },
+            triggers: {
+                "click .delete": "delete"
+            },
             initialize: function(options) {
                 this.modelBinder = new ModelBinder();
             },
-            onRender: function() {
+            onShow: function() {
                 var bindings = ModelBinder.createDefaultBindings(this.el, 'name');
                 bindings.averageRadiation.converter = bindings.roofArea.converter = roundValueConverter;
+                bindings.address.converter = function(direction, value) {
+                    return value.formatted_address;
+                };
                 this.modelBinder.bind(this.model, this.el, bindings);
+            },
+            onClose: function() {
+                this.modelBinder.unbind();
             }
         });
 });

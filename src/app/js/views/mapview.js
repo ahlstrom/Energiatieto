@@ -1,8 +1,9 @@
 define([
         "backbone.marionette", 
         "hbs!./mapview.tmpl",
-        "../helpers/googlemaps"
-    ], function(Marionette, tmpl, GoogleMaps) {
+        "../helpers/googlemaps",
+        "../models/building"
+    ], function(Marionette, tmpl, GoogleMaps, Building) {
         return Marionette.ItemView.extend({
             template: {
                 template: tmpl,
@@ -27,26 +28,31 @@ define([
                     });
 
                     google.maps.event.addListener(layer, 'click', function(event) {
-                        map.panTo(event.latLng);
-                        map.setZoom(17);
-
-                        var marker = new google.maps.Marker({
-                            position: event.latLng,
-                            animation: google.maps.Animation.DROP,
-                            map: map
-                        });
-                        google.maps.event.addListener(marker, 'click', function(event) {
-                            marker.setMap(null);
-                        });
                         new google.maps.Geocoder().geocode({
                                 latLng: event.latLng
                             },
                             function(res, status) {
-                                self.model.set({
+                                map.panTo(event.latLng);
+                                map.setZoom(17);
+
+                                var marker = new google.maps.Marker({
+                                    position: event.latLng,
+                                    animation: google.maps.Animation.DROP,
+                                    map: map
+                                });
+                                google.maps.event.addListener(marker, 'click', function(event) {
+                                    building.destroy();
+                                });
+
+                                var building = new Building({
                                     averageRadiation: event.row.AvActKWHm2.value,
                                     roofArea: event.row.ActualArea.value,
                                     address: res[0]
                                 });
+                                building.on("destroy", function() {
+                                    marker.setMap(null);
+                                });
+                                self.collection.add(building);
                             });
                         
                         return false;
