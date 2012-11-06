@@ -32,27 +32,32 @@ define([
                                 latLng: event.latLng
                             },
                             function(res, status) {
-                                map.panTo(event.latLng);
-                                map.setZoom(17);
-
-                                var marker = new google.maps.Marker({
-                                    position: event.latLng,
-                                    animation: google.maps.Animation.DROP,
-                                    map: map
-                                });
-                                google.maps.event.addListener(marker, 'click', function(event) {
-                                    building.destroy();
-                                });
-
                                 var building = new Building({
+                                    byggid: event.row.ByggID.value,
                                     averageRadiation: event.row.AvActKWHm2.value,
                                     roofArea: event.row.ActualArea.value,
                                     address: res[0]
                                 });
-                                building.on("destroy", function() {
-                                    marker.setMap(null);
-                                });
-                                self.collection.add(building);
+
+                                if (!self.collection.any(function(it) { return it.get("byggid") == building.get("byggid"); })) {
+
+                                    map.panTo(event.latLng);
+                                    map.setZoom(17);
+
+                                    var marker = new google.maps.Marker({
+                                        position: event.latLng,
+                                        animation: google.maps.Animation.DROP,
+                                        map: map
+                                    });
+                                    google.maps.event.addListener(marker, 'click', function(event) {
+                                        building.destroy();
+                                    });
+
+                                    building.on("destroy", function() {
+                                        marker.setMap(null);
+                                    });
+                                    self.collection.add(building);
+                                }
                             });
                         
                         return false;
