@@ -4,8 +4,7 @@ define([
         "hbs!./mainview.tmpl",
         "./controlformcollectionview",
         "./chartareaview",
-        "./mapview",
-        "../models/selectedbuildings"
+        "./mapview"
     ], 
     function(
         Backbone,
@@ -13,8 +12,7 @@ define([
         tmpl,
         ControlFormCollectionView,
         ChartAreaView,
-        MapView,
-        SelectedBuildingsCollection) {
+        MapView) {
 
     var MainView = Marionette.Layout.extend({
         template: {
@@ -27,17 +25,16 @@ define([
             map: '.map'
         },
         initialize: function(options) {
-            var coll = new SelectedBuildingsCollection();
-
             _.bindAll(this);
+            var self = this;
             this.ControlFormCollection = new ControlFormCollectionView({
-                collection: coll
+                collection: this.collection
             });
             this.ChartArea = new ChartAreaView({
-                model: this.model
+                collection: this.collection
             });
             this.mapView = new MapView({
-                collection: coll
+                collection: this.collection
             });
         },
         onShow: function() {

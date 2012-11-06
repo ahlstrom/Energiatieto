@@ -1,8 +1,8 @@
 define([
         'backbone.marionette', 
         'views/mainview',
-        'models/buildinginfomodel'
-    ], function(Marionette, MainView, BuildingInfoModel) {
+        'models/selectedbuildings'
+    ], function(Marionette, MainView, SelectedBuildingsCollection) {
 
     var app = new Marionette.Application();
 
@@ -12,7 +12,7 @@ define([
 
     app.addInitializer(function(options) {
         app.mainRegion.show(new MainView({
-            model: new BuildingInfoModel()
+            collection: new SelectedBuildingsCollection()
         }));
     });
 
