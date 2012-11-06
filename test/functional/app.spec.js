@@ -22,9 +22,13 @@ describe('index page', function() {
 
         ph.waitFor(function() {
             /*jslint browser: true */
-            if (require !== null && window.$ && window.$('input[name=buildYear]').length > 0) {                
-                require(["jquery", "underscore"], function($, _) {
+            if (require !== null) {
+                require(["models/selectedbuildings", "models/buildinginfomodel", "underscore", "jquery"], function(SelectedBuildings, Building, _, $) {
                     window._ = _;
+                    window.Building = new Building({});
+
+                    // add a building so that we get the form visible
+                    SelectedBuildings.add(window.Building);
 
                     $('input[name=buildYear]').val(1958).change();
                     $('input[name=floorArea]').val(68).change();
@@ -32,7 +36,7 @@ describe('index page', function() {
                 });
             }
 
-            return (typeof window.$ !== "undefined" && typeof window._ !== "undefined");
+            return (typeof window.Building !== "undefined" && typeof window._ !== "undefined");
         }).then(function() {
             ph.waitFor(function() {
                 /* jslint browser: true */

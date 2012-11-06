@@ -12,7 +12,7 @@ define([
 
     app.addInitializer(function(options) {
         app.mainRegion.show(new MainView({
-            collection: new SelectedBuildingsCollection()
+            collection: SelectedBuildingsCollection
         }));
     });
 
