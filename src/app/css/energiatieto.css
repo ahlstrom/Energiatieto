@@ -1,0 +1,100 @@
+@charset "UTF-8";
+body {
+    font: 80%/1.2 Verdana, Arial, Helvetica, sans-serif;
+    background: #e0e0e0;
+    margin: 0;
+    padding: 40px 0px  0px 0px;
+    color: #000;
+}
+
+body, html {
+    height: 100%;
+}
+
+/* Element/tag selectors */
+
+ul, ol, dl {
+    padding: 0;
+    margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+    margin-top: 0;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+a img {
+    border: none;
+}
+
+/* Links */
+
+a:link {
+    color: #42413C;
+    text-decoration: underline;
+}
+a:visited {
+    color: #6E6C64;
+    text-decoration: underline;
+}
+a:hover, a:active, a:focus {
+    text-decoration: none;
+}
+
+/* Layout */
+
+.containerMaster { /* Centers the lay-out and takes the height of the window */
+    height: inherit;
+    width: 1030px;
+    margin: 0 auto;
+}
+
+.containerWide { /* Sits inside the containerMaster, holds the shadow bitmap, the panels and expands vertically depending on the content in panelLeft */
+    position: absolute;
+    width: 1030px;
+    min-height: 100%;
+    background-image: url('shadow.png');
+}
+
+.footer {
+    position: absolute;
+    right:15px;
+    left: 15px;
+    bottom: 0px;
+    height: 15px;
+    background: #d0d0d0;
+    margin: 0 auto;
+}
+
+.header {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    left: 15px;
+    height: 60px;
+    background: #000000;
+    background-image: url('header.png');
+}
+
+/* panels */
+
+.panelGraphTop{
+    width: 560px;
+    height: 30px;
+}
+
+.panel .header {
+    width: 560px;
+    height: 30px;
+    background: #dbdbdb;
+}
+
+.panel .graph {
+    width: 560px;
+    height: 160px;
+}
+
+.panel .graphLine {
+    width: 560px;
+    height: 1px;
+    background: #b3b3b3;
+}
