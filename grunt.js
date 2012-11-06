@@ -89,7 +89,7 @@ module.exports = function(grunt) {
           timeout: 3000,
           ignoreLeaks: false,
           ui: 'bdd',
-          reporter: 'tap'
+          reporter: 'nyan'
         }
       },
       functional: {
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
           timeout: 3000,
           ignoreLeaks: false,
           ui: 'bdd',
-          reporter: 'tap'
+          reporter: 'nyan'
         }
       },
       client: {
