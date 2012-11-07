@@ -14,6 +14,11 @@ define([
                 styles: MapStyles.buildingsLayer
             });
 
+            var scaledSize = new google.maps.Size(30, 30),
+                origin     = new google.maps.Point(15, 15),
+                activeIcon = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize);
+                inactiveIcon = new google.maps.MarkerImage('/images/mapMarkerDot.png', null, null, origin, scaledSize);
+
             google.maps.event.addListener(layer, 'click', function(event) {
                 new google.maps.Geocoder().geocode({
                         latLng: event.latLng
@@ -34,12 +39,18 @@ define([
                             });
 
                             var marker = new google.maps.Marker({
+                                icon: inactiveIcon,
                                 position: event.latLng,
                                 animation: google.maps.Animation.DROP,
                                 map: map
                             });
 
+                            building.on("deselect", function() {
+                                marker.setIcon(inactiveIcon);
+                            });
+
                             var selectBuilding = function() {
+                                marker.setIcon(activeIcon);
                                 collection.trigger("select", building);
 
                                 map.panTo(building.get("location"));
