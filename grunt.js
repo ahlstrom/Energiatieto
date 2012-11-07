@@ -3,10 +3,6 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
-  var log = function() {
-    console.log(this);
-  };
-
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
@@ -154,11 +150,13 @@ module.exports = function(grunt) {
         stdout: true
       },
       git_push_to_heroku: {
-        command: 'git push heroku deploy:master -f',
-        stdout: log
+        command: 'git push heroku deploy:master -f -v',
+        stdout: true,
+        stderr: true
       },
       git_checkout_master: {
-        command: 'git checkout master'
+        command: 'git checkout master',
+        stdout: true
       }
     }
   });
