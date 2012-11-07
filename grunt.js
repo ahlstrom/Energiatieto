@@ -39,7 +39,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['lib/**/*.js', 'test/**/*.js', 'src/**/*.js', 'public/js/**/*.js'],
-      tasks: 'lint functional'
+      tasks: 'test'
     },
     jshint: {
       options: {
@@ -171,6 +171,8 @@ module.exports = function(grunt) {
   grunt.registerTask('mocha', 'simplemocha');
 
   grunt.registerTask('run', 'lint qunit functional concat min start');
+
+  grunt.registerTask('test', 'lint functional');
 
   grunt.loadNpmTasks('grunt-simple-mocha');
 
