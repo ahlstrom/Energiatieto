@@ -29,6 +29,7 @@ describe('index page', function() {
 
                     // add a building so that we get the form visible
                     SelectedBuildings.add(window.Building);
+                    SelectedBuildings.trigger("select", window.Building);
 
                     $('input[name=buildYear]').val(1958).change();
                     $('input[name=floorArea]').val(68).change();
