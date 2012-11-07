@@ -19,9 +19,6 @@ define([
                 type: 'handlebars',
                 template: tmpl
             },
-            triggers: {
-                "click .delete": "delete"
-            },
             modelEvents: {
                 "change:dropdown": "dropdownChanged"
             },
