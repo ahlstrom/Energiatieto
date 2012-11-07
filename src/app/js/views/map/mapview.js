@@ -2,8 +2,9 @@ define([
         "backbone.marionette", 
         "hbs!./mapview.tmpl",
         "../../helpers/googlemaps",
-        "../../models/buildinginfomodel"
-    ], function(Marionette, tmpl, GoogleMaps, Building) {
+        "../../models/buildinginfomodel",
+        "./mapstyles"
+    ], function(Marionette, tmpl, GoogleMaps, Building, MapStyles) {
         return Marionette.ItemView.extend({
             template: {
                 template: tmpl,
@@ -16,7 +17,8 @@ define([
                         zoom: 11,
                         center: new google.maps.LatLng(60.2, 24.7),
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        streetViewControl: false
+                        streetViewControl: false,
+                        styles: MapStyles.main
                     });
 
                     var layer = new google.maps.FusionTablesLayer({
@@ -24,7 +26,8 @@ define([
                             select: 'col10',
                             from: '1A3CXe08s00bb9SgIzCnmXWz61yAOHWIkcdpzOa0'
                         },
-                        suppressInfoWindows: true
+                        suppressInfoWindows: true,
+                        styles: MapStyles.buildingsLayer
                     });
 
                     google.maps.event.addListener(layer, 'click', function(event) {
