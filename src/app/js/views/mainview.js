@@ -5,7 +5,7 @@ define([
         "./controlformview",
         "./chartareaview",
         "../models/chartareamodel",
-        "./mapview"
+        "./map/mapview"
     ], 
     function(
         Backbone,

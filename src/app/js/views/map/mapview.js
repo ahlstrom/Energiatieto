@@ -1,8 +1,8 @@
 define([
         "backbone.marionette", 
         "hbs!./mapview.tmpl",
-        "../helpers/googlemaps",
-        "../models/buildinginfomodel"
+        "../../helpers/googlemaps",
+        "../../models/buildinginfomodel"
     ], function(Marionette, tmpl, GoogleMaps, Building) {
         return Marionette.ItemView.extend({
             template: {
