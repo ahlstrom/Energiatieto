@@ -148,7 +148,6 @@ define(["d3", "jquery", "tipsy"], function(d3, $) {
                  })
                  .transition()
                  .duration(500)
-                 .delay(function(d, i) { return i * 20; })
                  .attr("height", newHeightFn(data))
                  .attr("y", newyCoordFn(data))
                  .attr("title", function(d) {
