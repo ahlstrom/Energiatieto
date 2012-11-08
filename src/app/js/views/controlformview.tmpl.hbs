@@ -50,16 +50,29 @@
     <div class='control-group'>
         <label class='control-label'>Dropdown</label>
         <div class='controls'>
-            <select class='input-medium' name='dropdown'>
+            <select class='input-medium re-render' name='dropdown'>
                 <option value="">(valitse)</option>
                 <option value="1">Vaihtoehto 1</option>
                 <option value="2">Vaihtoehto 2</option>
             </select>
         </div>
     </div>
-
-    <div class='sub-view'>
-    </div>
+    {{#if dropdownchoice1}}
+            <div class='control-group'>
+                <label class='control-label'>Vaihtoehto 1</label>
+                <div class='controls'>
+                    <input type='text' class='input-medium' name='option1'>
+                </div>
+            </div>
+    {{/if}}
+    {{#if dropdownchoice2}}
+            <div class='control-group'>
+                <label class='control-label'>Dropdown</label>
+                <div class='controls'>
+                    Vaihtoehto 2
+                </div>
+            </div>
+    {{/if}}
 
     <div class='control-group'>
         <label class='control-label'>Keskisäteily</label>

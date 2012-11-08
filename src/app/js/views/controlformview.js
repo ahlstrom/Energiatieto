@@ -1,10 +1,9 @@
 define([
+    "underscore",
     "backbone.marionette", 
     "hbs!./controlformview.tmpl",
-    "backbone.modelbinder",
-    "./forms/heatingselector",
-    "./forms/widgetconfabulator"
-    ], function(Marionette, tmpl, ModelBinder, HeatingSelector, WidgetConfabulator) {
+    "backbone.modelbinder"
+    ], function(_, Marionette, tmpl, ModelBinder) {
         var roundValueConverter = function(direction, value) {
             var result = Math.round(value);
             if (isNaN(result)) {
@@ -14,21 +13,36 @@ define([
             }
         };
 
-        return Marionette.Layout.extend({
+        return Marionette.ItemView.extend({
             template: {
                 type: 'handlebars',
                 template: tmpl
             },
-            modelEvents: {
-                "change:dropdown": "dropdownChanged"
+            templateHelpers: {
+                dropdownchoice1: function() {
+                    return this.dropdown === "1";
+                }
             },
-            regions: {
-                "subview": ".sub-view"
+            modelEvents: {
+                "change": "modelChanged"
+            },
+            // re-renders the form if element bound to changed property has class ".re-render"
+            modelChanged: function(model, event) {
+                var self = this;
+                _.each(_.keys(event.changes), function(it) {
+                    var selector = ".re-render[name="+it+"]";
+                    if (self.$(selector).length) {
+                        self.render();
+                        // re-select the element from the now changed form and focus on it
+                        self.$(selector).each(function() { this.focus(); });
+                    }
+                });
             },
             initialize: function(options) {
+                _.bindAll(this);
                 this.modelBinder = new ModelBinder();
             },
-            onShow: function() {
+            onRender: function() {
                 var bindings = ModelBinder.createDefaultBindings(this.el, 'name');
                 bindings.averageRadiation.converter = bindings.roofArea.converter = roundValueConverter;
                 bindings.address.converter = function(direction, value) {
@@ -38,21 +52,6 @@ define([
             },
             onClose: function() {
                 this.modelBinder.unbind();
-            },
-            dropdownChanged: function() {
-                switch(this.model.get("dropdown")) {
-                    case "1":
-                        this.subview.show(new HeatingSelector({
-                            model: this.model
-                        }));
-                        break;
-                    case "2":
-                        this.subview.show(new WidgetConfabulator());
-                        break;
-                    default:
-                        this.subview.reset();
-                        break;
-                }
             }
         });
 });
