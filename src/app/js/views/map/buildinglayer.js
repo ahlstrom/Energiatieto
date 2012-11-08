@@ -24,6 +24,9 @@ define([
                         latLng: event.latLng
                     },
                     function(res, status) {
+                        if (map.getZoom() < 16) {
+                            return false;
+                        }
                         var byggid = event.row.ByggID.value;
                         var findByByggId = function(it) { return it.get("byggid") == byggid; };
 
