@@ -52,9 +52,6 @@ define([
                             var selectBuilding = function() {
                                 marker.setIcon(activeIcon);
                                 collection.trigger("select", building);
-
-                                map.panTo(building.get("location"));
-                                map.setZoom(17);
                             };
                             
                             google.maps.event.addListener(marker, 'click', selectBuilding);
