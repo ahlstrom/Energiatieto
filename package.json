@@ -15,7 +15,7 @@
     "grunt-requirejs"
   ],
   "devDependencies": {
-   "phantom": "git://github.com/amir20/phantomjs-node.git#phantom-1.7-fix"
+   "phantom": "http://github.com/amir20/phantomjs-node/archive/phantom-1.7-fix.tar.gz"
    ,"grunt-shell": "0.1.3"
    ,"grunt-simple-mocha": "0.2.0"
    ,"mocha": "1.6.0"

@@ -89,7 +89,7 @@
     },
     "phantom": {
       "version": "0.3.5",
-      "from": "git://github.com/amir20/phantomjs-node.git#phantom-1.7-fix",
+      "from": "http://github.com/amir20/phantomjs-node/archive/phantom-1.7-fix.tar.gz",
       "dependencies": {
         "dnode-protocol": {
           "version": "0.2.2",
@@ -131,9 +131,6 @@
                 }
               }
             },
-            "lazy": {
-              "version": "1.0.8"
-            },
             "dnode-protocol": {
               "version": "0.1.5",
               "dependencies": {
@@ -148,10 +145,10 @@
           }
         },
         "express": {
-          "version": "3.0.0",
+          "version": "3.0.1",
           "dependencies": {
             "connect": {
-              "version": "2.6.0",
+              "version": "2.6.2",
               "dependencies": {
                 "qs": {
                   "version": "0.5.1"
@@ -161,14 +158,6 @@
                 },
                 "bytes": {
                   "version": "0.1.0"
-                },
-                "send": {
-                  "version": "0.0.4",
-                  "dependencies": {
-                    "mime": {
-                      "version": "1.2.6"
-                    }
-                  }
                 },
                 "pause": {
                   "version": "0.0.1"
@@ -203,6 +192,9 @@
                   "version": "1.2.6"
                 }
               }
+            },
+            "cookie-signature": {
+              "version": "0.0.1"
             },
             "debug": {
               "version": "0.7.0"
