@@ -41,7 +41,6 @@ define([
                             var marker = new google.maps.Marker({
                                 icon: inactiveIcon,
                                 position: event.latLng,
-                                animation: google.maps.Animation.DROP,
                                 map: map
                             });
 
