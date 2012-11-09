@@ -42,24 +42,29 @@ a:hover, a:active, a:focus {
 
 /* Layout */
 
+div.navbar {
+    position: absolute;
+    width: 1000px;
+    z-index: 1030;
+}
+
 .navbar-inner {
     border-radius: 0px;
     -webkit-border-radius: 0px;
 }
 
-.container.master { /* Centers the lay-out and takes the height of the window */
+.master { /* Centers the lay-out and takes the height of the window */
     height: inherit;
-    width: 1000px;
+    width: 1030px;
     margin: 0 auto;
-    padding: 0 0px;
-    box-shadow: 0px 0px 20px #666;
 }
 
-.containerWide { /* Sits inside the containerMaster, holds the shadow bitmap, the panels and expands vertically depending on the content in panelLeft */
+.wide { /* Sits inside the containerMaster, holds the shadow bitmap, the panels and expands vertically depending on the content in panelLeft */
     position: absolute;
-    width: 1030px;
+    width: 1015px;
     min-height: 100%;
-    background-image: url('shadow.png');
+    padding-left: 15px;
+    background-image: url(/images/shadow.png);
 }
 
 .footer {
@@ -77,16 +82,33 @@ a:hover, a:active, a:focus {
 }
 /* panels */
 
-.panel.left {
-    background-color: rgb(242,242,242);
+.chart-area {
     margin-left: 0px;
-    padding-top: 3em;
-    box-shadow: 0px 2px 15px #bbb;
+    min-height: 100%;
+}
+.chart-area > * {
+    padding-top: 50px;
+}
+.panel.left {
+    float: left;
+    margin-bottom: 0px; /* 0 if there is no footer */
+    width: 560px;
+}
+.panel.right {
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    bottom: 0px; /* 0 if there is no footer */
+    width: 420px;
+    overflow: scroll;
 }
 
-.row.main {
+.main {
+    min-height: 100%;
     margin-left: 0px;
-    background-color: rgb(255,255,255);
+
+    padding-top: 42px;
+    width: 100%;
 }
 
 .panelGraphTop{

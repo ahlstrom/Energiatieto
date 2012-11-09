@@ -18,6 +18,7 @@ define([
     ) {
 
     var MainView = Marionette.Layout.extend({
+        className: 'master',
         template: {
             type: 'handlebars',
             template: tmpl
