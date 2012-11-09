@@ -19,8 +19,35 @@ define([
                 template: tmpl
             },
             templateHelpers: {
-                dropdownchoice1: function() {
-                    return this.dropdown === "1";
+                buildingTypeIs1: function() {
+                    return this.buildingType === "1";
+                },
+                buildingTypeIs2: function() {
+                    return this.buildingType === "2";
+                },
+                heatingSystemIs1: function() {
+                    return ( this.heatingSystem === "1" && this.buildingType === "1" );
+                },
+                heatingSystemIs2: function() {
+                    return ( this.heatingSystem === "2" && this.buildingType === "1" );
+                },
+                heatingSystemIs3: function() {
+                    return ( this.heatingSystem === "3" && this.buildingType === "1" );
+                },
+                heatingSystemIs4: function() {
+                    return ( this.heatingSystem === "4" && this.buildingType === "1" );
+                },
+                heatingEnergyConsumptionEstimatedNOT: function() {
+                    return ( this.heatingEnergyConsumptionEstimated === false || this.heatingEnergyConsumptionEstimated === undefined );
+                },
+                electricityConsumption: function() {
+                    return this.buildingType === "1" ;
+                },
+                electricityConsumptionEstimatedNOT: function() {
+                    return ( this.electricityConsumptionEstimated === false || this.electricityConsumptionEstimated === undefined );
+                },
+                showBackgroundDataIsTrue: function() {
+                    return ( this.showBackgroundData === true );
                 }
             },
             modelEvents: {
@@ -44,8 +71,9 @@ define([
             },
             onRender: function() {
                 var bindings = ModelBinder.createDefaultBindings(this.el, 'name');
-                bindings.averageRadiation.converter = bindings.roofArea.converter = roundValueConverter;
-                bindings.address.converter = function(direction, value) {
+                
+                (bindings.averageRadiation || {}).converter = (bindings.roofArea || {}).converter = roundValueConverter;
+                (bindings.address || {}).converter = function(direction, value) {
                     return value && value.formatted_address;
                 };
                 this.modelBinder.bind(this.model, this.el, bindings);

@@ -1,89 +1,258 @@
-<h3 name='address'></h3>
-<form class='form-horizontal span4'>
+<div class="controlform-frame">
 
-    <div class='control-group'>
-        <label class='control-label'>Rakennustyyppi</label>
-        <div class='controls'>
-            <select class='input-medium' name='buildingType'>
-                <option>Erillinen pientalo</option>
-                <option>Rivitalo</option>
-                <option>Ketjutalo</option>
-            </select>
-        </div>
+    <div class='controlform-frame-header'>
+        <h5 name='buildingName'></h5>
     </div>
 
-    <div class='control-group'>
-        <label class='control-label'>Rakennusvuosi</label>
-        <div class='controls'>
-            <input type='text' class='input-medium' name='buildYear'>
-        </div>
-    </div>
+    <div class="controlform-frame-content form-horizontal">
 
-    <div class='control-group'>
-        <label class='control-label'>Lämmitettävä Pinta-ala (m2)</label>
-        <div class='controls'>
-            <input type='text' class='input-medium' name='floorArea'>
+        <div class='control-group'>
+            <label class='control-label'>Nimi:</label>
+            <div class='controls'>
+                <input type='text' class='input-medium re-render' name='buildingName'>
+            </div>
         </div>
-    </div>
 
-    <div class='control-group'>
-        <label class='control-label'>Keskimääräinen huonekorkeus (cm)</label>
-        <div class='controls'>
-            <input type='text' class='input-medium' name='avgHeight'>
-        </div>
-    </div>
+        <div class='control-group'>
+            <label class='control-label'>Pinta-ala:</label>
+            <div class='controls'>
+                <input type='text' class='input-mini' name='floorArea'>  m2
+            </div>
 
-    <div class='control-group'>
-        <label class='control-label'>Asukasmäärä</label>
-        <div class='controls'>
-            <select class='input-medium' name='peopleCount'>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-            </select>
         </div>
-    </div>
 
-    <div class='control-group'>
-        <label class='control-label'>Dropdown</label>
-        <div class='controls'>
-            <select class='input-medium re-render' name='dropdown'>
-                <option value="">(valitse)</option>
-                <option value="1">Vaihtoehto 1</option>
-                <option value="2">Vaihtoehto 2</option>
-            </select>
+        <div class='control-group'>
+            <label class='control-label'>Rakennustyyppi:</label>
+            <div class='controls'>
+                <select class='input-medium re-render' name='buildingType'>
+                    <option value="">Valitse</option>
+                    <option value="1">Asuinrakennus - erillistalo</option>
+                    <option value="2">Asuinrakennus - uudisrakennus</option>
+                </select>
+            </div>
         </div>
-    </div>
-    {{#if dropdownchoice1}}
+
+        {{#if buildingTypeIs1}}
             <div class='control-group'>
-                <label class='control-label'>Vaihtoehto 1</label>
+                <label class='control-label'>Asukasmäärä</label>
                 <div class='controls'>
-                    <input type='text' class='input-medium' name='option1'>
+                    <input type='text' class='input-medium' name='peopleCount'>
                 </div>
             </div>
-    {{/if}}
-    {{#if dropdownchoice2}}
-            <div class='control-group'>
-                <label class='control-label'>Dropdown</label>
+             <div class='control-group'>
+                <label class='control-label'>Rakennusvuosi:</label>
                 <div class='controls'>
-                    Vaihtoehto 2
+                    <input type='text' class='input-medium' name='buildingYear'>
                 </div>
             </div>
-    {{/if}}
 
-    <div class='control-group'>
-        <label class='control-label'>Keskisäteily</label>
-        <div class='controls'>
-            <span class='input-medium uneditable-input' name='averageRadiation'>
+            <!-- ___________________________________________________________________________________________ --> 
+
+            <div class='controlform-divider'>Lämmitysenergia:</div>
+
+            <div class='control-group'>
+                <label class='control-label'>Lämmitysjärjestelmä:</label>
+                <div class='controls'>
+                    <select class='input-medium re-render' name='heatingSystem'>
+                        <option value="">Valitse</option>
+                        <option value="1">Kaukolämpö</option>
+                        <option value="2">Öljylämmitys</option>
+                        <option value="3">Sähkölämmitys</option>
+                        <option value="4">Jokin muu</option>
+                    </select>
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if buildingTypeIs2}}
+            <div class='control-group'>
+                <label class='control-label'>Asukasmäärä:</label>
+                <div class='controls'>
+                    <input type='text' class='input-small' name='peopleCount'>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='control-label'>Rakennusvuosi:</label>
+                <div class='controls'>
+                    <select class='input-medium' name='buildingYear'>
+                        <option value="">Valitse</option>
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                    </select>
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if heatingSystemIs1}}
+            <div class='control-group'>
+                <label class='control-label'>Arvioitu kulutus:</label>
+                <div class='controls'>
+                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
+                </div>
+            </div>
+        
+
+            {{#if heatingEnergyConsumptionEstimatedNOT}}
+                <div class='control-group'>
+                    <label class='control-label'>Ostettu lämmitysenergia:</label>
+                    <div class='controls'>
+                        <input type='text' class='input-small' name='purchasedEnergyDistrictHeating'> kWh
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Aikavälillä:</label>
+                    <div class='controls'>
+                        <input type='date' class='input-mini' name='purchasedEnergyDistrictHeatingPeriodStart'> - <input type='date' class='input-mini' name='purchasedEnergyDistrictHeatingPeriodEnd'>
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Sisältää käyttöveden lämmityksen:</label>
+                    <div class='controls'>
+                        <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
+
+          {{#if heatingSystemIs2}}
+            <div class='control-group'>
+                <label class='control-label'>Arvioitu kulutus:</label>
+                <div class='controls'>
+                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
+                </div>
+            </div>
+            {{#if heatingEnergyConsumptionEstimatedNOT}}
+                <div class='control-group'>
+                    <label class='control-label'>Ostettu öljy:</label>
+                    <div class='controls'>
+                        <input type='text' class='input-small' name='purchasedOil'> litraa
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Aikavälillä:</label>
+                    <div class='controls'>
+                        <input type='date' class='input-mini' name='purchasedOilPeriodStart'> - <input type='date' class='input-mini' name='purchasedOilPeriodEnd'>
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Sisältää käyttöveden lämmityksen:</label>
+                    <div class='controls'>
+                        <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
+
+        {{#if heatingSystemIs3}}
+            <div class='control-group'>
+                <label class='control-label'>Arvioitu kulutus:</label>
+                <div class='controls'>
+                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
+                </div>
+            </div>
+            {{#if heatingEnergyConsumptionEstimatedNOT}}
+                <div class='control-group'>
+                    <label class='control-label'>Ostettu sähköenergia:</label>
+                    <div class='controls'>
+                        <input type='text' class='input-small' name='purchasedElectricityHeating'> kWh
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Aikavälillä:</label>
+                    <div class='controls'>
+                        <input type='date' class='input-mini' name='purchasedElectricityPeriodStart'> - <input type='date' class='input-mini' name='purchasedElectricityPeriodEnd'>
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Sisältää käyttöveden lämmityksen:</label>
+                    <div class='controls'>
+                        <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Sisältää käyttösähkön:</label>
+                    <div class='controls'>
+                        <input type='checkbox' class='input-medium re-render' name='electricityConsumptionIncludesDomestic'>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
+
+        {{#if heatingSystemIs4}}
+            <div class='control-group'>
+                <label class='control-label'>Arvioitu kulutus:</label>
+                <div class='controls'>
+                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
+                </div>
+            </div>
+        {{/if}}
+
+
+        <!-- ___________________________________________________________________________________________ --> 
+
+
+        {{#if electricityConsumption}}
+            <div class='controlform-divider'>Käyttösähkö:</div>
+                
+            <div class='control-group'>
+                <label class='control-label'>Arvioitu kulutus:</label>
+                <div class='controls'>
+                    <input type='checkbox' class='input-medium re-render' name='electricityConsumptionEstimated'>
+                </div>
+            </div>
+
+            {{#if electricityConsumptionEstimatedNOT}}
+
+                <div class='control-group'>
+                    <label class='control-label'>Ostettu sähköenergia:</label>
+                    <div class='controls'>
+                        <input type='text' class='input-small' name='purchasedElectricityDomestic'> kWh
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label'>Aikavälillä:</label>
+                    <div class='controls'>
+                        <input type='date' class='input-mini' name='purchasedElectricityPeriodStart'> - <input type='date' class='input-mini' name='purchasedElectricityPeriodEnd'>
+                    </div>
+                </div>
+
+            {{/if}}
+
+        {{/if}}
+        
+        <!-- ___________________________________________________________________________________________ --> 
+
+        <div class='controlform-divider'>Laskennassa käytetyt tiedot:</div>
+
+        <div class='control-group'>
+                <label class='control-label'>Näytä:</label>
+                <div class='controls'>
+                    <input type='checkbox' class='input-medium re-render' name='showBackgroundData'>
+                </div>
         </div>
-    </div>
-    <div class='control-group'>
-        <label class='control-label'>Katon pinta-ala (m2)</label>
-        <div class='controls'>
-            <span class='input-medium uneditable-input' name='roofArea'>
-        </div>
-    </div>
-</form>
+
+        {{#if showBackgroundDataIsTrue}}
+            <div class='control-group'>
+                <label class='control-label'>Keskisäteily</label>
+                <div class='controls'>
+                    <span class='input-medium uneditable-input' name='averageRadiation'>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='control-label'>Katon pinta-ala (m2)</label>
+                <div class='controls'>
+                    <span class='input-medium uneditable-input' name='roofArea'>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='control-label'>Keskimääräinen huonekorkeus:</label>
+                <div class='controls'>
+                    <input type='text' class='input-mini' name='avgHeight'>  m
+                </div>
+            </div>
+        {{/if}}
+
+    </div> 
+</div>
