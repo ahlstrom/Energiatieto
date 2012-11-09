@@ -6,7 +6,7 @@ define([
             return new google.maps.ImageMapType({
                   getTileUrl: function(coord, zoom) {
                     var bound = Math.pow(2, zoom);
-                    return "https://raw.github.com/ahlstrom/EnergiatietoSolar/master/mapTIles" + "/" + zoom + "/" + coord.x + "/" + (bound - coord.y - 1) + ".png";
+                    return "https://raw.github.com/ahlstrom/EnergiatietoSolar/master/solarMapTiles" + "/" + zoom + "/" + coord.x + "/" + (bound - coord.y - 1) + ".png";
                   },
                   tileSize: new google.maps.Size(256, 256),
                   maxZoom: 20,

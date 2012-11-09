@@ -6,8 +6,9 @@ define([
         "./mapstyles",
         "./mapswitchcontrols",
         "./buildinglayer",
-        "./solarmaptype"
-    ], function(_, Marionette, tmpl, GoogleMaps, MapStyles, MapSwitchControls, BuildingLayer, SolarMapType) {
+        "./solarmaptype",
+        "./geoenergymaptype"
+    ], function(_, Marionette, tmpl, GoogleMaps, MapStyles, MapSwitchControls, BuildingLayer, SolarMapType, GeoEnergyMapType) {
         return Marionette.ItemView.extend({
             template: {
                 template: tmpl,
@@ -23,21 +24,31 @@ define([
 
                     var controls = new MapSwitchControls([
                         {
+                            title: 'Geoenergia',
+                            onSelect: function() {
+                                map.overlayMapTypes.clear();
+                                map.overlayMapTypes.push(new GeoEnergyMapType(map));
+                                buildingLayer.setOpaque(true);
+                            }
+                        },
+                        {
                             title: 'Aurinkoenergia',
                             onSelect: function() {
+                                map.overlayMapTypes.clear();
                                 map.overlayMapTypes.push(solarMapType);
-                                buildingLayer.setMap(null);
+                                buildingLayer.setOpaque(true);
                             }
                         },
                         {
                             title: 'Rakennukset',
                             onSelect: function() {
-                                buildingLayer.setMap(map);
+                                buildingLayer.setOpaque(false);
                                 map.overlayMapTypes.clear();
                             }
                         }
                     ]);
 
+                    buildingLayer.setMap(map);
                     controls.select('Rakennukset');
 
                     var topRightControls = map.controls[google.maps.ControlPosition.TOP_RIGHT];

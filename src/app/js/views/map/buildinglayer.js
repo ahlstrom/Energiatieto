@@ -14,6 +14,15 @@ define([
                 styles: MapStyles.buildingsLayer
             });
 
+
+            layer.setOpaque = function(val) {
+                if (val === true) {
+                    layer.set("styles", MapStyles.buildingsLayerInactive);
+                } else {
+                    layer.set("styles", MapStyles.buildingsLayer);
+                }
+            };
+
             var scaledSize = new google.maps.Size(30, 30),
                 origin     = new google.maps.Point(15, 15),
                 activeIcon = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize);

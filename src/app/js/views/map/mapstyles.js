@@ -42,5 +42,13 @@ define([], {
             strokeColor: "#333333",
             strokeWeight: "1"
         }
+    }],
+    buildingsLayerInactive: [{
+        polygonOptions: {
+            fillColor: "#FFFFFF",
+            strokeColor: "#333333",
+            strokeWeight: "1",
+            fillOpacity: 0.01
+        }
     }]
 });
