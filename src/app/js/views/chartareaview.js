@@ -1,9 +1,11 @@
 define([
+        "jquery",
+        "underscore",
         "backbone.marionette", 
         "hbs!./chartareaview.tmpl",
         "./chartview",
         "../models/buildinginfomodel"
-    ], function(Marionette, tmpl, ChartView, BuildingInfoModel) {
+    ], function($, _, Marionette, tmpl, ChartView, BuildingInfoModel) {
 
     return Marionette.Layout.extend({
         template: {
@@ -19,15 +21,37 @@ define([
             "click .subheader": "subheaderclick"
         },
         subheaderclick: function(event) {
-            this.$(".selected").removeClass("selected");
+            var trgt = this.$(event.target),
+                self = this;
 
-            var trgt = this.$(event.target);
-            if (trgt.hasClass("building-info")) {
-                trgt.addClass("selected");
-                this.trigger("select", "building-info");
-            } else if (trgt.hasClass("production")) {
-                trgt.addClass("selected");
-                this.trigger("select", "production");
+            this.markSelected(trgt);
+
+            _(["building-info", "production"]).each(function(it) {
+                if (trgt.hasClass(it)) {
+                    self.trigger("select", it);
+                }
+            })
+        },
+        markSelected: function(node, silent) {
+            this.$(".arrow").animate({
+                right: '+20'
+            }, {
+                duration: 100,
+                complete: function() { 
+                    $(this).remove(); 
+                }
+            });
+            var arrow = $("<span class='arrow'></span>");
+            node.append(arrow);
+
+            if (silent) {
+                arrow.css('right', '-20px');
+            } else {
+                arrow.animate({
+                    right: '-20'
+                },{
+                    duration: 100
+                });
             }
         },
         initialize: function() {
@@ -45,6 +69,8 @@ define([
             this.sum.show(new ChartView({
                 model: new BuildingInfoModel({})
             }));
+
+            this.markSelected(this.$('h3.building-info'), true);
         }
     });
 

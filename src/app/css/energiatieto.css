@@ -204,14 +204,13 @@ div.navbar {
     border-top: 2px solid rgb(181, 181, 181);
 }
 
-.chart-area h3.selected:after, .chart-area h4.selected:after {
-    content: "";
+.chart-area .arrow {
     position: absolute;
     border: 20px solid;
     border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(220, 220, 220);
 
     top: 0px;
-    right: -20px;
+    right: 0px;
     margin-right: -20px;
 }
 
