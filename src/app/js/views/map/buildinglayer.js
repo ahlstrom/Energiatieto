@@ -3,6 +3,8 @@ define([
     "../../models/buildinginfomodel"
     ], function(MapStyles, Building) {
 
+        var clickableZoomLevel = 16;
+
         return function(map, collection) {
 
             var layer = new google.maps.FusionTablesLayer({
@@ -10,6 +12,7 @@ define([
                     select: 'col10',
                     from: '1A3CXe08s00bb9SgIzCnmXWz61yAOHWIkcdpzOa0'
                 },
+                clickable: (map.getZoom() >= clickableZoomLevel),
                 suppressInfoWindows: true,
                 styles: MapStyles.buildingsLayer
             });
@@ -28,14 +31,17 @@ define([
                 activeIcon = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize);
                 inactiveIcon = new google.maps.MarkerImage('/images/mapMarkerDot.png', null, null, origin, scaledSize);
 
+            google.maps.event.addListener(map, 'zoom_changed', function() {
+                layer.setOptions({
+                    clickable: (map.getZoom() >= clickableZoomLevel)
+                });
+            });
+
             google.maps.event.addListener(layer, 'click', function(event) {
                 new google.maps.Geocoder().geocode({
                         latLng: event.latLng
                     },
                     function(res, status) {
-                        if (map.getZoom() < 16) {
-                            return false;
-                        }
                         var byggid = event.row.ByggID.value;
                         var findByByggId = function(it) { return it.get("byggid") == byggid; };
 
