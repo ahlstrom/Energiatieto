@@ -204,7 +204,7 @@ div.navbar {
     border-top: 2px solid rgb(181, 181, 181);
 }
 
-.chart-area h3.arrow:after, .chart-area h4.arrow:after {
+.chart-area h3.selected:after, .chart-area h4.selected:after {
     content: "";
     position: absolute;
     border: 20px solid;

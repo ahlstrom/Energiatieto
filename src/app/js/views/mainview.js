@@ -3,6 +3,7 @@ define([
         "backbone.marionette", 
         "hbs!./mainview.tmpl",
         "./form/buildinginfoform",
+        "./form/productionform",
         "./chartareaview",
         "../models/chartareamodel",
         "./map/mapview"
@@ -12,6 +13,7 @@ define([
         Marionette, 
         tmpl,
         BuildingInfoForm,
+        ProductionForm,
         ChartAreaView,
         ChartAreaModel,
         MapView
@@ -38,18 +40,37 @@ define([
 
             this.ChartArea = new ChartAreaView({
                 model: chartModel
+            }).on("select", function(view) {
+                self.selectFormView(view);
+                self.redrawForm();
             });
 
             this.mapView = new MapView({
                 collection: coll
             });
 
-            this.collection.on("select", function(model) {
-                self.form.show(new BuildingInfoForm({
-                    model: model
-                }));
+            this.bindTo(this.collection, "select", function(model) {
+                self.redrawForm(model);
                 chartModel.changeUnderlyingModel(model);
             });
+
+            this.viewtype = BuildingInfoForm;
+        },
+        selectFormView: function(view) {
+            switch(view) {
+                case "building-info":
+                    this.viewtype = BuildingInfoForm;
+                    break;
+                case "production":
+                    this.viewtype = ProductionForm;
+                    break;
+            }
+        },
+        redrawForm: function(model) {
+            var currentModel = model ? model : this.form.currentView.model;
+            this.form.show(new this.viewtype({
+                model: currentModel
+            }));
         },
         onShow: function() {
             this.map.show(this.mapView);

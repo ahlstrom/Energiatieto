@@ -11,9 +11,27 @@ define([
             template: tmpl
         },
         regions: {
-            consumption: ".consumption",
-            production: ".production",
-            sum: ".sum"
+            consumption: "div.consumption",
+            production: "div.production",
+            sum: "div.sum"
+        },
+        events: {
+            "click .subheader": "subheaderclick"
+        },
+        subheaderclick: function(event) {
+            this.$(".selected").removeClass("selected");
+
+            var trgt = this.$(event.target);
+            if (trgt.hasClass("building-info")) {
+                trgt.addClass("selected");
+                this.trigger("select", "building-info");
+            } else if (trgt.hasClass("production")) {
+                trgt.addClass("selected");
+                this.trigger("select", "production");
+            }
+        },
+        initialize: function() {
+            _.bindAll(this);
         },
         onShow: function() {
             this.consumption.show(new ChartView({
