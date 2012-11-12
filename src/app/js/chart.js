@@ -1,13 +1,14 @@
-define(["d3", "jquery", "tipsy"], function(d3, $) {
+define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
     return function(element, dataSource) {
         var height = 100;
-        var width = 300;
+        var width = 270;
 
         var paddingLeft = 40;
         var paddingTop = 5;
         
         var labelDecimals = 2;
-        var horizLinesCount = 3;
+        var horizLinesCount = 6;
+        var quantileCount = 2;
 
         var chart = d3.select(element)
                       .attr("width", width)
@@ -49,7 +50,7 @@ define(["d3", "jquery", "tipsy"], function(d3, $) {
             
             var value = maxValue;
 
-            for (var c=0; c < count; c++) {
+            for (var c=1; c < count; c++) {
                 quantiles.push(value);
                 value -= interval;
             }
@@ -65,6 +66,21 @@ define(["d3", "jquery", "tipsy"], function(d3, $) {
             }
         };
 
+        var drawQuantiles = function(total) {
+            chart
+                .selectAll("text.quantile")
+                .data(getQuantiles(horizLinesCount, total))
+                .enter()
+                .append("text")
+                .attr("class", "quantile")
+                .text(function(d,i) {
+                    return ((i + 1) % quantileCount == 0 ? d : "");
+                })
+                .attr("text-anchor", "end")
+                .attr("x", paddingLeft-2)
+                .attr("y", function(d, i) { return paddingTop + 5 + i * (getColumnMaxHeight() / horizLinesCount); });
+        }
+
         var layers;
 
         this.draw = function() {
@@ -75,18 +91,34 @@ define(["d3", "jquery", "tipsy"], function(d3, $) {
             var columnAreaHeight = height - paddingTop;
             var columnWidth = columnAreaWidth / dataSource.numDataPoints();
 
+            // value lines
             chart
-                .selectAll("line")
+                .selectAll("line.value")
                 .data(createHorizLines(height, horizLinesCount, paddingTop))
                 .enter()
                 .append("line")
+                .attr("class", "value")
                 .attr("x1", paddingLeft)
                 .attr("y1", function(d) { return d; })
                 .attr("x2", width)
                 .attr("y2", function(d) { return d; })
                 .style("stroke-width", 1)
-                .style("stroke", "rgb(160,160,160)")
                 .attr("shape-rendering", "crispEdges");
+
+            // categories
+            chart
+                .selectAll("text.category")
+                .data(function(d, i) {
+                    return _.range(1, _.max(_(dataSource.getData()).map(function(it) {
+                        return it.length;
+                    })) + 1);
+                })
+                .enter()
+                .append("text")
+                .text(String)
+                .attr("class", "category")
+                .attr("y", height - 2)
+                .attr("x", function(d, i) { return paddingLeft + i * columnWidth; });
 
             layers = chart
                 .selectAll("g.layer")
@@ -118,17 +150,7 @@ define(["d3", "jquery", "tipsy"], function(d3, $) {
                     $(this).tipsy({ gravity: 's' });
                 });
 
-            chart
-                .selectAll("text")
-                .data(getQuantiles(horizLinesCount, total))
-                .enter()
-                .append("text")
-                .text(formatValue)
-                .attr("font-size", "10px")
-                .attr("fill", "black")
-                .attr("text-anchor", "end")
-                .attr("x", paddingLeft-2)
-                .attr("y", function(d, i) { return paddingTop + 5 + i * (getColumnMaxHeight() / horizLinesCount); });
+            drawQuantiles(series.total);
 
             return this;
         };
@@ -137,10 +159,7 @@ define(["d3", "jquery", "tipsy"], function(d3, $) {
             var series = dataSource.getData();
             var data = series.total;
 
-            chart
-                .selectAll("text")
-                .data(getQuantiles(horizLinesCount, data))
-                .text(formatValue);
+            drawQuantiles(series.total);
 
             layers.selectAll("rect")
                  .data(function(d) {

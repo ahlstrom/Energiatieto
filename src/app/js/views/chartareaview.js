@@ -13,9 +13,12 @@ define([
             template: tmpl
         },
         regions: {
-            consumption: "div.consumption",
-            production: "div.production",
-            sum: "div.sum"
+            electricityConsumption  : "div.electricity-consumption",
+            heatingConsumption      : "div.heating-consumption",
+            electricityProduction   : "div.electricity-production",
+            heatingProduction       : "div.heating-production",
+            electricityPurchased    : "div.electricity-purchased",
+            heatingPurchased        : "div.heating-purchased"
         },
         events: {
             "click .subheader": "subheaderclick"
@@ -58,15 +61,27 @@ define([
             _.bindAll(this);
         },
         onShow: function() {
-            this.consumption.show(new ChartView({
+            this.electricityConsumption.show(new ChartView({
+                model: this.model
+            }));
+
+            this.heatingConsumption.show(new ChartView({
                 model: this.model
             }));
             
-            this.production.show(new ChartView({
+            this.electricityProduction.show(new ChartView({
                 model: new BuildingInfoModel({})
             }));
 
-            this.sum.show(new ChartView({
+            this.heatingProduction.show(new ChartView({
+                model: new BuildingInfoModel({})
+            }));
+
+            this.electricityPurchased.show(new ChartView({
+                model: new BuildingInfoModel({})
+            }));
+
+            this.heatingPurchased.show(new ChartView({
                 model: new BuildingInfoModel({})
             }));
 

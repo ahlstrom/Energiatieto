@@ -17,10 +17,13 @@ ul, ol, dl {
     margin: 0;
 }
 h1, h2, h3, h4, h5, h6, p {
-    font-size: 100%;
+    font-family: Tahoma, Geneva;
     margin-top: 0;
     padding-right: 15px;
     padding-left: 15px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
 }
 a img {
     border: none;
@@ -196,12 +199,45 @@ div.navbar {
 
 /* Typography */
 
-.chart-area h3, .chart-area h4 {
+.control-form label {
+    font-size: 0.9em;
+}
+
+.chart line.value {
+    stroke: rgb(220,220,220);
+}
+.chart text.category, .chart text.quantile {
+    font-size: 70%;
+    fill: rgb(100,100,100);
+    text-rendering: optimizelegibility;
+}
+.chart line.value:last-of-type {
+    stroke: rgb(0,0,0);
+}
+
+
+.chart-area h3 {
     position: relative;
     font-weight: lighter;
     margin-bottom: 1em;
     background-color: rgb(220, 220, 220);
     border-top: 2px solid rgb(181, 181, 181);
+}
+.chart-area h3:before {
+    clear: both;
+}
+
+.chart-area .clear {
+    clear: both;
+}
+
+.chart-area h4 {
+    font-weight: normal;
+    margin-left: 20px;
+    font-size: 90%;
+}
+.chart-area .chart-unit {
+    float: left;
 }
 
 .chart-area .arrow {
