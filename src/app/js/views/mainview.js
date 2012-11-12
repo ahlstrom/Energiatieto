@@ -2,7 +2,7 @@ define([
         "backbone",
         "backbone.marionette", 
         "hbs!./mainview.tmpl",
-        "./controlformview",
+        "./form/buildinginfoform",
         "./chartareaview",
         "../models/chartareamodel",
         "./map/mapview"
@@ -11,7 +11,7 @@ define([
         Backbone,
         Marionette, 
         tmpl,
-        ControlFormView,
+        BuildingInfoForm,
         ChartAreaView,
         ChartAreaModel,
         MapView
@@ -45,7 +45,7 @@ define([
             });
 
             this.collection.on("select", function(model) {
-                self.form.show(new ControlFormView({
+                self.form.show(new BuildingInfoForm({
                     model: model
                 }));
                 chartModel.changeUnderlyingModel(model);

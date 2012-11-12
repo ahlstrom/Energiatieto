@@ -1,7 +1,7 @@
 define([
     "underscore",
     "backbone.marionette", 
-    "hbs!./controlformview.tmpl",
+    "hbs!./buildinginfoform.tmpl",
     "backbone.modelbinder"
     ], function(_, Marionette, tmpl, ModelBinder) {
         var roundValueConverter = function(direction, value) {
