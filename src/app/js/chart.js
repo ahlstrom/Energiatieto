@@ -74,12 +74,12 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 .append("text")
                 .attr("class", "quantile")
                 .text(function(d,i) {
-                    return ((i + 1) % quantileCount == 0 ? d : "");
+                    return ((i + 1) % quantileCount === 0 ? d : "");
                 })
                 .attr("text-anchor", "end")
                 .attr("x", paddingLeft-2)
                 .attr("y", function(d, i) { return paddingTop + 5 + i * (getColumnMaxHeight() / horizLinesCount); });
-        }
+        };
 
         var layers;
 

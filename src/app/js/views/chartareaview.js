@@ -33,7 +33,7 @@ define([
                 if (trgt.hasClass(it)) {
                     self.trigger("select", it);
                 }
-            })
+            });
         },
         markSelected: function(node, silent) {
             this.$(".arrow").animate({
