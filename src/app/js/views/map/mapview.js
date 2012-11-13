@@ -14,6 +14,13 @@ define([
                 template: tmpl,
                 type: "handlebars"
             },
+            events: {
+                "submit form.search": "submitSearchForm"
+            },
+            submitSearchForm: function(event) {
+                this.trigger("search", this.$("input[name=search]").val());
+                return false;
+            },
             showOnlyBuildingLayer: function() {
                 this.controls.buildings.onSelect();
                 this.setControls([]);
@@ -43,6 +50,18 @@ define([
                 var self = this;
                 GoogleMaps.create(function() {
                     var map = self.map = new google.maps.Map(self.$('.map')[0], MapStyles.options());
+                    self.bindTo(self, "search", function(address) {
+                        new google.maps.Geocoder().geocode({
+                                address: address,
+                                bounds: map.getBounds()
+                            },
+                            function(res, status) {
+                                if (status === "OK") {
+                                    map.panTo(res[0].geometry.location);
+                                    map.setZoom(MapStyles.options().maxZoom);
+                                }
+                            });
+                    });
 
                     var buildingLayer = new BuildingLayer(map, self.collection);
                     var solarMapType = new SolarMapType(map);
