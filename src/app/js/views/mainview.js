@@ -7,6 +7,7 @@ define([
         "./form/purchasedform",
         "./chartareaview",
         "../models/chartareamodel",
+        "./helptext",
         "./map/mapview"
     ], 
     function(
@@ -18,6 +19,7 @@ define([
         PurchasedForm,
         ChartAreaView,
         ChartAreaModel,
+        HelpTextView,
         MapView
     ) {
 
@@ -34,9 +36,10 @@ define([
             template: tmpl
         },
         regions: {
-            form: '.control-form',
-            charts: '.chart-area',
-            map: '.map'
+            form        : '.control-form',
+            charts      : '.chart-area',
+            map         : '.map',
+            helptext    : '.helptext'
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -84,6 +87,9 @@ define([
         onShow: function() {
             this.map.show(this.mapView);
             this.charts.show(this.ChartArea);
+            this.helptext.show(new HelpTextView({
+                model: new Backbone.Model()
+            }));
         }
     });
     return MainView;

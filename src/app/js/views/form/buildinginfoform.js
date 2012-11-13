@@ -2,8 +2,10 @@ define([
     "underscore",
     "backbone.marionette", 
     "hbs!./buildinginfoform.tmpl",
-    "backbone.modelbinder"
-    ], function(_, Marionette, tmpl, ModelBinder) {
+    "backbone.modelbinder",
+    "../../helpers/helptextvent",
+    "text!../helptexts/buildinginfo.txt"
+    ], function(_, Marionette, tmpl, ModelBinder, HelpTextVent, HelpText) {
         var roundValueConverter = function(direction, value) {
             var result = Math.round(value);
             if (isNaN(result)) {
@@ -68,6 +70,9 @@ define([
             initialize: function(options) {
                 _.bindAll(this);
                 this.modelBinder = new ModelBinder();
+            },
+            onShow: function() {
+                HelpTextVent.trigger("change", HelpText);
             },
             onRender: function() {
                 var bindings = ModelBinder.createDefaultBindings(this.el, 'name');

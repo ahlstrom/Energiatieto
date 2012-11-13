@@ -201,6 +201,10 @@ div.navbar {
     margin-bottom: 0px;
 }
 
+ .helptext, form.search {
+    padding: 10px;
+ }
+
 /* Typography */
 
 .control-form label, .control-form input, .control-form select {

@@ -1,0 +1,1 @@
+Voit etsiä kiinteistöjä kartalta ja lisätä haluamasi rakennukset mukaan laskelmaan. Kunkin laskelmassa mukana olevan rakennuksen tiedot täydennetään kartan alle aukeavaan lomakkeeseen.
