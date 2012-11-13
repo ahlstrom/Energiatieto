@@ -61,6 +61,10 @@ define([
                 collection: coll
             });
 
+            this.bindTo(this.collection, "remove", function(model, coll) {
+                self.clearForm();
+            });
+
             this.bindTo(this.collection, "select", function(model) {
                 self.redrawForm(model);
                 chartModel.changeUnderlyingModel(model);
@@ -77,6 +81,9 @@ define([
             } else {
                     this.mapView.showOnlyBuildingLayer();
             }
+        },
+        clearForm: function() {
+            this.form.close();
         },
         redrawForm: function(model) {
             var currentModel = model ? model : this.form.currentView.model;

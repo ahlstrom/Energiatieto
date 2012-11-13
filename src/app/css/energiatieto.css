@@ -205,6 +205,12 @@ div.navbar {
     padding: 10px;
  }
 
+ .control-form .delete {
+    float: right;
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+
 /* Typography */
 
 .control-form label, .control-form input, .control-form select {

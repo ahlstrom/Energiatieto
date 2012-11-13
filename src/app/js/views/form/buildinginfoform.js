@@ -55,6 +55,12 @@ define([
             modelEvents: {
                 "change": "modelChanged"
             },
+            events: {
+                "click .delete": "destroyModel"
+            },
+            destroyModel: function() {
+                this.model.destroy();
+            },
             // re-renders the form if element bound to changed property has class ".re-render"
             modelChanged: function(model, event) {
                 var self = this;
