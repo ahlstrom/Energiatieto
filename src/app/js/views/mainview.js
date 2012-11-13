@@ -68,6 +68,16 @@ define([
         selectFormView: function(view) {
             this.viewtype = viewTypes[view];
         },
+        selectChartView: function(view) {
+            switch(view) {
+                case "production":
+                    this.mapView.showSolarAndGeoEnergy();
+                    break;
+                default:
+                    this.mapView.showOnlyBuildingLayer();
+                    break;
+            }
+        },
         redrawForm: function(model) {
             var currentModel = model ? model : this.form.currentView.model;
             this.form.show(new this.viewtype({
