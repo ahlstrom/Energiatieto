@@ -51,7 +51,7 @@ define([
                             building = new Building({
                                 byggid: byggid,
                                 averageRadiation: event.row.AvActKWHm2.value,
-                                roofArea: event.row.ActualArea.value,
+                                roofArea: event.row.area.value,
                                 address: res[0],
                                 location: event.latLng
                             });
