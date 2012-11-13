@@ -4,6 +4,7 @@ define([
         "hbs!./mainview.tmpl",
         "./form/buildinginfoform",
         "./form/productionform",
+        "./form/purchasedform",
         "./chartareaview",
         "../models/chartareamodel",
         "./map/mapview"
@@ -14,10 +15,17 @@ define([
         tmpl,
         BuildingInfoForm,
         ProductionForm,
+        PurchasedForm,
         ChartAreaView,
         ChartAreaModel,
         MapView
     ) {
+
+    var viewTypes = {
+        "building-info" : BuildingInfoForm,
+        "production"    : ProductionForm,
+        "purchased"     : PurchasedForm
+    }
 
     var MainView = Marionette.Layout.extend({
         className: 'master',
@@ -42,6 +50,7 @@ define([
                 model: chartModel
             }).on("select", function(view) {
                 self.selectFormView(view);
+                self.selectChartView(view);
                 self.redrawForm();
             });
 
@@ -57,14 +66,7 @@ define([
             this.viewtype = BuildingInfoForm;
         },
         selectFormView: function(view) {
-            switch(view) {
-                case "building-info":
-                    this.viewtype = BuildingInfoForm;
-                    break;
-                case "production":
-                    this.viewtype = ProductionForm;
-                    break;
-            }
+            this.viewtype = viewTypes[view];
         },
         redrawForm: function(model) {
             var currentModel = model ? model : this.form.currentView.model;

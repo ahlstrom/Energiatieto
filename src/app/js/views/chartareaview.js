@@ -29,7 +29,7 @@ define([
 
             this.markSelected(trgt);
 
-            _(["building-info", "production"]).each(function(it) {
+            _(["building-info", "production", "purchased", "costs"]).each(function(it) {
                 if (trgt.hasClass(it)) {
                     self.trigger("select", it);
                 }

@@ -197,10 +197,24 @@ div.navbar {
     color: black;
 }
 
+.control-form .control-group {
+    margin-bottom: 0px;
+}
+
 /* Typography */
 
-.control-form label {
-    font-size: 0.9em;
+.control-form label, .control-form input, .control-form select {
+    font-size: 0.85em;
+    text-rendering: optimizelegibility;
+}
+.control-form input {
+    height: 0.9em;
+    margin-top: 0.3em;
+}
+
+.control-form select {
+    height: 1.5em;
+    margin-top: 0.3em;
 }
 
 .chart line.value {
