@@ -25,7 +25,7 @@ define([
         "building-info" : BuildingInfoForm,
         "production"    : ProductionForm,
         "purchased"     : PurchasedForm
-    }
+    };
 
     var MainView = Marionette.Layout.extend({
         className: 'master',
@@ -69,13 +69,10 @@ define([
             this.viewtype = viewTypes[view];
         },
         selectChartView: function(view) {
-            switch(view) {
-                case "production":
+            if(view === "production") {
                     this.mapView.showSolarAndGeoEnergy();
-                    break;
-                default:
+            } else {
                     this.mapView.showOnlyBuildingLayer();
-                    break;
             }
         },
         redrawForm: function(model) {
