@@ -33,6 +33,9 @@ define([
                     ],
                     self.controls.solar.title);
             },
+            initialize: function() {
+                _.bindAll(this);
+            },
             setControls: function(controlList, select) {
                 var topRightControls = this.map.controls[google.maps.ControlPosition.TOP_RIGHT];
 
@@ -46,53 +49,82 @@ define([
                     controls.select(select);
                 }
             },
-            onShow: function() {
-                var self = this;
-                GoogleMaps.create(function() {
-                    var map = self.map = new google.maps.Map(self.$('.map')[0], MapStyles.options());
-                    self.bindTo(self, "search", function(address) {
-                        new google.maps.Geocoder().geocode({
-                                address: address,
-                                bounds: map.getBounds()
-                            },
-                            function(res, status) {
-                                if (status === "OK") {
-                                    map.panTo(res[0].geometry.location);
-                                    map.setZoom(MapStyles.options().maxZoom);
-                                }
-                            });
-                    });
-
-                    var buildingLayer = new BuildingLayer(map, self.collection);
-                    var solarMapType = new SolarMapType(map);
-                    self.controls = {
-                        geoenergy: {
-                            title: 'Geoenergia',
-                            onSelect: function() {
-                                map.overlayMapTypes.clear();
-                                map.overlayMapTypes.push(new GeoEnergyMapType(map));
-                                buildingLayer.setOpaque(true);
-                            }
+            createMap: function() {
+                var map = this.map = new google.maps.Map(this.$('.map')[0], MapStyles.options());
+                this.bindTo(this, "search", function(address) {
+                    new google.maps.Geocoder().geocode({
+                            address: address,
+                            bounds: map.getBounds()
                         },
-                        solar: {
-                            title: 'Aurinkoenergia',
-                            onSelect: function() {
-                                map.overlayMapTypes.clear();
-                                map.overlayMapTypes.push(solarMapType);
-                                buildingLayer.setOpaque(true);
+                        function(res, status) {
+                            if (status === "OK") {
+                                map.panTo(res[0].geometry.location);
+                                map.setZoom(MapStyles.options().maxZoom);
                             }
-                        },
-                        buildings: {
-                            title: 'Rakennukset',
-                            onSelect: function() {
-                                buildingLayer.setOpaque(false);
-                                map.overlayMapTypes.clear();
-                            }
-                        }
-                    };
-
-                    buildingLayer.setMap(map);
+                        });
                 });
+
+                this.model.fetch({
+                    success: function(model) {
+                        if (model.has("center")) {
+                            var center = model.get("center");
+                            map.setCenter(new google.maps.LatLng(center.lat, center.lng));
+                        };
+                        if (model.has("zoom")) {
+                            map.setZoom(model.get("zoom"));
+                        };
+                    }
+                })
+
+                var buildingLayer = new BuildingLayer(map, this.collection);
+                var solarMapType = new SolarMapType(map);
+                this.controls = {
+                    geoenergy: {
+                        title: 'Geoenergia',
+                        onSelect: function() {
+                            map.overlayMapTypes.clear();
+                            map.overlayMapTypes.push(new GeoEnergyMapType(map));
+                            buildingLayer.setOpaque(true);
+                        }
+                    },
+                    solar: {
+                        title: 'Aurinkoenergia',
+                        onSelect: function() {
+                            map.overlayMapTypes.clear();
+                            map.overlayMapTypes.push(solarMapType);
+                            buildingLayer.setOpaque(true);
+                        }
+                    },
+                    buildings: {
+                        title: 'Rakennukset',
+                        onSelect: function() {
+                            buildingLayer.setOpaque(false);
+                            map.overlayMapTypes.clear();
+                        }
+                    }
+                };
+
+                buildingLayer.setMap(map);
+                var self = this;
+
+                google.maps.event.addListener(map, 'center_changed', function() {
+                    var center = map.getCenter();
+                    self.model.set({
+                        center: {
+                            lat: center.lat(),
+                            lng: center.lng()
+                        }
+                    });                    
+                });
+                google.maps.event.addListener(map, 'zoom_changed', function() {
+                    self.model.set({
+                        zoom: map.getZoom()
+                    });
+                });
+
+            },
+            onShow: function() {
+                GoogleMaps.create(this.createMap);
             }
         });
 });

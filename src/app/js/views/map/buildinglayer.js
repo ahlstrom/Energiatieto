@@ -37,6 +37,37 @@ define([
                 });
             });
 
+            var addBuilding = function(building) {
+                var loc = building.get("location");
+
+                var marker = new google.maps.Marker({
+                    icon: inactiveIcon,
+                    position: new google.maps.LatLng(loc.lat, loc.lng),
+                    map: map
+                });
+
+                building.on("deselect", function() {
+                    marker.setIcon(inactiveIcon);
+                });
+
+                var selectBuilding = function() {
+                    marker.setIcon(activeIcon);
+                    collection.trigger("select", building);
+                };
+                
+                google.maps.event.addListener(marker, 'click', selectBuilding);
+
+                building.on("destroy", function() {
+                    marker.setMap(null);
+                });
+
+                selectBuilding();
+            };
+
+            collection.on("add", addBuilding);
+
+            collection.each(addBuilding);
+
             google.maps.event.addListener(layer, 'click', function(event) {
                 var byggid = event.row.ByggID.value;
                 var findByByggId = function(it) { return it.get("byggid") == byggid; };
@@ -48,33 +79,12 @@ define([
                         byggid: byggid,
                         averageRadiation: event.row.AvActKWHm2.value,
                         roofArea: event.row.area.value,
-                        location: event.latLng
+                        location: {
+                            lat: event.latLng.lat(),
+                            lng: event.latLng.lng()
+                        }
                     });
-
-                    var marker = new google.maps.Marker({
-                        icon: inactiveIcon,
-                        position: event.latLng,
-                        map: map
-                    });
-
-                    building.on("deselect", function() {
-                        marker.setIcon(inactiveIcon);
-                    });
-
-                    var selectBuilding = function() {
-                        marker.setIcon(activeIcon);
-                        collection.trigger("select", building);
-                    };
-                    
-                    google.maps.event.addListener(marker, 'click', selectBuilding);
-
-                    building.on("destroy", function() {
-                        marker.setMap(null);
-                    });
-
                     collection.add(building);
-
-                    selectBuilding();
                 }
                 
                 return false;

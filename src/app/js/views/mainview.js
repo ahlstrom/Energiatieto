@@ -8,7 +8,8 @@ define([
         "./chartareaview",
         "../models/chartareamodel",
         "./helptext",
-        "./map/mapview"
+        "./map/mapview",
+        "../models/mapposition"
     ], 
     function(
         Backbone,
@@ -20,7 +21,8 @@ define([
         ChartAreaView,
         ChartAreaModel,
         HelpTextView,
-        MapView
+        MapView,
+        MapPosition
     ) {
 
     var viewTypes = {
@@ -46,7 +48,7 @@ define([
             
             var self       = this,
                 coll       = this.collection,
-                chartModel = new ChartAreaModel();
+                chartModel = this.chartModel = new ChartAreaModel();
 
 
             this.ChartArea = new ChartAreaView({
@@ -58,28 +60,38 @@ define([
             });
 
             this.mapView = new MapView({
-                collection: coll
+                collection: coll,
+                model: new MapPosition({
+                    id: 'map-view-pos'
+                })
+            });
+
+            this.bindTo(this.collection, "reset", function() {
+                if (coll.length > 0) {
+                    self.selectModel(coll.models[0]);
+                }
             });
 
             this.bindTo(this.collection, "remove", function(model, coll) {
                 self.clearForm();
             });
 
-            this.bindTo(this.collection, "select", function(model) {
-                self.redrawForm(model);
-                chartModel.changeUnderlyingModel(model);
-            });
+            this.bindTo(this.collection, "select", this.selectModel);
 
             this.viewtype = BuildingInfoForm;
+        },
+        selectModel: function(model) {
+                this.redrawForm(model);
+                this.chartModel.changeUnderlyingModel(model);
         },
         selectFormView: function(view) {
             this.viewtype = viewTypes[view];
         },
         selectChartView: function(view) {
             if(view === "production") {
-                    this.mapView.showSolarAndGeoEnergy();
+                this.mapView.showSolarAndGeoEnergy();
             } else {
-                    this.mapView.showOnlyBuildingLayer();
+                this.mapView.showOnlyBuildingLayer();
             }
         },
         clearForm: function() {

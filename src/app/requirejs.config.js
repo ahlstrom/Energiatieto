@@ -9,6 +9,9 @@ require.config({
         },
         'json2': {
             exports: 'JSON'
+        },
+        'backbone.localstorage': {
+            deps: ['backbone']
         }
     },
     hbs : {
@@ -23,6 +26,7 @@ require.config({
         'jquery': '../lib/jquery/jquery-1.8.2',
         'underscore': '../lib/lodash/lodash-0.9.0',
         'backbone': '../lib/backbone/backbone-0.9.2',
+        'backbone.localstorage': '../lib/backbone/backbone.localStorage',
         'backbone.modelbinder': '../lib/backbone/backbone.modelbinder-0.1.6',
         'backbone.marionette': '../lib/marionette/backbone.marionette.bundle-1.0.0-beta3',
         'hbs': '../lib/hbs/hbs-0.4.0',
@@ -32,5 +36,5 @@ require.config({
         'tipsy': '../lib/tipsy/tipsy-1.0.0a',
         'text': '../lib/require/text-2.0.3'
     },
-    deps: ['backbone.marionette.handlebars']
+    deps: ['backbone.localstorage','backbone.marionette.handlebars']
 });

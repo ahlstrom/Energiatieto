@@ -14,6 +14,7 @@ define([
         app.mainRegion.show(new MainView({
             collection: SelectedBuildingsCollection
         }));
+        SelectedBuildingsCollection.fetch();
     });
 
     return app;
