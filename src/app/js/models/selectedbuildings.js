@@ -24,6 +24,8 @@ define(["backbone", "./buildinginfomodel", "backbone.localstorage"], function(Ba
                 self.each(function(it) {
                     if (it !== model) {
                         it.trigger("deselect");
+                    } else {
+                        it.trigger("selected");
                     }
                 });
             });

@@ -73,7 +73,11 @@ define([
             });
 
             this.bindTo(this.collection, "remove", function(model, coll) {
-                self.clearForm();
+                if (coll.length <= 0) {
+                    self.clearForm();
+                } else {
+                    coll.trigger("select", coll.models[0]);
+                }
             });
 
             this.bindTo(this.collection, "select", this.selectModel);

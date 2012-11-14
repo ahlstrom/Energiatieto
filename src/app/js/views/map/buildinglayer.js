@@ -50,8 +50,11 @@ define([
                     marker.setIcon(inactiveIcon);
                 });
 
-                var selectBuilding = function() {
+                building.on("selected", function() {
                     marker.setIcon(activeIcon);
+                })
+
+                var selectBuilding = function() {
                     collection.trigger("select", building);
                 };
                 
