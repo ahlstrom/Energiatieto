@@ -28,7 +28,7 @@ define([
 
             var scaledSize = new google.maps.Size(30, 30),
                 origin     = new google.maps.Point(15, 15),
-                activeIcon = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize);
+                activeIcon = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize),
                 inactiveIcon = new google.maps.MarkerImage('/images/mapMarkerDot.png', null, null, origin, scaledSize);
 
             google.maps.event.addListener(map, 'zoom_changed', function() {
@@ -56,7 +56,7 @@ define([
 
                 building.on("selected", function() {
                     marker.setIcon(activeIcon);
-                })
+                });
                 
                 google.maps.event.addListener(marker, 'click', function() {
                     selectBuilding(building);
@@ -71,7 +71,7 @@ define([
             collection.on("add", addBuilding);
 
             collection.each(addBuilding);
-            
+
             _.each(collection.where({selected: true}), function(it) {
                 selectBuilding(it);
             });

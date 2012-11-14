@@ -69,12 +69,12 @@ define([
                         if (model.has("center")) {
                             var center = model.get("center");
                             map.setCenter(new google.maps.LatLng(center.lat, center.lng));
-                        };
+                        }
                         if (model.has("zoom")) {
                             map.setZoom(model.get("zoom"));
-                        };
+                        }
                     }
-                })
+                });
 
                 var buildingLayer = new BuildingLayer(map, this.collection);
                 var solarMapType = new SolarMapType(map);

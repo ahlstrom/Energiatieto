@@ -11,7 +11,7 @@ define(["backbone", "./buildinginfomodel", "backbone.localstorage"], function(Ba
                         model.save();
                         break;
                     case "change":
-                        if (!info.changes['id']) {
+                        if (!info.changes.id) {
                             model.save();
                         }
                         break;
