@@ -26,10 +26,25 @@ define([
                 }
             };
 
-            var scaledSize = new google.maps.Size(30, 30),
-                origin     = new google.maps.Point(15, 15),
-                activeIcon = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize),
-                inactiveIcon = new google.maps.MarkerImage('/images/mapMarkerDot.png', null, null, origin, scaledSize);
+            layer.activate = function() {
+                layer.setOpaque(false);
+                _.each(markers, function(it) {
+                    it.setMap(map);
+                });
+            };
+
+            layer.deactivate = function() {
+                layer.setOpaque(true);
+                _.each(markers, function(it) {
+                    it.setMap(null);
+                });
+            };
+
+            var scaledSize   = new google.maps.Size(30, 30),
+                origin       = new google.maps.Point(15, 15),
+                activeIcon   = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize),
+                inactiveIcon = new google.maps.MarkerImage('/images/mapMarkerDot.png', null, null, origin, scaledSize),
+                markers      = [];
 
             google.maps.event.addListener(map, 'zoom_changed', function() {
                 layer.setOptions({
@@ -50,6 +65,8 @@ define([
                     map: map
                 });
 
+                markers.push(marker);
+
                 building.on("deselect", function() {
                     marker.setIcon(inactiveIcon);
                 });
@@ -64,6 +81,7 @@ define([
 
                 building.on("destroy", function() {
                     marker.setMap(null);
+                    markers = _.without(markers, marker);
                 });
 
             };

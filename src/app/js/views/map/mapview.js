@@ -84,7 +84,7 @@ define([
                         onSelect: function() {
                             map.overlayMapTypes.clear();
                             map.overlayMapTypes.push(new GeoEnergyMapType(map));
-                            buildingLayer.setOpaque(true);
+                            buildingLayer.deactivate();
                         }
                     },
                     solar: {
@@ -92,13 +92,13 @@ define([
                         onSelect: function() {
                             map.overlayMapTypes.clear();
                             map.overlayMapTypes.push(solarMapType);
-                            buildingLayer.setOpaque(true);
+                            buildingLayer.deactivate();
                         }
                     },
                     buildings: {
                         title: 'Rakennukset',
                         onSelect: function() {
-                            buildingLayer.setOpaque(false);
+                            buildingLayer.activate();
                             map.overlayMapTypes.clear();
                         }
                     }
