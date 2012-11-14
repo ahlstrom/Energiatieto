@@ -22,7 +22,10 @@ define([
                 selected: true
             });
             this.render();
-            this.model.get("onSelect")();
+            var onselect = this.model.get("onSelect");
+            if (typeof onselect !== "undefined") {
+                onselect();
+            }
         },
         deselect: function() {
             this.model.set({

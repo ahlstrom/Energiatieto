@@ -1,7 +1,8 @@
 define([
     "./mapstyles",
-    "../../models/buildinginfomodel"
-    ], function(MapStyles, Building) {
+    "../../models/buildinginfomodel",
+    "./buildinglayercontrols"
+    ], function(MapStyles, Building, BuildingLayerControls) {
 
         var clickableZoomLevel = 16;
 
@@ -27,6 +28,7 @@ define([
             };
 
             layer.activate = function() {
+                layer.setMap(map);
                 layer.setOpaque(false);
                 _.each(markers, function(it) {
                     it.setMap(map);
@@ -39,6 +41,10 @@ define([
                     it.setMap(null);
                 });
             };
+
+            layer.controls = new BuildingLayerControls({
+                
+            });
 
             var scaledSize   = new google.maps.Size(30, 30),
                 origin       = new google.maps.Point(15, 15),

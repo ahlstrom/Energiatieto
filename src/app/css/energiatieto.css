@@ -192,6 +192,10 @@ div.navbar {
     border-radius: 5px;
 }
 
+.map .controls {
+    text-align: right;
+}
+
 .map .control.selected {
     background-color: white;
     color: black;
@@ -201,7 +205,7 @@ div.navbar {
     margin-bottom: 0px;
 }
 
- .helptext, form.search {
+ .helptext, .indent {
     padding: 10px;
  }
 
