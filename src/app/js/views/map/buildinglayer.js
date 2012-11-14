@@ -37,7 +37,11 @@ define([
                 });
             });
 
-            var addBuilding = function(building) {
+            var selectBuilding = function(building) {
+                collection.trigger("select", building);
+            };
+
+            var addBuilding = function(building, silent) {
                 var loc = building.get("location");
 
                 var marker = new google.maps.Marker({
@@ -53,23 +57,24 @@ define([
                 building.on("selected", function() {
                     marker.setIcon(activeIcon);
                 })
-
-                var selectBuilding = function() {
-                    collection.trigger("select", building);
-                };
                 
-                google.maps.event.addListener(marker, 'click', selectBuilding);
+                google.maps.event.addListener(marker, 'click', function() {
+                    selectBuilding(building);
+                });
 
                 building.on("destroy", function() {
                     marker.setMap(null);
                 });
 
-                selectBuilding();
             };
 
             collection.on("add", addBuilding);
 
             collection.each(addBuilding);
+            
+            _.each(collection.where({selected: true}), function(it) {
+                selectBuilding(it);
+            });
 
             google.maps.event.addListener(layer, 'click', function(event) {
                 var byggid = event.row.ByggID.value;
@@ -88,6 +93,7 @@ define([
                         }
                     });
                     collection.add(building);
+                    selectBuilding(building);
                 }
                 
                 return false;
