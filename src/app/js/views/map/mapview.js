@@ -1,16 +1,24 @@
 define([
         "underscore",
         "jquery",
+        "backbone",
         "backbone.marionette", 
         "hbs!./mapview.tmpl",
         "../../helpers/googlemaps",
         "./mapstyles",
-        "./mapswitchcontrols",
         "./buildinglayer",
-        "./energylayer",
-        "./solarmaptype",
-        "./geoenergymaptype"
-    ], function(_, $, Marionette, tmpl, GoogleMaps, MapStyles, MapSwitchControls, BuildingLayer, EnergyLayer, SolarMapType, GeoEnergyMapType) {
+        "./energylayer"
+    ], function(
+        _,
+        $,
+        Backbone,
+        Marionette,
+        tmpl,
+        GoogleMaps,
+        MapStyles,
+        BuildingLayer,
+        EnergyLayer) {
+
         return Marionette.Layout.extend({
             template: {
                 template: tmpl,
@@ -51,10 +59,13 @@ define([
             },
             showSolarAndGeoEnergy: function() {
                 this.activate(this.layers.energy);
+                this.layers.energy.selectSolar();
             },
-            initialize: function() {
+            initialize: function(options) {
                 _.bindAll(this);
                 var self = this;
+                this.buildings = options.buildings;
+                this.producers = options.producers;
                 GoogleMaps.create(function() {
                     self.createMap();
                     self.layers = self.newLayers();
@@ -62,11 +73,15 @@ define([
                 });
             },
             newLayers: function() {
+                var buildingLayer = new BuildingLayer(this.map, this.buildings);
+                var energyLayer = new EnergyLayer(
+                            this.map, 
+                            this.producers, 
+                            buildingLayer);
+
                 return {
-                    building    : new BuildingLayer(this.map, this.collection),
-                    energy      : new EnergyLayer(this.map),
-                    solar       : new SolarMapType(this.map),
-                    geoenergy   : new GeoEnergyMapType(this.map)
+                    building    : buildingLayer,
+                    energy      : energyLayer
                 };
             },
             createMap: function() {

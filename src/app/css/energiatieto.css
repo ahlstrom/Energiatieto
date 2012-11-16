@@ -250,10 +250,11 @@ form.search input[type=submit] {
 
 .chart-area h3 {
     position: relative;
-    font-weight: lighter;
     margin-bottom: 1em;
+    height: 2.5em;    
     background-color: rgb(220, 220, 220);
     border-top: 2px solid rgb(181, 181, 181);
+    cursor: pointer;
 }
 .chart-area h3:before {
     clear: both;
@@ -265,6 +266,8 @@ form.search input[type=submit] {
 
 .chart-area h4 {
     font-weight: normal;
+    margin-top: -10px;
+
     margin-left: 20px;
     font-size: 90%;
 }
@@ -274,12 +277,12 @@ form.search input[type=submit] {
 
 .chart-area .arrow {
     position: absolute;
-    border: 20px solid;
+    border: 1.25em solid;
     border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(220, 220, 220);
 
     top: 0px;
     right: 0px;
-    margin-right: -20px;
+    margin-right: -1em;
 }
 
 .control-form label:after {

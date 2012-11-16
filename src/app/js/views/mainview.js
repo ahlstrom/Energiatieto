@@ -5,6 +5,7 @@ define([
         "./form/buildinginfoform",
         "./form/productionform",
         "./form/purchasedform",
+        "../models/energyproducers",
         "./chartareaview",
         "../models/chartareamodel",
         "./helptext",
@@ -18,6 +19,7 @@ define([
         BuildingInfoForm,
         ProductionForm,
         PurchasedForm,
+        EnergyProducers,
         ChartAreaView,
         ChartAreaModel,
         HelpTextView,
@@ -48,64 +50,64 @@ define([
             
             var self       = this,
                 coll       = this.collection,
-                chartModel = this.chartModel = new ChartAreaModel();
+                chartModel = this.chartModel = new ChartAreaModel(),
+                producers  = this.producers  = EnergyProducers;
+
+            this.bindTo(this.collection, "select", this.showBuildingInfoForm);
+            this.bindTo(this.collection, "remove", this.showBuildingInfoForm);
+
+            this.bindTo(this.producers,  "select", this.showProductionForm);
+            this.bindTo(this.producers,  "remove", this.showProductionForm);
 
 
             this.ChartArea = new ChartAreaView({
                 model: chartModel
             }).on("select", function(view) {
-                self.selectFormView(view);
-                self.selectChartView(view);
-                self.redrawForm();
+                if (view === "production") {
+                    self.showProductionForm();
+                } else {
+                    self.showBuildingInfoForm();
+                }
+                self.selectMapView(view);
             });
 
             this.mapView = new MapView({
-                collection: coll,
+                buildings: coll,
+                producers: producers,
                 model: new MapPosition({
                     id: 'map-view-pos'
                 })
             });
 
-            this.bindTo(this.collection, "reset", function() {
-                if (coll.length > 0) {
-                    self.selectModel(coll.models[0]);
-                }
-            });
+            producers.fetch();
 
-            this.bindTo(this.collection, "remove", function(model, coll) {
-                if (coll.length <= 0) {
-                    self.clearForm();
-                } else {
-                    coll.trigger("select", coll.models[0]);
-                }
-            });
-
-            this.bindTo(this.collection, "select", this.selectModel);
-
-            this.viewtype = BuildingInfoForm;
         },
-        selectModel: function(model) {
-                this.redrawForm(model);
-                this.chartModel.changeUnderlyingModel(model);
+        showBuildingInfoForm: function() {
+            var model = this.collection.getSelected();
+            if (!model) {
+                this.form.close();
+            } else {
+                this.form.show(new BuildingInfoForm({
+                    model: model
+                }));
+            }
         },
-        selectFormView: function(view) {
-            this.viewtype = viewTypes[view];
+        showProductionForm: function() {
+            var model = this.producers.getSelected();
+            if (!model) {
+                this.form.close();
+            } else {
+                this.form.show(new ProductionForm({
+                    model: model
+                }));
+            }
         },
-        selectChartView: function(view) {
+        selectMapView: function(view) {
             if(view === "production") {
                 this.mapView.showSolarAndGeoEnergy();
             } else {
                 this.mapView.showOnlyBuildingLayer();
             }
-        },
-        clearForm: function() {
-            this.form.close();
-        },
-        redrawForm: function(model) {
-            var currentModel = model ? model : this.form.currentView.model;
-            this.form.show(new this.viewtype({
-                model: currentModel
-            }));
         },
         onShow: function() {
             this.map.show(this.mapView);

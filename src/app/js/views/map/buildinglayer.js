@@ -1,8 +1,9 @@
 define([
     "./mapstyles",
     "../../models/buildinginfomodel",
-    "./buildinglayercontrols"
-    ], function(MapStyles, Building, BuildingLayerControls) {
+    "./buildinglayercontrols",
+    "./markerstore"
+    ], function(MapStyles, Building, BuildingLayerControls, MarkerStore) {
 
         var clickableZoomLevel = 16;
 
@@ -18,6 +19,8 @@ define([
                 styles: MapStyles.buildingsLayer
             });
 
+            layer.markerStore = new MarkerStore();
+
 
             layer.setOpaque = function(val) {
                 if (val === true) {
@@ -30,27 +33,21 @@ define([
             layer.activate = function() {
                 layer.setMap(map);
                 layer.setOpaque(false);
-                _.each(markers, function(it) {
-                    it.setMap(map);
-                });
+                layer.markerStore.associateWith(map);
+
+                layer.activateClickHandler();
             };
 
             layer.deactivate = function() {
                 layer.setOpaque(true);
-                _.each(markers, function(it) {
-                    it.setMap(null);
-                });
+                layer.markerStore.disassociate();
+
+                google.maps.event.removeListener(layer.eventlistener);
             };
 
             layer.controls = new BuildingLayerControls({
                 
             });
-
-            var scaledSize   = new google.maps.Size(30, 30),
-                origin       = new google.maps.Point(15, 15),
-                activeIcon   = new google.maps.MarkerImage('/images/mapMarkerDotActive.png', null, null, origin, scaledSize),
-                inactiveIcon = new google.maps.MarkerImage('/images/mapMarkerDot.png', null, null, origin, scaledSize),
-                markers      = [];
 
             google.maps.event.addListener(map, 'zoom_changed', function() {
                 layer.setOptions({
@@ -65,63 +62,58 @@ define([
             var addBuilding = function(building, silent) {
                 var loc = building.get("location");
 
-                var marker = new google.maps.Marker({
-                    icon: inactiveIcon,
+                var marker = layer.markerStore.create({
                     position: new google.maps.LatLng(loc.lat, loc.lng),
                     map: map
                 });
 
-                markers.push(marker);
+                marker.onclick(_.bind(selectBuilding, this, building));
+                building.on("deselect", marker.deactivate);
+                building.on("selected", marker.activate);
+                building.on("destroy", marker.remove);
 
-                building.on("deselect", function() {
-                    marker.setIcon(inactiveIcon);
-                });
-
-                building.on("selected", function() {
-                    marker.setIcon(activeIcon);
-                });
-                
-                google.maps.event.addListener(marker, 'click', function() {
-                    selectBuilding(building);
-                });
-
-                building.on("destroy", function() {
-                    marker.setMap(null);
-                    markers = _.without(markers, marker);
-                });
+                if (building.get("selected")) {
+                    marker.activate();
+                }
 
             };
 
+            var initMarkers = function() {
+                layer.markerStore.clear();
+
+                collection.each(addBuilding);
+            };
+
             collection.on("add", addBuilding);
+            collection.on("reset", initMarkers);
 
-            collection.each(addBuilding);
 
-            _.each(collection.where({selected: true}), function(it) {
-                selectBuilding(it);
-            });
+            initMarkers();
 
-            google.maps.event.addListener(layer, 'click', function(event) {
-                var byggid = event.row.ByggID.value;
-                var findByByggId = function(it) { return it.get("byggid") == byggid; };
+            layer.activateClickHandler = function() {
+                layer.eventlistener = google.maps.event.addListener(layer, 'click', function(event) {
+                    var byggid = event.row.ByggID.value;
+                    var findByByggId = function(it) { return it.get("byggid") == byggid; };
 
-                var building = collection.find(findByByggId);
+                    var building = collection.find(findByByggId);
 
-                if (building === null || typeof building === 'undefined') {
-                    building = new Building({
-                        byggid: byggid,
-                        averageRadiation: event.row.AvActKWHm2.value,
-                        roofArea: event.row.area.value,
-                        location: {
-                            lat: event.latLng.lat(),
-                            lng: event.latLng.lng()
-                        }
-                    });
-                    collection.add(building);
-                    selectBuilding(building);
-                }
-                
-                return false;
-            });
+                    if (building === null || typeof building === 'undefined') {
+                        building = new Building({
+                            byggid: byggid,
+                            averageRadiation: event.row.AvActKWHm2.value,
+                            roofArea: event.row.area.value,
+                            location: {
+                                lat: event.latLng.lat(),
+                                lng: event.latLng.lng()
+                            }
+                        });
+                        collection.add(building);
+                        selectBuilding(building);
+                    }
+                    
+                    return false;
+                });
+            };
 
             return layer;
     };

@@ -12,16 +12,6 @@ define(["backbone", "../algorithm/facade"], function(Backbone, algorithm) {
         initialize: function() {
             _.bindAll(this);
             this.on("change", this.modelChanged);
-            this.on("selected", this.selected);
-            this.on("deselect", this.deselected);
-        },
-        selected: function() {
-            this.set({
-                selected: true
-            });
-        },
-        deselected: function() {
-            this.unset('selected');
         },
         modelChanged: function() {
             if(!this.hasChanged("data")) {
