@@ -12,8 +12,12 @@ define([
                 "click .btn"        : "clickBtn"
             },
             clickBtn: function(event) {
-                this.$(".btn").addClass("btn-inverse");
-                $(event.target).removeClass("btn-inverse");
+                if (!$(event.target).hasClass("btn-inverse")) {
+                    $(event.target).addClass("btn-inverse");
+                } else {
+                    this.$(".btn").addClass("btn-inverse");
+                    $(event.target).removeClass("btn-inverse");
+                }
             },
             onShow: function() {
                 this.delegateEvents();
