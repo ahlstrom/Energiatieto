@@ -1,0 +1,3 @@
+[submodule "src/calculation"]
+	path = src/calculation
+	url = git://github.com/ahlstrom/EnergiatietoCalculation.git
