@@ -21,6 +21,18 @@ define([
             this.controls = new SolarMapControls();
             this.markerStore = new MarkerStore();
 
+            this.controls.on("deactivate", function() {
+                google.maps.event.removeListener(self.listener);
+            });
+            this.controls.on("select:solar", function() {
+                self.listener = google.maps.event.addListener(buildingLayer, 'click', self.clickHandler);
+                self.onclick = self.addSolarPanel;
+            });
+            this.controls.on("select:geoenergy", function() {
+                self.listener = google.maps.event.addListener(map, 'click', self.clickHandler);
+                self.onclick = self.addGeoThermalWell;
+            });
+
             this.onclick = function() {};
 
             this.clickHandler = function() {
@@ -72,22 +84,22 @@ define([
             };
 
             this.addSolarPanel = function(event) {
-                var loc = event.latLng;
+                var loc = event.latLng,
+                    panel = new SolarPanel({
+                            averageRadiation: event.row.AvActKWHm2.value,
+                            loc: {
+                                lat: loc.lat(),
+                                lng: loc.lng()
+                            }
+                        });
 
-                collection.add(new SolarPanel({
-                    averageRadiation: event.row.AvActKWHm2.value,
-                    loc: {
-                        lat: loc.lat(),
-                        lng: loc.lng()
-                    }
-                }));
+                collection.add(panel);
+                collection.trigger("select", panel);
             };
 
             this.selectSolar = function() {
                 self.replaceOverlay(new SolarMapType(map));
-                self.listener = google.maps.event.addListener(buildingLayer, 'click', self.clickHandler);
 
-                self.onclick = self.addSolarPanel;
                 self.markerFilter = function(it) {
                     return it.get('type') === 'solarpanel';
                 };
@@ -95,28 +107,27 @@ define([
             };
 
             this.replaceOverlay = function(overlayType) {
-                self.deactivate();
+
                 map.overlayMapTypes.clear();
                 map.overlayMapTypes.push(overlayType);
             };
 
             this.addGeoThermalWell = function(event) {
-                var loc = event.latLng;
+                var loc = event.latLng,
+                    well = new GeoThermalWell({
+                            loc: {
+                                lat: loc.lat(),
+                                lng: loc.lng()
+                            }
+                        });
 
-                collection.add(new GeoThermalWell({
-                    loc: {
-                        lat: loc.lat(),
-                        lng: loc.lng()
-                    }
-                }));
+                collection.add(well);
+                collection.trigger("select", well);
             };
 
             this.selectGeoEnergy = function() {
                 self.replaceOverlay(new GeoEnergyMapType(map));
 
-                self.onclick = self.addGeoThermalWell;
-
-                self.listener = google.maps.event.addListener(map, 'click', self.clickHandler);
                 buildingLayer.setOptions({
                     clickable: false
                 });
