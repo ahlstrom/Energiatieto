@@ -35,16 +35,17 @@ define([
             return newData;
         };
 
-        this.calculate = function(options) {
+        this.calculate = function(options, callback) {
             var opts = new Options(options);
             if (!opts.isValid()) {
-                return this.empty;
+                callback(this.empty);
+                return;
             }
             var sys = this.constructSystem(opts.asMap());
-            return {
+            callback({
                 total: consumptionFromSystem(sys),
                 water: consumptionFromSystem(sys, 'water')
-            };
+            });
         };
         this.constructSystem = function(options) {
             var bldg = new Building(

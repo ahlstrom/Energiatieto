@@ -70,19 +70,19 @@ define([
             }));
             
             this.electricityProduction.show(new ChartView({
-                model: new BuildingInfoModel({})
+                model: this.model
             }));
 
             this.heatingProduction.show(new ChartView({
-                model: new BuildingInfoModel({})
+                model: this.model
             }));
 
             this.electricityPurchased.show(new ChartView({
-                model: new BuildingInfoModel({})
+                model: this.model
             }));
 
             this.heatingPurchased.show(new ChartView({
-                model: new BuildingInfoModel({})
+                model: this.model
             }));
 
             this.markSelected(this.$('h3.building-info'), true);

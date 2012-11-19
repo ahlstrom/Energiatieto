@@ -5,6 +5,7 @@ define([
         "./form/buildinginfoform",
         "./form/productionform",
         "./form/purchasedform",
+        "../models/selectedbuildings",
         "../models/energyproducers",
         "./chartareaview",
         "../models/chartareamodel",
@@ -19,6 +20,7 @@ define([
         BuildingInfoForm,
         ProductionForm,
         PurchasedForm,
+        SelectedBuildings,
         EnergyProducers,
         ChartAreaView,
         ChartAreaModel,
@@ -49,16 +51,18 @@ define([
             _.bindAll(this);
             
             var self       = this,
-                coll       = this.collection,
-                chartModel = this.chartModel = new ChartAreaModel(),
+                buildings  = this.buildings  = SelectedBuildings,
+                chartModel = this.chartModel = new ChartAreaModel(options.model),
                 producers  = this.producers  = EnergyProducers;
 
-            this.bindTo(this.collection, "select", this.showBuildingInfoForm);
-            this.bindTo(this.collection, "remove", this.showBuildingInfoForm);
+            this.bindTo(this.buildings, "select", this.showBuildingInfoForm);
+            this.bindTo(this.buildings, "remove", this.showBuildingInfoForm);
 
             this.bindTo(this.producers,  "select", this.showProductionForm);
             this.bindTo(this.producers,  "remove", this.showProductionForm);
 
+            this.producers.attachTo(this.model, "producers");
+            this.buildings.attachTo(this.model, "buildings");
 
             this.ChartArea = new ChartAreaView({
                 model: chartModel
@@ -72,7 +76,7 @@ define([
             });
 
             this.mapView = new MapView({
-                buildings: coll,
+                buildings: buildings,
                 producers: producers,
                 model: new MapPosition({
                     id: 'map-view-pos'
@@ -80,10 +84,11 @@ define([
             });
 
             producers.fetch();
+            buildings.fetch();
 
         },
         showBuildingInfoForm: function() {
-            var model = this.collection.getSelected();
+            var model = this.buildings.getSelected();
             if (!model) {
                 this.form.close();
             } else {

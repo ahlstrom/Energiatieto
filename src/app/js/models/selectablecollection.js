@@ -46,6 +46,18 @@ define(["backbone"], function(Backbone) {
             return this.find(function(it) {
                 return it.get("___selected");
             });
+        },
+        attachTo: function(parent, prop) {
+            var self      = this,
+                sync = function() {
+                    var changes = {};
+                    changes[prop] = self.toJSON();
+                    parent.set(changes);
+                };
+
+            this.on("change", sync);
+            this.on("reset", sync);
+            sync();
         }
     });
 });

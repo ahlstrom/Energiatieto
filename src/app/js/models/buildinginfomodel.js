@@ -2,24 +2,18 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["backbone", "../algorithm/facade"], function(Backbone, algorithm) {
+define(["backbone"], function(Backbone) {
     return Backbone.Model.extend({
         defaults: {
-            // init with a 12-item array that contains zeroes
-            data: algorithm.empty,
-            peopleCount: 1
-        },
-        initialize: function() {
-            _.bindAll(this);
-            this.on("change", this.modelChanged);
-        },
-        modelChanged: function() {
-            if(!this.hasChanged("data")) {
-                var data = algorithm.calculate(this.attributes);
-                this.set({
-                    data: data
-                });
-            }
+            buildingType                      : null,
+            buildingYear                      : null,
+            numberOfInhabitants               : 3,
+            averageRoomHeight                 : 2.8,
+            oilEfficiency                     : 0.87,
+            districtHeatingEfficiency         : 0.97,
+            waterHeatingTemperatureDifference : 50,
+            waterHeatingLosses                : 0.89,
+            nominalElectricityConsumption     : 20
         }
     });
 });

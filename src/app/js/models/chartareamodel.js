@@ -1,13 +1,11 @@
 define(
     [
-        "backbone",
-        "./buildinginfomodel"
+        "backbone"
     ],
-    function(Backbone, Building) {
+    function(Backbone) {
         return Backbone.Model.extend({
-            initialize: function() {
-                _.bindAll(this);
-                this.changeUnderlyingModel(new Building());
+            initialize: function(model) {
+                this.changeUnderlyingModel(model);
             },
             changeUnderlyingModel: function(model) {
                 if (this.underlyingModel) {

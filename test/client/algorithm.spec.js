@@ -11,9 +11,11 @@ var Algorithm = require(basedir + 'facade'),
     assert    = require('assert');
 
 describe('algorithm', function() {
-    it('should give twelve datapoints', function() {
-        var res = Algorithm.calculate();
-        assert.equal(res.total.length, 12);
+    it('should give twelve datapoints', function(done) {
+        Algorithm.calculate({}, function(res) {
+            assert.equal(res.total.length, 12);
+            done();
+        });
     });
 });
 
