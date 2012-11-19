@@ -41,6 +41,28 @@
     "lazy": {
       "version": "1.0.8"
     },
+    "gzippo": {
+      "version": "0.2.0",
+      "dependencies": {
+        "send": {
+          "version": "0.1.0",
+          "dependencies": {
+            "debug": {
+              "version": "0.7.0"
+            },
+            "mime": {
+              "version": "1.2.6"
+            },
+            "fresh": {
+              "version": "0.1.0"
+            },
+            "range-parser": {
+              "version": "0.0.4"
+            }
+          }
+        }
+      }
+    },
     "amdefine": {
       "version": "0.0.4"
     },

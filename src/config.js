@@ -1,5 +1,7 @@
 "use strict";
 
+var gzippo = require('gzippo').staticGzip;
+
 module.exports = function(app, express) {
     var config = this;
 
@@ -16,9 +18,9 @@ module.exports = function(app, express) {
 
 
         if ('development' === app.settings.env) {
-            app.use(express['static'](__dirname + '/app'));
+            app.use(gzippo(__dirname + '/app'));
         } else {
-            app.use(express['static'](__dirname + '/../public/dist'));
+            app.use(gzippo(__dirname + '/../public/dist'));
         }
 
     });
