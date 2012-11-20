@@ -8,14 +8,26 @@ var Algorithm = require(basedir + 'facade'),
     System    = require(basedir + 'energysystem'),
     Building  = require(basedir + 'building'),
     Persons   = require(basedir + 'persons'),
-    assert    = require('assert');
+    assert    = require('assert'),
+    _         = require('underscore');
 
-describe('algorithm', function() {
+describe('facade', function() {
     it('should give twelve datapoints', function(done) {
         Algorithm.calculate({}, function(res) {
             assert.equal(res.total.length, 12);
             done();
         }, {});
+    });
+
+    it('should shield from any NaNs from the profile', function() {
+        var months = Algorithm.monthly({
+            month: function() {
+                return NaN;
+            }
+        });
+        _.each(months, function(it) {
+            assert(!isNaN(it), it + " was NaN");
+        });
     });
 });
 

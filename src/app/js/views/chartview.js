@@ -32,7 +32,7 @@ define([
                 ).draw();
             },
             modelChanged: function() {
-                if (this.chart) {
+                if (this.chart && this.model.get("data")[this.propertyName]) {
                     this.chart.redraw();
                 }
             }

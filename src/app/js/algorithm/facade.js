@@ -16,8 +16,7 @@ define([
         };
 
         this.empty = {
-            total: arrayWith(0, 12),
-            water: arrayWith(0, 12)
+            total: arrayWith(0, 12)
         };
 
         this.randomizeData = function() {
@@ -30,23 +29,25 @@ define([
             return newData;
         };
 
+        this.monthly = function(profile) {
+            return _.map(_.range(12), function(num) {
+                var it = profile.month(num + 1);
+                return (isNaN(it) ? 0 : it);
+            });
+        };
+
         this.calculate = function(options, callback, profiles) {
             var heating     = profiles.SpaceHeatingEnergyProfile,
                 electricity = profiles.ElectricityConsumptionProfile,
                 constants   = profiles.Constants;
 
             if (options.buildings && options.buildings.length > 0) {
-                var monthly = function(profile) {
-                    return _.map(_.range(12), function(num) {
-                        return profile.month(num + 1);
-                    });
-                };
                 callback({
                     heat: {
-                        total: monthly(heating(options.buildings[0], constants))
+                        total: this.monthly(heating(options.buildings[0], constants))
                     },
                     electricity: {
-                        total: monthly(electricity(options.buildings[0], constants))
+                        total: this.monthly(electricity(options.buildings[0], constants))
                     }
                 });
                 return;
