@@ -3,15 +3,8 @@ if (typeof define !== 'function') {
 }
 
 define([
-        'underscore', 
-        './heating',
-        './options',
-        './building',
-        './energysystem',
-        './persons',
-        'SpaceHeatingEnergyProfile',
-        'Constants'
-    ], function(_, heating, Options, Building, System, Persons, SpaceHeatingEnergyProfile, Constants) {
+        'underscore'
+    ], function(_) {
     return (function() {
         var arrayWith = function(val, num) {
             return _.map(_.range(num), function() { return val; });
@@ -37,39 +30,30 @@ define([
             return newData;
         };
 
-        this.calculate = function(options, callback) {
+        this.calculate = function(options, callback, profiles) {
+            var heating     = profiles.SpaceHeatingEnergyProfile,
+                electricity = profiles.ElectricityConsumptionProfile,
+                constants   = profiles.Constants;
+
             if (options.buildings && options.buildings.length > 0) {
-                var prof = SpaceHeatingEnergyProfile(options.buildings[0], new Constants());
-                var monthly = _.map(_.range(12), function(num) {
-                    return prof.month(num + 1)
-                });
+                var monthly = function(profile) {
+                    return _.map(_.range(12), function(num) {
+                        return profile.month(num + 1);
+                    });
+                };
                 callback({
-                    total: monthly
+                    heat: {
+                        total: monthly(heating(options.buildings[0], constants))
+                    },
+                    electricity: {
+                        total: monthly(electricity(options.buildings[0], constants))
+                    }
                 });
                 return;
-            }
-
-            var opts = new Options(options);
-            if (!opts.isValid()) {
+            } else {
                 callback(this.empty);
-                return;
+                return;                
             }
-
-            var sys = this.constructSystem(opts.asMap());
-            callback({
-                total: consumptionFromSystem(sys),
-                water: consumptionFromSystem(sys, 'water')
-            });
-        };
-        this.constructSystem = function(options) {
-            var bldg = new Building(
-                options.buildYear, 
-                options.floorArea, 
-                options.avgHeight
-            );
-            var prs = new Persons(options.peopleCount);
-
-            return new System([ bldg, prs ]);
         };
 
         return this;

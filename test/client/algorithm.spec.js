@@ -15,7 +15,7 @@ describe('algorithm', function() {
         Algorithm.calculate({}, function(res) {
             assert.equal(res.total.length, 12);
             done();
-        });
+        }, {});
     });
 });
 

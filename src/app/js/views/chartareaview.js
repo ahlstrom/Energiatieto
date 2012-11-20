@@ -62,11 +62,13 @@ define([
         },
         onShow: function() {
             this.electricityConsumption.show(new ChartView({
-                model: this.model
+                model: this.model,
+                propertyName: "electricity"
             }));
 
             this.heatingConsumption.show(new ChartView({
-                model: this.model
+                model: this.model,
+                propertyName: "heat"
             }));
             
             this.electricityProduction.show(new ChartView({

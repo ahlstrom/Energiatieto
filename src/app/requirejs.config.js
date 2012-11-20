@@ -41,12 +41,14 @@ require.config({
         'HotWaterHeatingEnergyProfile': {
             deps: [
                 'Profile'
-            ]
+            ],
+            exports: 'HotWaterHeatingEnergyProfile'
         },
         'ElectricityConsumptionProfile': {
             deps: [
                 'Profile'
-            ]
+            ],
+            exports: 'ElectricityConsumptionProfile'
         },
         'Constants': {
             deps: [
