@@ -5,6 +5,7 @@ define(
     function(Backbone) {
         return Backbone.Model.extend({
             initialize: function(model) {
+                _.bindAll(this);
                 this.changeUnderlyingModel(model);
             },
             changeUnderlyingModel: function(model) {

@@ -18,7 +18,7 @@ define(["backbone", "../algorithm/facade"], function(Backbone, algorithm) {
                 algorithm.calculate(this.attributes, function(res) {
                     self.set({
                         data: res
-                    });                    
+                    });
                 });
             }
         }

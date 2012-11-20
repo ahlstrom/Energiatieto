@@ -5,6 +5,8 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
 
         var paddingLeft = 40;
         var paddingTop = 5;
+        var paddingBottom = 16;
+        var chartHeight = height - paddingBottom;
         
         var labelDecimals = 2;
         var horizLinesCount = 6;
@@ -15,7 +17,7 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                       .attr("height", height);
 
         var getColumnMaxHeight = function() {
-            return height - paddingTop;
+            return chartHeight - paddingTop;
         };
 
         var newHeightFn = function(data) {
@@ -24,14 +26,15 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 if (maxHeight === 0) {
                     return 0;
                 } else {
-                    return (d / maxHeight) * getColumnMaxHeight();
+                    var height = (d / maxHeight) * getColumnMaxHeight();
+                    return isNaN(height) ? 0 : height;
                 }
             };
         };
 
         var newyCoordFn = function(data) {
             return function(d) {
-                return height - newHeightFn(data)(d);
+                return chartHeight - newHeightFn(data)(d);
             };
         };
 
@@ -51,7 +54,7 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
             var value = maxValue;
 
             for (var c=1; c < count; c++) {
-                quantiles.push(value);
+                quantiles.push(Math.round(value));
                 value -= interval;
             }
 
@@ -67,15 +70,18 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
         };
 
         var drawQuantiles = function(total) {
+            var quantileText = function(d,i) {
+                    return ((i + 1) % quantileCount === 0 ? d : "");
+                };
+
             chart
                 .selectAll("text.quantile")
                 .data(getQuantiles(horizLinesCount, total))
+                .text(quantileText)
                 .enter()
                 .append("text")
                 .attr("class", "quantile")
-                .text(function(d,i) {
-                    return ((i + 1) % quantileCount === 0 ? d : "");
-                })
+                .text(quantileText)
                 .attr("text-anchor", "end")
                 .attr("x", paddingLeft-2)
                 .attr("y", function(d, i) { return paddingTop + 5 + i * (getColumnMaxHeight() / horizLinesCount); });
@@ -136,9 +142,6 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 })
                 .enter()
                 .append("rect")
-                .datum(function(d) {
-                    return series[d];
-                })
                 .attr("title", function(d) {
                     return d;
                 })

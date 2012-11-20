@@ -8,8 +8,10 @@ define([
         './options',
         './building',
         './energysystem',
-        './persons'
-    ], function(_, heating, Options, Building, System, Persons) {
+        './persons',
+        'SpaceHeatingEnergyProfile',
+        'Constants'
+    ], function(_, heating, Options, Building, System, Persons, SpaceHeatingEnergyProfile, Constants) {
     return (function() {
         var arrayWith = function(val, num) {
             return _.map(_.range(num), function() { return val; });
@@ -36,11 +38,23 @@ define([
         };
 
         this.calculate = function(options, callback) {
+            if (options.buildings && options.buildings.length > 0) {
+                var prof = SpaceHeatingEnergyProfile(options.buildings[0], new Constants());
+                var monthly = _.map(_.range(12), function(num) {
+                    return prof.month(num + 1)
+                });
+                callback({
+                    total: monthly
+                });
+                return;
+            }
+
             var opts = new Options(options);
             if (!opts.isValid()) {
                 callback(this.empty);
                 return;
             }
+
             var sys = this.constructSystem(opts.asMap());
             callback({
                 total: consumptionFromSystem(sys),

@@ -22,10 +22,10 @@ define([
             },
             templateHelpers: {
                 buildingTypeIs1: function() {
-                    return this.buildingType === "existing";
+                    return this.buildingType === "1";
                 },
                 buildingTypeIs2: function() {
-                    return this.buildingType === "new";
+                    return this.buildingType === "2";
                 },
                 heatingSystemIs1: function() {
                     return ( this.heatingSystem === "1" && this.buildingType === "1" );
