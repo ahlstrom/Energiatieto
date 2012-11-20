@@ -72,7 +72,7 @@ define([
                 building.on("selected", marker.activate);
                 building.on("destroy", marker.remove);
 
-                if (building.get("selected")) {
+                if (building.get("___selected")) {
                     marker.activate();
                 }
 

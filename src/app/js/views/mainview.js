@@ -82,10 +82,6 @@ define([
                     id: 'map-view-pos'
                 })
             });
-
-            producers.fetch();
-            buildings.fetch();
-
         },
         showBuildingInfoForm: function() {
             var model = this.buildings.getSelected();
@@ -120,6 +116,9 @@ define([
             this.helptext.show(new HelpTextView({
                 model: new Backbone.Model()
             }));
+
+            this.producers.fetch();
+            this.buildings.fetch();
         }
     });
     return MainView;
