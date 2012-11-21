@@ -141,6 +141,10 @@ module.exports = function(grunt) {
         command: 'git checkout -B deploy',
         stdout: true
       },
+      rm_gitmodules: {
+        command: 'git rm .gitmodules',
+        stdout: true
+      },
       git_add_dist: {
         command: 'git add public/dist',
         stdout: true

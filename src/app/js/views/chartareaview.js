@@ -86,7 +86,7 @@ define([
                         region.reset();
                         region.isVisible = false;
                     });
-                })
+                });
                 region.show(view);
             };
         },

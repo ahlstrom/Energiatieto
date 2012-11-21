@@ -32,7 +32,7 @@ define([
                     this.options.chartOptions
                 ).draw();
                 this.chart.onclick = function(value, category) {
-                    self.trigger("click", category)
+                    self.trigger("click", category);
                 };
             },
             modelChanged: function() {

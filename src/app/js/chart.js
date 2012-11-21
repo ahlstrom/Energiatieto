@@ -92,7 +92,7 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
 
         var onclickdelegate = function() {
             self.onclick.apply(self.onclick, arguments);
-        }
+        };
 
         var layers;
 
