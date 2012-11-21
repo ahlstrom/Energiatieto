@@ -1,4 +1,5 @@
 !dist/lib/bootstrap
+!dist/lib/tipsy
 dist/index.html
 dist/lib/*
 dist/*.js
