@@ -12,7 +12,7 @@ define([
             var layer = new google.maps.FusionTablesLayer({
                 query: {
                     select: 'col10',
-                    from: '1A3CXe08s00bb9SgIzCnmXWz61yAOHWIkcdpzOa0'
+                    from: '1-IZOhHD0En2LK-l8I9GXUztwCTr24_GJ70irCpQ'
                 },
                 clickable: (map.getZoom() >= clickableZoomLevel),
                 suppressInfoWindows: true,
