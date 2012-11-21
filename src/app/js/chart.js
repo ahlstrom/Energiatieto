@@ -1,12 +1,15 @@
 define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
-    return function(element, dataSource) {
+    return function(element, dataSource, options) {
         var height = 100;
-        var width = 270;
+        var width = (options && options.width) || 270;
+        var columnAreaWidth = width - 60;
+        var self = this;
 
         var paddingLeft = 40;
         var paddingTop = 5;
         var paddingBottom = 16;
         var chartHeight = height - paddingBottom;
+        var columnGap = 2;
         
         var labelDecimals = 2;
         var horizLinesCount = 6;
@@ -87,13 +90,19 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 .attr("y", function(d, i) { return paddingTop + 5 + i * (getColumnMaxHeight() / horizLinesCount); });
         };
 
+        var onclickdelegate = function() {
+            self.onclick.apply(self.onclick, arguments);
+        }
+
         var layers;
+
+        this.onclick = function() {};
 
         this.draw = function() {
             var series = dataSource.getData();
             var total = series.total;
 
-            var columnAreaWidth = width - paddingLeft;
+            //var columnAreaWidth = width - paddingLeft;
             var columnAreaHeight = height - paddingTop;
             var columnWidth = columnAreaWidth / dataSource.numDataPoints();
 
@@ -124,7 +133,7 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 .text(String)
                 .attr("class", "category")
                 .attr("y", height - 2)
-                .attr("x", function(d, i) { return paddingLeft + i * columnWidth; });
+                .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth + (columnWidth / 2) - 5; });
 
             layers = chart
                 .selectAll("g.layer")
@@ -142,12 +151,13 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 })
                 .enter()
                 .append("rect")
+                .on("click", onclickdelegate)
                 .attr("title", function(d) {
                     return d;
                 })
                 .attr("y", newyCoordFn(total))
-                .attr("x", function(d, i) { return paddingLeft + i * columnWidth; })
-                .attr("width", columnWidth)
+                .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth; })
+                .attr("width", columnWidth - columnGap)
                 .attr("height", newHeightFn(total))
                 .each(function() {
                     $(this).tipsy({ gravity: 's' });
@@ -165,6 +175,7 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
             drawQuantiles(series.total);
 
             layers.selectAll("rect")
+                 .on("click", onclickdelegate)
                  .data(function(d) {
                     return series[d];
                  })
@@ -173,7 +184,7 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                  .attr("height", newHeightFn(data))
                  .attr("y", newyCoordFn(data))
                  .attr("title", function(d) {
-                    return Math.round(d / 1000) + 'kWh';
+                    return Math.round(d) + 'kWh';
                 });
         };
     };
