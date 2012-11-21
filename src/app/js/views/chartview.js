@@ -12,8 +12,11 @@ define([
             },
             initialize: function(options) {
                 _.bindAll(this);
+                var self = this;
                 this.bindTo(this.model, "change", this.modelChanged);
-                this.propertyName = options.propertyName;
+                this.seriesSource = (options && options.series) || function() {
+                    return self.model.get("data")[options.propertyName];
+                };
             },
             onShow: function() {
                 var model = this.model,
@@ -22,7 +25,7 @@ define([
                 this.chart = new Chart(
                     this.$("svg")[0],
                     new MultiSeriesDataSource(function() {
-                        var series = model.get("data")[self.propertyName];
+                        var series = self.seriesSource();
                         if (series) {
                             return series;
                         } else {
@@ -36,7 +39,7 @@ define([
                 };
             },
             modelChanged: function() {
-                if (this.chart && this.model.get("data")[this.propertyName]) {
+                if (this.chart && this.seriesSource()) {
                     this.chart.redraw();
                 }
             }

@@ -36,18 +36,29 @@ define([
             });
         };
 
-        this.calculate = function(options, callback, profiles) {
-            var heating     = profiles.SpaceHeatingEnergyProfile,
-                electricity = profiles.ElectricityConsumptionProfile,
-                constants   = profiles.Constants;
+        this.monthlyAverages = function(profile, constants) {
+            return _.map(_.range(12), function(month) {
+                return _.map(_.range(24), function(hour) {
+                    var it = profile.hourOfDayAvgValueInMonth(hour + 1, month + 1, constants);
+                    return (isNaN(it) ? 0 : it);
+                });
+            });
+        };
 
+        this.calculate = function(options, callback, profiles) {
             if (options.buildings && options.buildings.length > 0) {
+                var constants   = profiles.Constants,
+                    heating     = profiles.SpaceHeatingEnergyProfile(options.buildings[0], constants),
+                    electricity = profiles.ElectricityConsumptionProfile(options.buildings[0], constants);
+
                 callback({
                     heat: {
-                        total: this.monthly(heating(options.buildings[0], constants))
+                        total: this.monthly(heating),
+                        averages: this.monthlyAverages(heating, constants)
                     },
                     electricity: {
-                        total: this.monthly(electricity(options.buildings[0], constants))
+                        total: this.monthly(electricity),
+                        averages: this.monthlyAverages(electricity, constants)
                     }
                 });
                 return;

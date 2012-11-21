@@ -121,9 +121,7 @@ define([
                 },
                 heatingConsumption: {
                     propertyName: "heat",
-                    clickHandler: function(category) {
-                        console.log("click heat");
-                    }
+                    clickHandler: this.additionalInfo(this.firstAdditionalInfo)
                 },
                 electricityProduction: {},
                 heatingProduction: {},

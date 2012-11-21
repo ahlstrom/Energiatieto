@@ -16,9 +16,14 @@ define([
             "click .close": "click:close"
         },
         onShow: function() {
+            var self = this;
             this.chart.show(new ChartView({
                 model: this.model,
-                propertyName: this.options.opts.propertyName,
+                series: function() {
+                    return {
+                        total: self.model.get("data")[self.options.opts.propertyName].averages[self.options.categoryIndex]
+                    };
+                },
                 chartOptions: {
                     width: 550
                 }

@@ -13,20 +13,20 @@ require.config({
         'backbone.localstorage': {
             deps: ['backbone']
         },
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2014': {
-            exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2014'
+        'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014': {
+            exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014'
         },
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2015': {
-            exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2015'
-        },
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2016': {
-            exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2016'
-        },
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2017': {
-            exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2017'
+        'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017': {
+            exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017'
         },
         'heatingDemandProfileHelsinkiKaisaniemiReferenceYear': {
             exports: 'heatingDemandProfileHelsinkiKaisaniemiReferenceYear'
+        },
+        'DomesticElectricityConsumptionWeekValues': {
+            exports: 'DomesticElectricityConsumptionWeekValues'
+        },
+        'DomesticElectricityConsumptionHourValues': {
+            exports: 'DomesticElectricityConsumptionHourValues'
         },
         'SpaceHeatingEnergyProfile': {
             deps: [
@@ -40,6 +40,12 @@ require.config({
             ],
             exports: 'HotWaterHeatingEnergyProfile'
         },
+        'VantaaReferenceYearTotalIrradiationOnHorizontalSurface': {
+            exports: 'VantaaReferenceYearTotalIrradiationOnHorizontalSurface'
+        },
+        'ReferenceYearCalendar': {
+            exports: 'ReferenceYearCalendar'
+        },
         'ElectricityConsumptionProfile': {
             deps: [
                 'Profile'
@@ -48,11 +54,13 @@ require.config({
         },
         'Constants': {
             deps: [
+                'VantaaReferenceYearTotalIrradiationOnHorizontalSurface',
+                'DomesticElectricityConsumptionWeekValues',
+                'DomesticElectricityConsumptionHourValues',
                 'heatingDemandProfileHelsinkiKaisaniemiReferenceYear',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2014',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2015',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2016',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2017'
+                'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014',
+                'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017',
+                'ReferenceYearCalendar'
             ],
             exports: 'Constants'
         },
@@ -70,15 +78,20 @@ require.config({
         'Constants'                                                    : '../calculation/Constants',
         'Profile'                                                      : '../calculation/Profile',
 
+        'ReferenceYearCalendar'                                        : '../calculation/tables/referenceYearCalendar',
+        'DomesticElectricityConsumptionWeekValues'                     : '../calculation/tables/domesticElectricityConsumptionWeekValues',
+        'DomesticElectricityConsumptionHourValues'                     : '../calculation/tables/domesticElectricityConsumptionHourValues',
+
         'SpaceHeatingEnergyProfile'                                    : '../calculation/SpaceHeatingEnergyProfile',
         'HotWaterHeatingEnergyProfile'                                 : '../calculation/HotWaterHeatingEnergyProfile',
         'ElectricityConsumptionProfile'                                : '../calculation/ElectricityConsumptionProfile',
 
+        'VantaaReferenceYearTotalIrradiationOnHorizontalSurface'       : '../calculation/Profiles/vantaaReferenceYearTotalIrradiationOnHorizontalSurface',
         'heatingDemandProfileHelsinkiKaisaniemiReferenceYear'          : '../calculation/Profiles/heatingDemandProfileHelsinkiKaisaniemiReferenceYear',
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2014': '../calculation/Profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2014',
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2015': '../calculation/Profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2015',
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2016': '../calculation/Profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2016',
-        'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2017': '../calculation/Profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2017',
+        'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014'
+                                                                       : '../calculation/Profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014',
+        'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017'
+                                                                       : '../calculation/Profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017',
 
         'json2': '../lib/json2/json2',
         'd3': '../lib/d3/d3.v2',
