@@ -30,11 +30,7 @@ require.config({
         },
         'SpaceHeatingEnergyProfile': {
             deps: [
-                'Profile',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2014',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2015',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2016',
-                'simulatedSpaceHeatingDemandOfResidentialReferenceBuilding2017'
+                'Profile'
             ],
             exports: 'SpaceHeatingEnergyProfile'
         },
