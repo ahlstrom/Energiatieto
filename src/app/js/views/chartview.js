@@ -28,8 +28,12 @@ define([
                         } else {
                             return Algorithm.empty;
                         }
-                    })
+                    }),
+                    this.options.chartOptions
                 ).draw();
+                this.chart.onclick = function(value, category) {
+                    self.trigger("click", category)
+                };
             },
             modelChanged: function() {
                 if (this.chart && this.model.get("data")[this.propertyName]) {
