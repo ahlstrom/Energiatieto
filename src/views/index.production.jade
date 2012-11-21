@@ -8,13 +8,4 @@ head
         window.googleMapsApiKey = '#{process.env["google.maps.api.key"]}';
     script(type='text/javascript', src='js/main.js')
     script require(['main'])
-
-    style 
-        .chart g.total {
-            fill: steelblue;
-         }
-        .chart g.water {
-            fill: orange;
-         }
-        .map img { max-width: none; }
 body
