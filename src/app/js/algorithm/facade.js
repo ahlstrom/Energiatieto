@@ -46,23 +46,29 @@ define([
         };
 
         this.calculate = function(options, callback, profiles) {
-            if (options.buildings && options.buildings.length > 0) {
-                var constants   = profiles.Constants,
-                    heating     = profiles.SpaceHeatingEnergyProfile(options.buildings[0], constants),
-                    electricity = profiles.ElectricityConsumptionProfile(options.buildings[0], constants);
+            try {
+                if (options.buildings && options.buildings.length > 0) {
+                    var constants   = profiles.Constants,
+                        heating     = profiles.SpaceHeatingEnergyProfile(options.buildings[0], constants),
+                        electricity = profiles.ElectricityConsumptionProfile(options.buildings[0], constants);
 
-                callback({
-                    heat: {
-                        total: this.monthly(heating),
-                        averages: this.monthlyAverages(heating, constants)
-                    },
-                    electricity: {
-                        total: this.monthly(electricity),
-                        averages: this.monthlyAverages(electricity, constants)
-                    }
-                });
-                return;
-            } else {
+                    callback({
+                        heat: {
+                            total: this.monthly(heating),
+                            averages: this.monthlyAverages(heating, constants)
+                        },
+                        electricity: {
+                            total: this.monthly(electricity),
+                            averages: this.monthlyAverages(electricity, constants)
+                        }
+                    });
+                    return;
+                } else {
+                    callback(this.empty);
+                    return;                
+                }
+            } catch (e) {
+                console.log(e);
                 callback(this.empty);
                 return;                
             }

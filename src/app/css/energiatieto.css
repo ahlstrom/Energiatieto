@@ -293,12 +293,19 @@ form.search input[type=submit] {
     margin-left: 1ex;    
 }
 
-/* Icon */
+/* Icons */
 .icon-round-x {
     background-image: url(/images/roundX.png);
     background-position: 0px 0px;
     height: 19px;
     width: 19px;
+}
+
+.chart-area .subheader:after {
+    content: url(/images/roundArrow.png);
+    position: absolute;
+    right: 10px;
+    margin-top: 2px;
 }
 
 /* SVG graphs */
