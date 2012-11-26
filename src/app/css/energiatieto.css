@@ -293,6 +293,14 @@ form.search input[type=submit] {
     margin-left: 1ex;    
 }
 
+/* Icon */
+.icon-round-x {
+    background-image: url(/images/roundX.png);
+    background-position: 0px 0px;
+    height: 19px;
+    width: 19px;
+}
+
 /* SVG graphs */
 
 .chart g.total {
