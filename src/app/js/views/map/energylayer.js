@@ -58,16 +58,16 @@ define([
             };
 
             this.initMarkers = function() {
+                self.markerStore.clear();
                 collection.each(self.addMarker);
             };
 
-            this.markerFilter = function() { return true; };
-
             this.addMarker = function(producer) {
-                var loc = producer.get("loc");
-                var marker = self.markerStore.create({
-                    position: new google.maps.LatLng(loc.lat, loc.lng),
-                    map: map
+                var loc = producer.get("loc"),
+                    marker = self.markerStore.create({
+                        position: new google.maps.LatLng(loc.lat, loc.lng),
+                        map: map,
+                        iconBaseUrl: producer.get("iconBaseUrl")
                 });
 
                 marker.onclick(function() {
@@ -100,14 +100,10 @@ define([
             this.selectSolar = function() {
                 self.replaceOverlay(new SolarMapType(map));
 
-                self.markerFilter = function(it) {
-                    return it.get('type') === 'solarpanel';
-                };
                 self.activate();
             };
 
             this.replaceOverlay = function(overlayType) {
-
                 map.overlayMapTypes.clear();
                 map.overlayMapTypes.push(overlayType);
             };
@@ -131,9 +127,6 @@ define([
                 buildingLayer.setOptions({
                     clickable: false
                 });
-                self.markerFilter = function(it) {
-                    return it.get('type') === 'geothermal';
-                };
                 self.activate();
             };
 
