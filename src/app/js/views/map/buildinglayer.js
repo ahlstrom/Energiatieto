@@ -34,8 +34,6 @@ define([
                 layer.setMap(map);
                 layer.setOpaque(false);
                 layer.markerStore.associateWith(map);
-
-                layer.activateClickHandler();
             };
 
             layer.deactivate = function() {
@@ -44,10 +42,6 @@ define([
 
                 google.maps.event.removeListener(layer.eventlistener);
             };
-
-            layer.controls = new BuildingLayerControls({
-                
-            });
 
             google.maps.event.addListener(map, 'zoom_changed', function() {
                 layer.setOptions({
@@ -114,6 +108,14 @@ define([
                     return false;
                 });
             };
+            layer.deactivateClickHandler = function() {
+                google.maps.event.removeListener(layer.eventlistener);
+            };
+
+            layer.controls = new BuildingLayerControls({});
+
+            layer.controls.on("activate", layer.activateClickHandler);
+            layer.controls.on("deactivate", layer.deactivateClickHandler);
 
             return layer;
     };

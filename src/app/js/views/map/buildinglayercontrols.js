@@ -7,6 +7,19 @@ define([
             template: {
                 template: tmpl,
                 type: 'handlebars'
+            },
+            events: {
+                "click .btn": "click"
+            },
+            click: function() {
+                var btn = this.$(".btn");
+                if (btn.hasClass("btn-inverse")) {
+                    btn.removeClass("btn-inverse");
+                    this.trigger("activate");
+                } else {
+                    btn.addClass("btn-inverse");
+                    this.trigger("deactivate");
+                }
             }
         });
 });
