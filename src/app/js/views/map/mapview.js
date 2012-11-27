@@ -131,7 +131,7 @@ define([
                         self.layers = self.newLayers();
                         self.showOnlyBuildingLayer();
                         self.googleCreated = true;
-                    };
+                    }
                     self.$(".map").append(self.map.getDiv());
                 });
             },

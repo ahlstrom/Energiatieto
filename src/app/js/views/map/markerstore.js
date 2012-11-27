@@ -41,16 +41,16 @@ define(["underscore"], function(_) {
 
             if(existingMarker) {
                 return existingMarker;
-            };
+            }
             if (markerData && markerData.iconBaseUrl) {
                 iconType = markerData.iconBaseUrl;
-            };
+            }
             if (!icons[iconType]) {                
                 icons[iconType] = {
                     active: new google.maps.MarkerImage(iconType + 'Active.png', null, null, origin, scaledSize),
                     inactive: new google.maps.MarkerImage(iconType + '.png', null, null, origin, scaledSize)
-                }
-            };
+                };
+            }
 
             var marker = new google.maps.Marker(_.extend(markerData, {
                 iconType: icons[iconType],
