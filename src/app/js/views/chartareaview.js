@@ -66,8 +66,27 @@ define([
                 model        : this.model,
                 propertyName : opts.propertyName
             });
+            if (opts.sumElement) {
+                this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement));
+            }
             opts.clickHandler = function() {
                 clk.apply(clk, [opts].concat([].slice.call(arguments, 0)));
+            };
+        },
+        newSumCounter: function(propertyName, sumElement) {
+            var self = this;
+            return function(model) {
+                var dataSets = model.get("data")[propertyName],
+                    sumReduce = function(memo, num) { return memo + num; },
+                    sum = 0;
+                if (typeof dataSets !== "undefined") {
+                    sum = Math.round(_.reduce(dataSets.total, sumReduce, 0));
+                }
+                if (sum > 0) {
+                    self.$(sumElement).text(sum + " kWh");
+                } else {
+                    self.$(sumElement).text("");
+                }
             };
         },
         initViewsInCharts: function(chartOpts) {
@@ -117,11 +136,13 @@ define([
             this.charts = {
                 electricityConsumption: {
                     propertyName: "electricity",
-                    clickHandler: this.additionalInfo(this.firstAdditionalInfo)
+                    clickHandler: this.additionalInfo(this.firstAdditionalInfo),
+                    sumElement  : ".electricity-consumption-total"
                 },
                 heatingConsumption: {
                     propertyName: "heat",
-                    clickHandler: this.additionalInfo(this.firstAdditionalInfo)
+                    clickHandler: this.additionalInfo(this.firstAdditionalInfo),
+                    sumElement  : ".heating-consumption-total"
                 },
                 electricityProduction: {},
                 heatingProduction: {},

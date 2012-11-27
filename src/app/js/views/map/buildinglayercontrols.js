@@ -11,6 +11,9 @@ define([
             events: {
                 "click .btn": "click"
             },
+            onShow: function() {
+                this.delegateEvents();
+            },
             click: function() {
                 var btn = this.$(".btn");
                 if (btn.hasClass("btn-inverse")) {
