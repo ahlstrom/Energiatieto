@@ -221,6 +221,10 @@ div.navbar {
     color: black;
 }
 
+.map .modeselector .btn {
+    width: 40%;
+}
+
 .control-form .control-group {
     margin-bottom: 0px;
 }

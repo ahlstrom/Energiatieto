@@ -4,22 +4,17 @@ define([
     ], 
     function(Marionette, tmpl) {
         return Marionette.ItemView.extend({
-            triggers: {
-                "click .solar:not(.active)"      : "select:solar",
-                "click .geoenergy:not(.active)"  : "select:geoenergy",
-                "click .active"     : "deactivate"
-            },
             events: {
                 "click .btn"        : "clickBtn"
             },
             clickBtn: function(event) {
-                if (!$(event.target).hasClass("btn-inverse")) {
-                    $(event.target).addClass("btn-inverse");
-                    $(event.target).removeClass("active");
+                var btn = this.$(".btn");
+                if (btn.hasClass("btn-inverse")) {
+                    btn.removeClass("btn-inverse");
+                    this.trigger("activate");
                 } else {
-                    this.$(".btn").addClass("btn-inverse");
-                    $(event.target).removeClass("btn-inverse");
-                    $(event.target).addClass("active");
+                    btn.addClass("btn-inverse");
+                    this.trigger("deactivate");
                 }
             },
             onShow: function() {
@@ -28,6 +23,9 @@ define([
             template: {
                 template: tmpl,
                 type: 'handlebars'
+            },
+            setText: function(text) {
+                this.$(".text").text(text);
             }
         });
 });

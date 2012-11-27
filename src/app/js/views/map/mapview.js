@@ -28,7 +28,8 @@ define([
                 "submit form.search": "submitSearchForm"
             },
             regions: {
-                controls: ".controls"
+                controls: ".controls",
+                modeselector: ".modeselector"
             },
             layers: {
             },
@@ -44,6 +45,9 @@ define([
                 if (typeof layer.controls !== "undefined") {
                     this.controls.show(layer.controls);
                 }
+                if (typeof layer.modeselector !== "undefined") {
+                    this.modeselector.show(layer.modeselector);
+                }
             },
             showOnlyBuildingLayer: function() {
                 this.$(".search").show();
@@ -51,6 +55,7 @@ define([
             },
             clear: function() {
                 this.controls.close();
+                this.modeselector.close();
                 this.map.overlayMapTypes.clear();
                 _.each(_.values(this.layers), function(it) {
                     if (typeof it.deactivate === "function") {

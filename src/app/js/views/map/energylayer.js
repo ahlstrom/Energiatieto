@@ -4,6 +4,7 @@ define([
     "./solarmaptype",
     "./geoenergymaptype",
     "./solarmapcontrols",
+    "./energylayermodeselector",
     "../../models/solarpanel",
     "../../models/geothermalwell"
     ], function(
@@ -12,25 +13,19 @@ define([
         SolarMapType,
         GeoEnergyMapType,
         SolarMapControls,
+        EnergyLayerModeSelector,
         SolarPanel,
         GeoThermalWell) {
 
         return function(map, collection, buildingLayer) {
             var self = this;
 
+            this.modeselector = new EnergyLayerModeSelector();
             this.controls = new SolarMapControls();
             this.markerStore = new MarkerStore();
 
             this.controls.on("deactivate", function() {
                 google.maps.event.removeListener(self.listener);
-            });
-            this.controls.on("select:solar", function() {
-                self.listener = google.maps.event.addListener(buildingLayer, 'click', self.clickHandler);
-                self.onclick = self.addSolarPanel;
-            });
-            this.controls.on("select:geoenergy", function() {
-                self.listener = google.maps.event.addListener(map, 'click', self.clickHandler);
-                self.onclick = self.addGeoThermalWell;
             });
 
             this.onclick = function() {};
@@ -101,6 +96,15 @@ define([
                 self.replaceOverlay(new SolarMapType(map));
 
                 self.activate();
+                self.onclick = self.addSolarPanel;
+                self.controls.off("activate");
+                self.controls.on("activate", function() {
+                    self.listener = google.maps.event.addListener(buildingLayer, 'click', self.clickHandler);
+                });
+                buildingLayer.setOptions({
+                    clickable: true
+                });
+                self.controls.setText("Aurinkokeräin");
             };
 
             this.replaceOverlay = function(overlayType) {
@@ -128,10 +132,16 @@ define([
                     clickable: false
                 });
                 self.activate();
+                self.onclick = self.addGeoThermalWell;
+                self.controls.off("activate");
+                self.controls.on("activate", function() {
+                    self.listener = google.maps.event.addListener(map, 'click', self.clickHandler);
+                });
+                self.controls.setText("Lämpökaivo");
             };
 
-            this.controls.on("select:solar", this.selectSolar);
-            this.controls.on("select:geoenergy", this.selectGeoEnergy);
+            this.modeselector.on("solar", this.selectSolar);
+            this.modeselector.on("geoenergy", this.selectGeoEnergy);
 
             _.bindAll(this);
         };
