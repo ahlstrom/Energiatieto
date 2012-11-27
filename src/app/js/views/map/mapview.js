@@ -66,11 +66,6 @@ define([
                 var self = this;
                 this.buildings = options.buildings;
                 this.producers = options.producers;
-                GoogleMaps.create(function() {
-                    self.createMap();
-                    self.layers = self.newLayers();
-                    self.showOnlyBuildingLayer();
-                });
             },
             newLayers: function() {
                 var buildingLayer = new BuildingLayer(this.map, this.buildings);
@@ -131,6 +126,12 @@ define([
             onShow: function() {
                 var self = this;
                 GoogleMaps.create(function() {
+                    if (!self.googleCreated) {
+                        self.createMap();
+                        self.layers = self.newLayers();
+                        self.showOnlyBuildingLayer();
+                        self.googleCreated = true;
+                    };
                     self.$(".map").append(self.map.getDiv());
                 });
             },
