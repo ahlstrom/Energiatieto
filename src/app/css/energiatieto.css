@@ -278,6 +278,9 @@ span.brand-header {
 form.search input[type=submit] {
     margin-top: -10px;
 }
+form.search input[name=search] {
+    width: 310px;
+}
 
 
 .chart-area h3 {
