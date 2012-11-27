@@ -46,6 +46,7 @@ define([
                 }
             },
             showOnlyBuildingLayer: function() {
+                this.$(".search").show();
                 this.activate(this.layers.building);
             },
             clear: function() {
@@ -58,6 +59,7 @@ define([
                 });
             },
             showSolarAndGeoEnergy: function() {
+                this.$(".search").hide();
                 this.activate(this.layers.energy);
                 this.layers.energy.selectSolar();
             },
