@@ -5,6 +5,7 @@ if (typeof define !== 'function') {
 define([
         'underscore'
     ], function(_) {
+
     return (function() {
         var arrayWith = function(val, num) {
             return _.map(_.range(num), function() { return val; });
@@ -12,6 +13,11 @@ define([
         var consumptionFromSystem = function(sys, type) {
             return _.map(_.range(12), function(num) {
                 return sys.getMonthlyConsumption(num, type);
+            });
+        };
+        var findByType = function(arr, type) {
+            return _.filter(arr, function(it) {
+                return it.type === type;
             });
         };
 
@@ -48,19 +54,39 @@ define([
         this.calculate = function(options, callback, profiles) {
             try {
                 if (options.buildings && options.buildings.length > 0) {
-                    var constants   = profiles.Constants,
-                        heating     = profiles.SpaceHeatingEnergyProfile(options.buildings[0], constants),
-                        electricity = profiles.ElectricityConsumptionProfile(options.buildings[0], constants);
+                    var system = {
+                        building: options.buildings,
+                        solarInstallation: findByType(options.producers, "solarpanel"),
+                        borehole: findByType(options.producers, "geothermal")
+                    };
+
+                    var valuesFor = function(profile) {
+                        var constants   = profiles.Constants,
+                            calculatedProfile = profile(system, constants);
+
+                        return {
+                            total: this.monthly(calculatedProfile),
+                            averages: this.monthlyAverages(calculatedProfile, constants)
+                        };
+                    };
 
                     callback({
-                        heat: {
-                            total: this.monthly(heating),
-                            averages: this.monthlyAverages(heating, constants)
-                        },
-                        electricity: {
-                            total: this.monthly(electricity),
-                            averages: this.monthlyAverages(electricity, constants)
-                        }
+                        heatingConsumption
+                                    : valuesFor(profiles.SystemSpaceHeatingEnergyConsumption),
+                        electricityConsumption
+                                    : valuesFor(profiles.SystemElectricityConsumption),
+                        hotWaterHeatingEnergyProduction
+                                    : valuesFor(profiles.SystemHotWaterHeatingEnergyProduction),
+                        spaceHeatingEnergyProduction
+                                    : valuesFor(profiles.SystemSpaceHeatingEnergyProduction),
+                        electricityProduction
+                                    : valuesFor(profiles.SystemElectricityProduction),
+                        hotWaterHeatingEnergyBalance
+                                    : valuesFor(profiles.SystemHotWaterHeatingEnergyBalance),
+                        spaceHeatingEnergyBalance
+                                    : valuesFor(profiles.SystemSpaceHeatingEnergyBalance),
+                        electricityBalance
+                                    : valuesFor(profiles.SystemElectricityBalance)
                     });
                     return;
                 } else {
@@ -68,7 +94,11 @@ define([
                     return;                
                 }
             } catch (e) {
-                console.log(e);
+                if (typeof e.stack !== "undefined") {
+                    console.warn(e.stack);
+                } else {
+                    console.warn(e);
+                }
                 callback(this.empty);
                 return;                
             }

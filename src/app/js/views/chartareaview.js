@@ -18,8 +18,8 @@ define([
             heatingConsumption      : "div.heating-consumption",
             electricityProduction   : "div.electricity-production",
             heatingProduction       : "div.heating-production",
-            electricityPurchased    : "div.electricity-purchased",
-            heatingPurchased        : "div.heating-purchased",
+            electricityBalance      : "div.electricity-balance",
+            heatingBalance          : "div.heating-balance",
 
             firstAdditionalInfo     : "div.first-infoarea"
         },
@@ -69,9 +69,11 @@ define([
             if (opts.sumElement) {
                 this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement));
             }
-            opts.clickHandler = function() {
-                clk.apply(clk, [opts].concat([].slice.call(arguments, 0)));
-            };
+            if (typeof clk === "function") {
+                opts.clickHandler = function() {
+                    clk.apply(clk, [opts].concat([].slice.call(arguments, 0)));
+                };
+            }
         },
         newSumCounter: function(propertyName, sumElement) {
             var self = this;
@@ -135,19 +137,29 @@ define([
 
             this.charts = {
                 electricityConsumption: {
-                    propertyName: "electricity",
+                    propertyName: "electricityConsumption",
                     clickHandler: this.additionalInfo(this.firstAdditionalInfo),
                     sumElement  : ".electricity-consumption-total"
                 },
                 heatingConsumption: {
-                    propertyName: "heat",
+                    propertyName: "heatingConsumption",
                     clickHandler: this.additionalInfo(this.firstAdditionalInfo),
                     sumElement  : ".heating-consumption-total"
                 },
-                electricityProduction: {},
-                heatingProduction: {},
-                electricityPurchased: {},
-                heatingPurchased: {}
+                electricityProduction: {
+                    propertyName: "electricityProduction",
+                    sumElement  : ".electricity-production-total"
+                },
+                heatingProduction: {
+                    propertyName: "hotWaterHeatingEnergyProduction",
+                    sumElement  : ".heating-production-total"
+                },
+                electricityBalance: {
+                    propertyName: "electricityBalance"
+                },
+                heatingBalance: {
+                    propertyName: "hotWaterHeatingEnergyBalance"
+                }
             };
             this.initViewsInCharts(this.charts);
         },

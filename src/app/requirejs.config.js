@@ -34,6 +34,42 @@ require.config({
             ],
             exports: 'SpaceHeatingEnergyProfile'
         },
+        'SystemElectricityConsumption': {
+            deps: [
+                'ElectricityConsumptionProfile'
+            ],
+            exports: 'SystemElectricityConsumption'
+        },
+        'SystemSpaceHeatingEnergyConsumption': {
+            deps: [
+                'SpaceHeatingEnergyProfile'
+            ],
+            exports: 'SystemSpaceHeatingEnergyConsumption'
+        },
+        'SystemHotWaterHeatingEnergyProduction': {
+            deps: [
+                'SolarHeatingEnergyProductionProfile',
+                'SolarElectricityProductionProfile'
+            ],
+            exports: 'SystemHotWaterHeatingEnergyProduction'
+        },
+        'SystemSpaceHeatingEnergyProduction': {
+            exports: 'SystemSpaceHeatingEnergyProduction'
+        },
+        'SystemElectricityProduction': {
+            exports: 'SystemElectricityProduction'
+        },
+
+        'SystemSpaceHeatingEnergyBalance': {
+            exports: 'SystemSpaceHeatingEnergyBalance'
+        },
+        'SystemHotWaterHeatingEnergyBalance': {
+            exports: 'SystemHotWaterHeatingEnergyBalance'
+        },
+        'SystemElectricityBalance': {
+            exports: 'SystemElectricityBalance'
+        },
+
         'HotWaterHeatingEnergyProfile': {
             deps: [
                 'Profile'
@@ -89,6 +125,19 @@ require.config({
         'SpaceHeatingEnergyProfile'                                    : '../calculation/SpaceHeatingEnergyProfile',
         'HotWaterHeatingEnergyProfile'                                 : '../calculation/HotWaterHeatingEnergyProfile',
         'ElectricityConsumptionProfile'                                : '../calculation/ElectricityConsumptionProfile',
+        'SolarHeatingEnergyProductionProfile'                          : '../calculation/SolarHeatingEnergyProductionProfile',
+        'SolarElectricityProductionProfile'                            : '../calculation/SolarElectricityProductionProfile',
+
+        'SystemElectricityConsumption'                                 : '../calculation/SystemElectricityConsumption',
+        'SystemSpaceHeatingEnergyConsumption'                          : '../calculation/SystemSpaceHeatingEnergyConsumption',
+
+        'SystemHotWaterHeatingEnergyProduction'                        : '../calculation/SystemHotWaterHeatingEnergyProduction',
+        'SystemSpaceHeatingEnergyProduction'                           : '../calculation/SystemSpaceHeatingEnergyProduction',
+        'SystemElectricityProduction'                                  : '../calculation/SystemElectricityProduction',
+
+        'SystemSpaceHeatingEnergyBalance'                              : '../calculation/SystemSpaceHeatingEnergyBalance',
+        'SystemHotWaterHeatingEnergyBalance'                           : '../calculation/SystemHotWaterHeatingEnergyBalance',
+        'SystemElectricityBalance'                                     : '../calculation/SystemElectricityBalance',
 
         'VantaaReferenceYearOutsideTemperature'                        : '../calculation/Profiles/vantaaReferenceYearOutsideTemperature',
         'VantaaReferenceYearTotalIrradiationOnHorizontalSurface'       : '../calculation/Profiles/vantaaReferenceYearTotalIrradiationOnHorizontalSurface',

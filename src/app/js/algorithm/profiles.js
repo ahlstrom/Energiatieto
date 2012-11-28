@@ -3,24 +3,44 @@ if (typeof define !== 'function') {
 }
 
 define([
-        "ElectricityConsumptionProfile",
+        "SystemElectricityConsumption",
         "HotWaterHeatingEnergyProfile",
-//        "SolarElectricityProductionProfile",
-        "SpaceHeatingEnergyProfile",
+        "SystemSpaceHeatingEnergyConsumption",
+        "SystemHotWaterHeatingEnergyProduction",
+        "SystemSpaceHeatingEnergyProduction",
+        "SystemElectricityProduction",
+        "SystemElectricityBalance",
+        "SystemHotWaterHeatingEnergyBalance",
+        "SystemSpaceHeatingEnergyBalance",
         "Constants"
     ], 
     function(
-        ElectricityConsumptionProfile,
+        SystemElectricityConsumption,
         HotWaterHeatingEnergyProfile,
-//        SolarElectricityProductionProfile,
-        SpaceHeatingEnergyProfile,
+        SystemSpaceHeatingEnergyConsumption,
+        SystemHotWaterHeatingEnergyProduction,
+        SystemSpaceHeatingEnergyProduction,
+        SystemElectricityProduction,
+        SystemElectricityBalance,
+        SystemHotWaterHeatingEnergyBalance,
+        SystemSpaceHeatingEnergyBalance,
         Constants
     ) {
         return {
-            ElectricityConsumptionProfile     : ElectricityConsumptionProfile,
+            SystemElectricityConsumption     : SystemElectricityConsumption,
             HotWaterHeatingEnergyProfile      : HotWaterHeatingEnergyProfile,
-//            SolarElectricityProductionProfile : SolarElectricityProductionProfile,
-            SpaceHeatingEnergyProfile         : SpaceHeatingEnergyProfile,
+            SystemSpaceHeatingEnergyConsumption
+                                              : SystemSpaceHeatingEnergyConsumption,
+            SystemHotWaterHeatingEnergyProduction
+                                              : SystemHotWaterHeatingEnergyProduction,
+            SystemSpaceHeatingEnergyProduction
+                                              : SystemSpaceHeatingEnergyProduction,
+            SystemElectricityProduction       : SystemElectricityProduction,
+            SystemElectricityBalance          : SystemElectricityBalance,
+            SystemHotWaterHeatingEnergyBalance
+                                              : SystemHotWaterHeatingEnergyBalance,
+            SystemSpaceHeatingEnergyBalance
+                                              : SystemSpaceHeatingEnergyBalance,
             Constants                         : new Constants()
         };
 });
