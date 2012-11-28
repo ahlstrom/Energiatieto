@@ -8,26 +8,26 @@
     <div class="controlform-frame-content form-horizontal">
 
         <div class='control-group'>
-            <label class='control-label'>Nimi</label>
-            <div class='controls'>
+            <label class='et-control-label'>Nimi</label>
+            <div class='et-controls'>
                 <input type='text' class='input-medium re-render' name='buildingName'>
             </div>
         </div>
 
         <div class='control-group'>
-            <label class='control-label'>Pinta-ala</label>
-            <div class='controls'>
-                <input type='text' class='input-mini' name='floorArea'>  m2
+            <label class='et-control-label'>Pinta-ala</label>
+            <div class='et-controls'>
+                <input type='text' class='input-mini' name='floorArea'><span class="et-unit">m&sup2</span>
             </div>
 
         </div>
 
         <div class='control-group'>
-            <label class='control-label'>Rakennustyyppi</label>
-            <div class='controls'>
+            <label class='et-control-label'>Rakennustyyppi</label>
+            <div class='et-controls'>
                 <select class='input-medium re-render' name='buildingType'>
                     <option value="">Valitse</option>
-                    <option value="1">Asuinrakennus - erillistalo</option>
+                    <option value="1">Asuinrakennus</option>
                     <option value="2">Asuinrakennus - uudisrakennus</option>
                 </select>
             </div>
@@ -35,14 +35,14 @@
 
         {{#if buildingTypeIs1}}
             <div class='control-group'>
-                <label class='control-label'>Asukasmäärä</label>
-                <div class='controls'>
-                    <input type='text' class='input-medium' name='peopleCount'>
+                <label class='et-control-label'>Asukasmäärä</label>
+                <div class='et-controls'>
+                    <input type='text' class='input-medium' name='numberOfInhabitants'>
                 </div>
             </div>
              <div class='control-group'>
-                <label class='control-label'>Rakennusvuosi</label>
-                <div class='controls'>
+                <label class='et-control-label'>Rakennusvuosi</label>
+                <div class='et-controls'>
                     <input type='text' class='input-medium' name='buildingYear'>
                 </div>
             </div>
@@ -52,29 +52,36 @@
             <div class='controlform-divider'>Lämmitysenergia</div>
 
             <div class='control-group'>
-                <label class='control-label'>Lämmitysjärjestelmä</label>
-                <div class='controls'>
-                    <select class='input-medium re-render' name='heatingSystem'>
-                        <option value="">Valitse</option>
-                        <option value="1">Kaukolämpö</option>
-                        <option value="2">Öljylämmitys</option>
-                        <option value="3">Sähkölämmitys</option>
-                        <option value="4">Jokin muu</option>
-                    </select>
+                <label class='et-control-label'>Arvioitu kulutus</label>
+                <div class='et-controls'>
+                    <input type='checkbox' class='input-medium re-render' name='spaceHeatingEnergyEstimated'>
                 </div>
             </div>
+            {{#if heatingEnergyConsumptionEstimatedNOT}}
+                <div class='control-group'>
+                    <label class='et-control-label'>Lämmitysjärjestelmä</label>
+                    <div class='et-controls'>
+                        <select class='input-medium re-render' name='heatingSystem'>
+                            <option value="">Valitse</option>
+                            <option value="1">Kaukolämpö</option>
+                            <option value="2">Öljylämmitys</option>
+                            <option value="3">Sähkölämmitys</option>
+                        </select>
+                    </div>
+                </div>
+            {{/if}}
         {{/if}}
 
         {{#if buildingTypeIs2}}
             <div class='control-group'>
-                <label class='control-label'>Asukasmäärä</label>
-                <div class='controls'>
-                    <input type='text' class='input-small' name='peopleCount'>
+                <label class='et-control-label'>Asukasmäärä</label>
+                <div class='et-controls'>
+                    <input type='text' class='input-small' name='numberOfInhabitants'>
                 </div>
             </div>
             <div class='control-group'>
-                <label class='control-label'>Rakennusvuosi</label>
-                <div class='controls'>
+                <label class='et-control-label'>Rakennusvuosi</label>
+                <div class='et-controls'>
                     <select class='input-medium' name='buildingYear'>
                         <option value="">Valitse</option>
                         <option value="2014">2014</option>
@@ -87,107 +94,159 @@
         {{/if}}
 
         {{#if heatingSystemIs1}}
-            <div class='control-group'>
-                <label class='control-label'>Arvioitu kulutus</label>
-                <div class='controls'>
-                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
-                </div>
-            </div>
-        
-
             {{#if heatingEnergyConsumptionEstimatedNOT}}
                 <div class='control-group'>
-                    <label class='control-label'>Ostettu lämmitysenergia</label>
-                    <div class='controls'>
-                        <input type='text' class='input-small' name='purchasedEnergyDistrictHeating'> kWh
+                    <label class='et-control-label'>Ostettu lämmitysenergia</label>
+                    <div class='et-controls'>
+                        <input type='text' class='input-small' name='districtHeatingConsumption'><span class="et-unit">kWh</span>
                     </div>
                 </div>
+            
                 <div class='control-group'>
-                    <label class='control-label'>Aikavälillä</label>
-                    <div class='controls'>
-                        <input type='date' class='input-mini' name='purchasedEnergyDistrictHeatingPeriodStart'> - <input type='date' class='input-mini' name='purchasedEnergyDistrictHeatingPeriodEnd'>
+                    <label class='et-control-label'>Aikavälillä</label>
+                    <div class='et-controls'>
+                        <select class='et-input-mini' name='energyConsumptionPeriodStartYear'>
+                            <option value="">Vuosi</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                        </select>
+                        <select class='input-small' name='energyConsumptionPeriodStartMonth'>
+                            <option value="">Kuukausi</option>
+                            <option value="1">tammikuu</option>
+                            <option value="2">helmikuu</option>
+                            <option value="3">maaliskuu</option>
+                            <option value="4">huhtikuu</option>
+                            <option value="5">toukokuu</option>
+                            <option value="6">kesäkuu</option>
+                            <option value="7">heinäkuu</option>
+                            <option value="8">elokuu</option>
+                            <option value="9">syyskuu</option>
+                            <option value="10">lokakuu</option>
+                            <option value="11">marraskuu</option>
+                            <option value="12">joulukuu</option>
+                        </select>
                     </div>
                 </div>
+
                 <div class='control-group'>
-                    <label class='control-label'>Sisältää käyttöveden lämmityksen</label>
-                    <div class='controls'>
+                    <div class='et-controls'>
+                        <select class='et-input-mini' name='energyConsumptionPeriodEndYear'>
+                            <option value="">Vuosi</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                        </select>
+                        <select class='input-small' name='energyConsumptionPeriodEndMonth'>
+                            <option value="">Kuukausi</option>
+                            <option value="1">tammikuu</option>
+                            <option value="2">helmikuu</option>
+                            <option value="3">maaliskuu</option>
+                            <option value="4">huhtikuu</option>
+                            <option value="5">toukokuu</option>
+                            <option value="6">kesäkuu</option>
+                            <option value="7">heinäkuu</option>
+                            <option value="8">elokuu</option>
+                            <option value="9">syyskuu</option>
+                            <option value="10">lokakuu</option>
+                            <option value="11">marraskuu</option>
+                            <option value="12">joulukuu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class='control-group'>
+                    <label class='et-control-label'>Sisältää veden lämmityksen</label>
+                    <div class='et-controls'>
                         <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
                     </div>
                 </div>
             {{/if}}
         {{/if}}
 
-          {{#if heatingSystemIs2}}
-            <div class='control-group'>
-                <label class='control-label'>Arvioitu kulutus</label>
-                <div class='controls'>
-                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
-                </div>
-            </div>
+        {{#if heatingSystemIs2}}
             {{#if heatingEnergyConsumptionEstimatedNOT}}
                 <div class='control-group'>
-                    <label class='control-label'>Ostettu öljy</label>
-                    <div class='controls'>
-                        <input type='text' class='input-small' name='purchasedOil'> litraa
+                    <label class='et-control-label'>Ostettu öljy</label>
+                    <div class='et-controls'>
+                        <input type='text' class='input-small' name='oilConsumption'><span class="et-unit">litraa</span>
                     </div>
                 </div>
+
                 <div class='control-group'>
-                    <label class='control-label'>Aikavälillä</label>
-                    <div class='controls'>
-                        <input type='date' class='input-mini' name='purchasedOilPeriodStart'> - <input type='date' class='input-mini' name='purchasedOilPeriodEnd'>
+                    <label class='et-control-label'>Aikavälillä</label>
+                    <div class='et-controls'>
+                        <select class='et-input-mini' name='energyConsumptionPeriodStartYear'>
+                            <option value="">Vuosi</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                        </select>
+                        <select class='input-small' name='energyConsumptionPeriodStartMonth'>
+                            <option value="">Kuukausi</option>
+                            <option value="1">tammikuu</option>
+                            <option value="2">helmikuu</option>
+                            <option value="3">maaliskuu</option>
+                            <option value="4">huhtikuu</option>
+                            <option value="5">toukokuu</option>
+                            <option value="6">kesäkuu</option>
+                            <option value="7">heinäkuu</option>
+                            <option value="8">elokuu</option>
+                            <option value="9">syyskuu</option>
+                            <option value="10">lokakuu</option>
+                            <option value="11">marraskuu</option>
+                            <option value="12">joulukuu</option>
+                        </select>
                     </div>
                 </div>
+
                 <div class='control-group'>
-                    <label class='control-label'>Sisältää käyttöveden lämmityksen</label>
-                    <div class='controls'>
+                    <div class='et-controls'>
+                        <select class='et-input-mini' name='energyConsumptionPeriodEndYear'>
+                            <option value="">Vuosi</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                        </select>
+                        <select class='input-small' name='energyConsumptionPeriodEndMonth'>
+                            <option value="">Kuukausi</option>
+                            <option value="1">tammikuu</option>
+                            <option value="2">helmikuu</option>
+                            <option value="3">maaliskuu</option>
+                            <option value="4">huhtikuu</option>
+                            <option value="5">toukokuu</option>
+                            <option value="6">kesäkuu</option>
+                            <option value="7">heinäkuu</option>
+                            <option value="8">elokuu</option>
+                            <option value="9">syyskuu</option>
+                            <option value="10">lokakuu</option>
+                            <option value="11">marraskuu</option>
+                            <option value="12">joulukuu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class='control-group'>
+                    <label class='et-control-label'>Sisältää veden lämmityksen</label>
+                    <div class='et-controls'>
                         <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
                     </div>
                 </div>
             {{/if}}
         {{/if}}
 
-        {{#if heatingSystemIs3}}
-            <div class='control-group'>
-                <label class='control-label'>Arvioitu kulutus</label>
-                <div class='controls'>
-                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
-                </div>
-            </div>
-            {{#if heatingEnergyConsumptionEstimatedNOT}}
-                <div class='control-group'>
-                    <label class='control-label'>Ostettu sähköenergia</label>
-                    <div class='controls'>
-                        <input type='text' class='input-small' name='purchasedElectricityHeating'> kWh
-                    </div>
-                </div>
-                <div class='control-group'>
-                    <label class='control-label'>Aikavälillä</label>
-                    <div class='controls'>
-                        <input type='date' class='input-mini' name='purchasedElectricityPeriodStart'> - <input type='date' class='input-mini' name='purchasedElectricityPeriodEnd'>
-                    </div>
-                </div>
-                <div class='control-group'>
-                    <label class='control-label'>Sisältää käyttöveden lämmityksen</label>
-                    <div class='controls'>
-                        <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
-                    </div>
-                </div>
-                <div class='control-group'>
-                    <label class='control-label'>Sisältää käyttösähkön</label>
-                    <div class='controls'>
-                        <input type='checkbox' class='input-medium re-render' name='electricityConsumptionIncludesDomestic'>
-                    </div>
-                </div>
-            {{/if}}
-        {{/if}}
+
 
         {{#if heatingSystemIs4}}
-            <div class='control-group'>
-                <label class='control-label'>Arvioitu kulutus</label>
-                <div class='controls'>
-                    <input type='checkbox' class='input-medium re-render' name='heatingEnergyConsumptionEstimated'>
-                </div>
-            </div>
+
         {{/if}}
 
 
@@ -195,11 +254,11 @@
 
 
         {{#if electricityConsumption}}
-            <div class='controlform-divider'>Käyttösähkö</div>
+            <div class='controlform-divider'>Sähkö</div>
                 
             <div class='control-group'>
-                <label class='control-label'>Arvioitu kulutus</label>
-                <div class='controls'>
+                <label class='et-control-label'>Arvioitu kulutus</label>
+                <div class='et-controls'>
                     <input type='checkbox' class='input-medium re-render' name='electricityConsumptionEstimated'>
                 </div>
             </div>
@@ -207,20 +266,85 @@
             {{#if electricityConsumptionEstimatedNOT}}
 
                 <div class='control-group'>
-                    <label class='control-label'>Ostettu sähköenergia</label>
-                    <div class='controls'>
-                        <input type='text' class='input-small' name='purchasedElectricityDomestic'> kWh
+                    <label class='et-control-label'>Ostettu sähköenergia</label>
+                    <div class='et-controls'>
+                        <input type='text' class='input-small' name='electricityConsumption'><span class="et-unit">kWh</span>
                     </div>
                 </div>
+
                 <div class='control-group'>
-                    <label class='control-label'>Aikavälillä</label>
-                    <div class='controls'>
-                        <input type='date' class='input-mini' name='purchasedElectricityPeriodStart'> - <input type='date' class='input-mini' name='purchasedElectricityPeriodEnd'>
+                    <label class='et-control-label'>Aikavälillä</label>
+                    <div class='et-controls'>
+                        <select class='et-input-mini' name='electricityConsumptionPeriodStartYear'>
+                            <option value="">Vuosi</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                        </select>
+                        <select class='input-small' name='electricityConsumptionPeriodStartMonth'>
+                            <option value="">Kuukausi</option>
+                            <option value="1">tammikuu</option>
+                            <option value="2">helmikuu</option>
+                            <option value="3">maaliskuu</option>
+                            <option value="4">huhtikuu</option>
+                            <option value="5">toukokuu</option>
+                            <option value="6">kesäkuu</option>
+                            <option value="7">heinäkuu</option>
+                            <option value="8">elokuu</option>
+                            <option value="9">syyskuu</option>
+                            <option value="10">lokakuu</option>
+                            <option value="11">marraskuu</option>
+                            <option value="12">joulukuu</option>
+                        </select>
                     </div>
                 </div>
 
+                <div class='control-group'>
+                    <div class='et-controls'>
+                        <select class='et-input-mini' name='electricityConsumptionPeriodEndYear'>
+                            <option value="">Vuosi</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                        </select>
+                        <select class='input-small' name='electricityConsumptionPeriodEndMonth'>
+                            <option value="">Kuukausi</option>
+                            <option value="1">tammikuu</option>
+                            <option value="2">helmikuu</option>
+                            <option value="3">maaliskuu</option>
+                            <option value="4">huhtikuu</option>
+                            <option value="5">toukokuu</option>
+                            <option value="6">kesäkuu</option>
+                            <option value="7">heinäkuu</option>
+                            <option value="8">elokuu</option>
+                            <option value="9">syyskuu</option>
+                            <option value="10">lokakuu</option>
+                            <option value="11">marraskuu</option>
+                            <option value="12">joulukuu</option>
+                        </select>
+                    </div>
+                </div>
+                {{#if heatingSystemIs3}}
+                    {{#if heatingEnergyConsumptionEstimatedNOT}}
+                        <div class='control-group'>
+                            <label class='et-control-label'>Sisältää veden lämmityksen</label>
+                            <div class='et-controls'>
+                                <input type='checkbox' class='input-medium' name='energyConsumptionIncludesWaterHeating'>
+                            </div>
+                        </div>
+                        <div class='control-group'>
+                            <label class='et-control-label'>Sisältää tilojen lämmityksen</label>
+                            <div class='et-controls'>
+                                <input type='checkbox' class='input-medium' name='electricHeatingIncludesSpaceHeating' disabled>
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/if}}
             {{/if}}
-
         {{/if}}
         
         <!-- ___________________________________________________________________________________________ --> 
@@ -228,29 +352,88 @@
         <div class='controlform-divider'>Laskennassa käytetyt tiedot</div>
 
         <div class='control-group'>
-                <label class='control-label'>Näytä</label>
-                <div class='controls'>
+                <label class='et-control-label'>Näytä</label>
+                <div class='et-controls'>
                     <input type='checkbox' class='input-medium re-render' name='showBackgroundData'>
                 </div>
         </div>
 
         {{#if showBackgroundDataIsTrue}}
+            <div class="et-info">
+                <p>
+                    Ostoenergiankulutuksen normituksessa hyödynnetään Espoon alueen toteutuneita lämmitystarvelukuja vuosilta 2008-2012.
+                </p>
+            </div>
+             <div class="et-info">
+                <p>
+                    Vuosittaisen lämmitysenergian kulutuksen jakautuminen eri kuukausille arvioidaan vertailuvuoden lämmitystarvelukujen perusteella. Kulutuksen jakautuminen edelleen kuukauden tunneille arvioidaan vertailuvuoden tunnittaisen ulkoilman keskilämpötilan perusteella.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Käyttöveden lämmittämiseen tarvittavan energian oletetaan jakautuvan tasaisesti vuoden jokaiselle tunnille.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Käyttö- ja kiinteistösähkön kulutuksen jakautuminen vuoden tunneille arvioidaan arki-,lauantai- ja pyhäpäiväien tyypillisten kulutusprofiilien mukaisesti.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Uudisrakennusten lämmitysenergiankulutus on arvioitu simuloitujen tyyppitalojen kulutusprofiilien perusteella. Tyyppitaloissa on huomioitu rakentamismääräysten oletetut muutokset.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Tarkat kuvaukset laskentatavoista sekä käytetyt lähtötiedot löytyvät <a href="https://github.com/ahlstrom/EnergiatietoCalculation" target="_blank">täältä.</a>
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Rakennuskohtaiset tiedot:
+                </p>
+            </div>
             <div class='control-group'>
-                <label class='control-label'>Keskisäteily</label>
-                <div class='controls'>
-                    <input type='text' class='input-mini' name='averageRadiation'>
+                <label class='et-data-control-label'>Keskimääräinen huonekorkeus</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='averageRoomHeight'><span class="et-unit">m</span>
                 </div>
             </div>
             <div class='control-group'>
-                <label class='control-label'>Katon pinta-ala (m2)</label>
-                <div class='controls'>
-                    <input type='text' class='input-mini' name='roofArea'>
+                <label class='et-data-control-label'>Lämpimän veden kulutus henkilöä kohti</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='waterConsumptionPerPersonPerDay'><span class="et-unit">litraa/pvä</span>
                 </div>
             </div>
             <div class='control-group'>
-                <label class='control-label'>Keskimääräinen huonekorkeus</label>
-                <div class='controls'>
-                    <input type='text' class='input-mini' name='avgHeight'>  m
+                <label class='et-data-control-label'>Käyttöveden lämmitystarve</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='waterHeatingTemperatureDifference'><span class="et-unit">°C</span> 
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Käyttöveden lämmityksen häviöt</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='waterHeatingLosses'>  
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Öljypolttimen hyötysuhde</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='oilEfficiency'>  
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Kaukolämmityksen hyötysuhde</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='districtHeatingEfficiency'>  
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Kiinteistö- ja käyttösähkön vuosikulutus</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='nominalElectricityConsumption'><span class="et-unit">kWh/m&sup2</span>
                 </div>
             </div>
         {{/if}}

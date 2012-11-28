@@ -1,1 +1,1 @@
-production.txt
+Aurinkoenergiakarttaa tarkastellessasi voit ottaa kattopintoja käyttöön energiantuotannossa. Kartan alapuolelle aukeavassa lomakkeessa voit valita millä tavalla kattopintaa haluat hyödyntää. Geoenergiakarttaa tarkastellessasi voit vastaavasti lisätä lämpökaivon haluamaasi kohtaan.

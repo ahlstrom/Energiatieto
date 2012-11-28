@@ -160,11 +160,13 @@ div.navbar {
 
 .form-info {
     width: 400px;
+    height: 200px;
 }
 
 .controlform-frame {
     margin-top: 20px;
     padding-bottom: 20px;
+    margin-bottom: 20px; /* mikko */
     width: 400px;
     border-width: 1px;
     border-style: solid;
@@ -237,6 +239,55 @@ div.navbar {
     float: right;
     margin-right: 0.5em;
     cursor: pointer;
+}
+
+.form-horizontal .et-data-control-label {   /* mikko */
+  float: left;
+  width: 255px; 
+  padding-top: 5px;
+  text-align: right;
+}
+
+.form-horizontal .et-data-controls {        /* mikko */
+  *display: inline-block;
+  *padding-left: 20px;
+  margin-left: 263px; 
+  *margin-left: 0;
+}
+
+.form-horizontal .et-control-label {        /* mikko */
+  float: left;
+  width: 180px;
+  padding-top: 5px;
+  text-align: right;
+}
+
+.form-horizontal .et-controls {             /* mikko */
+  *display: inline-block;
+  *padding-left: 20px;
+  margin-left: 188px;
+  *margin-left: 0;
+}
+
+.et-unit {                                  /* mikko */
+    margin-left: 4px;
+    vertical-align: bottom;
+    font-size: 0.85em;
+}
+
+.et-info {                                  /* mikko */
+    padding-right: 20px;
+    padding-left: 5px;
+    margin-top: 0px;
+    font-size: 0.85em;
+}
+
+.et-input-micro {                           /* mikko */
+  width: 30px;
+}
+
+.et-input-mini {
+  width: 65px;                              /* mikko */
 }
 
 /* Typography */
