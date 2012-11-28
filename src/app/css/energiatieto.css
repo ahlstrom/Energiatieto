@@ -275,8 +275,12 @@ div.navbar {
     font-size: 0.85em;
 }
 
+.et-value {                                  /* mikko */
+    margin-left: 4px;
+    font-size: 0.85em;
+}
 .et-info {                                  /* mikko */
-    padding-right: 20px;
+    padding-right: 10px;
     padding-left: 5px;
     margin-top: 0px;
     font-size: 0.85em;
@@ -286,8 +290,21 @@ div.navbar {
   width: 30px;
 }
 
-.et-input-mini {
-  width: 65px;                              /* mikko */
+.et-input-mini {                            /* mikko */
+  width: 65px;                              
+}
+
+input[et-view] {                            /* mikko */
+    background-color: rgb(240, 240, 240);
+    color: black;
+}
+
+.data-divider {                             /* mikko */
+    width: 360px;
+    height: 1px;
+    background-color: #d9d9d9;
+    margin-left: 20px;
+    margin-bottom: 5px;
 }
 
 /* Typography */

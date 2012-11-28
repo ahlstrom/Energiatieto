@@ -2,17 +2,218 @@
 
     <div class='controlform-frame-header'>
         <span class='icon-round-x delete'></span>
-        <h5>{{typeName}}</h5>
+        <h5>{{typeName}}<h5>
     </div>
 
+{{#if typeIsSolar}}
     <div class="controlform-frame-content form-horizontal">
 
+         <div class='control-group'>
+            <label class='et-control-label'>Nimi</label>
+            <div class='et-controls'>
+                <input type='text' class='input-medium re-render' name='solarInstallationName'>
+            </div>
+        </div>
         <div class='control-group'>
-            <label class='control-label'></label>
-            <div class='controls'>
-                <input type='text' class='input-medium re-render' name='buildingName'>
+            <label class='et-control-label'>Katon pinta-ala</label>
+            <div class='et-controls'>
+                <input type='text' class='et-input-micro' name='roofArea' disabled et-view><span class="et-unit">m&sup2</span>
+            </div>   
+        </div>
+        <div class='control-group'>
+            <label class='et-control-label'>Hyvä osuus</label>
+            <div class='et-controls'>
+                <input type='text' class='et-input-micro' name='roofGoodArea' disabled et-view><span class="et-unit">m&sup2</span>
+            </div>   
+        </div>
+
+        <div class='controlform-divider'>Järjestelmän koko</div>
+
+        <div class='control-group'>
+            <label class='et-control-label'>Aurinkosähkö</label>
+            <div class='et-controls'>
+                <input type='text' class='et-input-micro' name='photovoltaicArea'><span class="et-unit">m&sup2</span>
             </div>
         </div>
 
+        <div class='control-group'>
+            <label class='et-control-label'>Aurinkolämpö</label>
+            <div class='et-controls'>
+                <input type='text' class='et-input-micro' name='thermalArea'><span class="et-unit">m&sup2</span>
+            </div>
+        </div>
+
+   
+        <div class='controlform-divider'>Laskennassa käytetyt tiedot</div>
+
+        <div class='control-group'>
+                <label class='et-control-label'>Näytä</label>
+                <div class='et-controls'>
+                    <input type='checkbox' class='input-medium re-render' name='showBackgroundData'>
+                </div>
+        </div>
+
+        {{#if showBackgroundDataIsTrue}}
+            <div class="et-info">
+                <p>
+                    Kattopinnan säteily- ja pinta-alatiedot saadaan Espoon aurinkoenergiakartasta. Auringon sätelyn jakautuminen sekä ulkoilman lämpötila vuoden eri tunneille arvioidaan referenssivuoden säätietojen perusteella.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Keräimelle osuvan säteilyn määrää arvioitaessa oletetaan että ensin käytetään kattopinnan paremmat osuudet ja sen jälkeen varjoisemmat osuudet.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Aurinkoenergian tuotannon laskennan pohjana on Sitran ja ympäristöministeriön toimeksiannosta laadittu Aurinko-opas 2012.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Tarkat kuvaukset laskentatavoista sekä käytetyt lähtötiedot löytyvät <a href="https://github.com/ahlstrom/EnergiatietoCalculation" target="_blank">täältä.</a>
+                </p>
+            </div>
+            <br>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Katon tiedot</label>
+            </div>
+
+            <div class="data-divider"></div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Katon pinta-ala</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='roofArea' disabled et-view><span class="et-unit">m&sup2</span>
+                </div>   
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Säteilyenergia vuodessa koko katolle</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='roofAreaAvgIrradiance' disabled et-view><span class="et-unit">kWh/m&sup2</span>
+                </div>   
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Osuus jolla säteilyenergia yli 900 kWh/m&sup2</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='roofGoodArea' disabled et-view><span class="et-unit">m&sup2</span>
+                </div>   
+            </div>
+            <div class='control-group'>
+                    <label class='et-data-control-label'>Hyvän osuuden säteilyenergia vuodessa</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='roofGoodAreaAvgIrradiance' disabled et-view><span class="et-unit">kWh/m&sup2</span>
+                </div>   
+            </div>
+            <br>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Aurinkosähköjärjestelmän tiedot</label>
+            </div>
+
+            <div class="data-divider"></div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Huipputehokerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='photovoltaicPeakPowerFactor'><span class="et-unit">kW/m&sup2</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Käyttötilanteen toimivuuskerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='photovoltaicInstallationFactor'><span class="et-unit"></span>
+                </div>
+            </div>
+            <br>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Aurinkolämpöjärjestelmän tiedot</label>
+            </div>
+
+            <div class="data-divider"></div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Keräintyypin kohtauskulmakerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='IAM'><span class="et-unit"></span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Keräimen lämpöhäviökerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='a1'><span class="et-unit">W/m&sup2K</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Keräimen häviökerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='a2'><span class="et-unit">W/m&sup2K&sup2</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Keräinpiirin hyötysuhde</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='nkierto'><span class="et-unit"></span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Optinen hyötysuhde</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='no'><span class="et-unit"></span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lämpimän käyttöveden minimilämpötilä</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='thw'><span class="et-unit">°C</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Kylmän veden lämpötila</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tcw'><span class="et-unit">°C</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Varaajan lisälämmitysosan tilavuus</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='Vll'><span class="et-unit">litraa</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lisälämmityksen käyttötapakerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='xfactor'><span class="et-unit"></span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Käyttöveden lämmitystarve</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='waterHeatingTemperatureDifference'><span class="et-unit">°C</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Käyttöveden lämmityksen häviöt</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='waterHeatingLosses'><span class="et-unit"></span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lämminvesivaraajan mitoitus</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='reservoirVolumeDimensioning'><span class="et-unit">litraa/keräin m&sup2</span>
+                </div>
+            </div>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lämminvesivaraajan mitoitus</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='reservoirCapacityDimensioning'><span class="et-unit">vrk kulutus</span>
+                </div>
+            </div>
+        {{/if}}
+
     </div>
+    {{/if}}
+
 </div>
+
+

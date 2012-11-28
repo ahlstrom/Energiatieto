@@ -13,10 +13,21 @@ define([
             templateHelpers: {
                 typeName: function() {
                     if (this.type === "solarpanel") {
-                        return "Aurinkopaneeli";
+                        return ("Aurinkokeräin : " + this.solarInstallationName);
                     } else {
-                        return "Maalämpökaivo";
+                        return "Lämpökaivo";
                     }
+                },
+                typeIsSolar: function() {
+                    if (this.type === "solarpanel") {
+                        return true;
+                    }
+                },
+                showBackgroundDataIsTrue: function() {
+                    return ( this.showBackgroundData === true );
+                },
+                roofArea: function() {
+                    return Number(this.roofArea);
                 }
             },
             events: {
