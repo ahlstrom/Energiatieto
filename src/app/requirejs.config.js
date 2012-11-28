@@ -40,6 +40,9 @@ require.config({
             ],
             exports: 'HotWaterHeatingEnergyProfile'
         },
+        'VantaaReferenceYearOutsideTemperature': {
+            exports: 'VantaaReferenceYearOutsideTemperature'
+        },
         'VantaaReferenceYearTotalIrradiationOnHorizontalSurface': {
             exports: 'VantaaReferenceYearTotalIrradiationOnHorizontalSurface'
         },
@@ -54,6 +57,7 @@ require.config({
         },
         'Constants': {
             deps: [
+                'VantaaReferenceYearOutsideTemperature',
                 'VantaaReferenceYearTotalIrradiationOnHorizontalSurface',
                 'DomesticElectricityConsumptionWeekValues',
                 'DomesticElectricityConsumptionHourValues',
@@ -86,6 +90,7 @@ require.config({
         'HotWaterHeatingEnergyProfile'                                 : '../calculation/HotWaterHeatingEnergyProfile',
         'ElectricityConsumptionProfile'                                : '../calculation/ElectricityConsumptionProfile',
 
+        'VantaaReferenceYearOutsideTemperature'                        : '../calculation/Profiles/vantaaReferenceYearOutsideTemperature',
         'VantaaReferenceYearTotalIrradiationOnHorizontalSurface'       : '../calculation/Profiles/vantaaReferenceYearTotalIrradiationOnHorizontalSurface',
         'heatingDemandProfileHelsinkiKaisaniemiReferenceYear'          : '../calculation/Profiles/heatingDemandProfileHelsinkiKaisaniemiReferenceYear',
         'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014'
