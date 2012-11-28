@@ -1,10 +1,15 @@
 define([
     "backbone.marionette",
     "hbs!./productionform.tmpl",
+    "backbone.modelbinder",
     "../../helpers/helptextvent",
     "text!../helptexts/production.txt"
-    ], function(Marionette, tmpl, HelpTextVent, HelpText) {
+    ], function(Marionette, tmpl, ModelBinder, HelpTextVent, HelpText) {
         return Marionette.ItemView.extend({
+            template: {
+                template: tmpl,
+                type: "handlebars"
+            },
             templateHelpers: {
                 typeName: function() {
                     if (this.type === "solarpanel") {
@@ -17,15 +22,37 @@ define([
             events: {
                 "click .delete": "destroyModel"
             },
+            modelEvents: {
+                "change": "modelChanged"
+            },
             destroyModel: function() {
                 this.model.destroy();
             },
-            template: {
-                template: tmpl,
-                type: "handlebars"
+            // re-renders the form if element bound to changed property has class ".re-render"
+            modelChanged: function(model, event) {
+                var self = this;
+                _.each(_.keys(event.changes), function(it) {
+                    var selector = ".re-render[name="+it+"]";
+                    if (self.$(selector).length) {
+                        self.render();
+                        // re-select the element from the now changed form and focus on it
+                        self.$(selector).each(function() { this.focus(); });
+                    }
+                });
+            },
+            initialize: function(options) {
+                _.bindAll(this);
+                this.modelBinder = new ModelBinder();
             },
             onShow: function() {
                 HelpTextVent.trigger("change", HelpText);
+            },
+            onRender: function() {
+                var bindings = ModelBinder.createDefaultBindings(this.el, 'name');
+                this.modelBinder.bind(this.model, this.el, bindings);
+            },
+            onClose: function() {
+                this.modelBinder.unbind();
             }
         });
 });
