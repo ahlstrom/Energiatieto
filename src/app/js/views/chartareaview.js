@@ -21,7 +21,9 @@ define([
             electricityBalance      : "div.electricity-balance",
             heatingBalance          : "div.heating-balance",
 
-            firstAdditionalInfo     : "div.first-infoarea"
+            firstAdditionalInfo     : "div.first-infoarea",
+            secondAdditionalInfo    : "div.second-infoarea",
+            thirdAdditionalInfo     : "div.third-infoarea"
         },
         events: {
             "click .subheader": "subheaderclick"
@@ -126,14 +128,22 @@ define([
                 }
             };
 
-            this.firstAdditionalInfo.open = slideOpen;
-            this.firstAdditionalInfo.slideUp = function(callback) {
-                var $el = this.$el;
-                $el.slideUp("fast", function() {
-                    callback();
-                    $el.show();
-                });
-            };
+            var self = this;
+            _.each([
+                "firstAdditionalInfo",
+                "secondAdditionalInfo",
+                "thirdAdditionalInfo"
+            ], function(it) {
+                self[it].open = slideOpen;
+                self[it].slideUp = function(callback) {
+                    var $el = this.$el;
+                    $el.slideUp("fast", function() {
+                        callback();
+                        $el.show();
+                    });
+                };
+            });
+
 
             this.charts = {
                 electricityConsumption: {
@@ -148,17 +158,21 @@ define([
                 },
                 electricityProduction: {
                     propertyName: "electricityProduction",
+                    clickHandler: this.additionalInfo(this.secondAdditionalInfo),
                     sumElement  : ".electricity-production-total"
                 },
                 heatingProduction: {
                     propertyName: "hotWaterHeatingEnergyProduction",
+                    clickHandler: this.additionalInfo(this.secondAdditionalInfo),
                     sumElement  : ".heating-production-total"
                 },
                 electricityBalance: {
-                    propertyName: "electricityBalance"
+                    propertyName: "electricityBalance",
+                    clickHandler: this.additionalInfo(this.thirdAdditionalInfo)
                 },
                 heatingBalance: {
-                    propertyName: "hotWaterHeatingEnergyBalance"
+                    propertyName: "hotWaterHeatingEnergyBalance",
+                    clickHandler: this.additionalInfo(this.thirdAdditionalInfo)
                 }
             };
             this.initViewsInCharts(this.charts);

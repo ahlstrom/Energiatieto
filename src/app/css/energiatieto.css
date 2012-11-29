@@ -339,7 +339,7 @@ span.brand-header {
     fill: rgb(100,100,100);
     text-rendering: optimizelegibility;
 }
-.chart line.value:last-of-type {
+.chart line.zero {
     stroke: rgb(0,0,0);
 }
 
@@ -421,5 +421,8 @@ form.search input[name=search] {
     -webkit-transition: fill 0.5s;
  }
  .chart rect:hover {
+    fill: rgb(225, 196, 45);
+ }
+ .chart rect.negative {
     fill: rgb(225, 196, 45);
  }

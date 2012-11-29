@@ -1,21 +1,29 @@
-define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
+define([
+        "underscore", 
+        "d3", 
+        "jquery",
+        "chart.utilities",
+        "tipsy"
+    ], function(_, d3, $, Utils) {
     return function(element, dataSource, options) {
-        var height = 100;
-        var width = (options && options.width) || 270;
-        var columnAreaWidth = width - 60;
-        var self = this;
+        var height = 100,
+            width = (options && options.width) || 270,
+            columnAreaWidth = width - 60,
+            self = this,
 
-        var paddingLeft = 40;
-        var paddingTop = 5;
-        var paddingBottom = 16;
-        var chartHeight = height - paddingBottom;
-        var columnGap = 2;
+            paddingLeft = 40,
+            paddingTop = 5,
+            paddingBottom = 16,
+            chartHeight = height - paddingBottom,
+            columnGap = 2,
+
+            zeroPoint = 84,
         
-        var labelDecimals = 2;
-        var horizLinesCount = 6;
-        var quantileCount = 2;
+            labelDecimals = 2,
+            horizLinesCount = 4,
+            quantileCount = 2;
 
-        var chart = d3.select(element)
+            chart = d3.select(element)
                       .attr("width", width)
                       .attr("height", height);
 
@@ -23,46 +31,46 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
             return chartHeight - paddingTop;
         };
 
+        var chartSizeNormalizedValue = function(data, d) {
+            var maxHeight = Math.max.apply(this, data);
+            if (maxHeight === 0) {
+                return 0;
+            } else {
+                var height = (d / maxHeight) * getColumnMaxHeight();
+                return isNaN(height) ? 0 : height;
+            }
+        };
+
+        var datumHeight = function(data, d) {
+            var height = Utils.heightOfElement(data, d, getColumnMaxHeight());
+            return (isNaN(height) ? 0 : height);
+        };
+
         var newHeightFn = function(data) {
             return function(d) {
-                var maxHeight = Math.max.apply(this, data);
-                if (maxHeight === 0) {
-                    return 0;
-                } else {
-                    var height = (d / maxHeight) * getColumnMaxHeight();
-                    return isNaN(height) ? 0 : height;
-                }
+                return datumHeight(data, d);
             };
         };
 
         var newyCoordFn = function(data) {
             return function(d) {
-                return chartHeight - newHeightFn(data)(d);
+                var zeroPoint = Utils.zeroPointOffset(data, getColumnMaxHeight()) + paddingTop + 1;
+                if (d < 0) {
+                    return zeroPoint;
+                } else {
+                    return zeroPoint - datumHeight(data, d) - 1;
+                }
             };
         };
 
-        var createHorizLines = function (height, count, paddingTop) {
-            var lines = [];
-            for (var y=paddingTop; y<height; y += (height - paddingTop) / count)
-                lines.push(Math.round(y));
-            return lines;
+        var createHorizLines = function (series, count, paddingTop) {
+            var quant   = Utils.quantiles(series, count),
+                offsets = Utils.offsetsAgainstSeries(quant, chartHeight - paddingTop, series);
+
+            return _.map(offsets, function(it) {
+                return it + paddingTop;
+            });
         };        
-
-        var getQuantiles = function (count, data) {
-            var quantiles = [];
-            
-            var maxValue = Math.max.apply(this, data);            
-            var interval = maxValue / count;
-            
-            var value = maxValue;
-
-            for (var c=1; c < count; c++) {
-                quantiles.push(Math.round(value));
-                value -= interval;
-            }
-
-            return quantiles;
-        };
 
         var formatValue = function(value) {
             if (value <= 0)
@@ -72,29 +80,98 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
             }
         };
 
-        var drawQuantiles = function(total) {
+        var drawQuantiles = function(series) {
             var quantileText = function(d,i) {
-                    return ((i + 1) % quantileCount === 0 ? d : "");
-                };
+                return Math.round(d);
+            };
 
-            chart
-                .selectAll("text.quantile")
-                .data(getQuantiles(horizLinesCount, total))
-                .text(quantileText)
-                .enter()
+            var i = 0,
+                lines = _.filter(
+                    Utils.quantiles(series, horizLinesCount), 
+                    function(it) {
+                        return (i++ % quantileCount === 0);
+                    }),
+                offsets = Utils.offsetsAgainstSeries(lines, chartHeight - paddingTop, series);
+
+            var quants = 
+                d3.select(element)
+                    .selectAll("text.quantile")
+                    .data(lines);
+
+            quants
+                .attr("x", paddingLeft-2)
+                .attr("y", function(d, i) {
+                    return offsets[i];
+                 })
+                .text(quantileText);
+
+            quants.enter()
                 .append("text")
-                .attr("class", "quantile")
                 .text(quantileText)
+                .attr("class", "quantile")
                 .attr("text-anchor", "end")
                 .attr("x", paddingLeft-2)
-                .attr("y", function(d, i) { return paddingTop + 5 + i * (getColumnMaxHeight() / horizLinesCount); });
+                .attr("y", function(d, i) { 
+                    return offsets[i] + 8;
+                });
+
+            quants.exit().remove();
         };
 
         var onclickdelegate = function() {
             self.onclick.apply(self.onclick, arguments);
         };
 
-        var layers;
+        var drawValuelines = function(series, transition) {
+           // zero point
+
+            var zeroPoint = Utils.zeroPointOffset(series, getColumnMaxHeight()) + paddingTop;
+            var zeroLine = chart
+                        .selectAll("line.zero")
+                        .data([ zeroPoint ]);
+        
+            zeroLine
+                .enter()
+                .insert("line", ":first-child")
+                .attr("class", "zero")
+                .attr("x1", paddingLeft)
+                .attr("y1", function(d) { return d; })
+                .attr("x2", width)
+                .attr("y2", function(d) { return d; })
+                .style("stroke-width", 1)
+                .attr("shape-rendering", "crispEdges");
+
+
+            zeroLine
+                .transition()
+                .duration(500)
+                .attr("y1", function(d) { return d; })
+                .attr("y2", function(d) { return d; })
+                .attr("class", "zero");
+
+            var valueLines = d3.select(element)
+                        .selectAll("line.value")
+                        .data(createHorizLines(series, horizLinesCount, paddingTop));
+
+            valueLines
+                .enter()
+                .insert("line", ":first-child")
+                .attr("class", "value")
+                .attr("x1", paddingLeft)
+                .attr("y1", function(d) { return d; })
+                .attr("x2", width)
+                .attr("y2", function(d) { return d; })
+                .style("stroke-width", 1)
+                .attr("shape-rendering", "crispEdges");
+
+            valueLines
+                .transition()
+                .duration(500)
+                .attr("y1", function(d) { return d; })
+                .attr("y2", function(d) { return d; });
+
+            valueLines.exit().remove();
+        };
 
         this.onclick = function() {};
 
@@ -106,22 +183,8 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
             var columnAreaHeight = height - paddingTop;
             var columnWidth = columnAreaWidth / dataSource.numDataPoints();
 
-            // value lines
-            chart
-                .selectAll("line.value")
-                .data(createHorizLines(height, horizLinesCount, paddingTop))
-                .enter()
-                .append("line")
-                .attr("class", "value")
-                .attr("x1", paddingLeft)
-                .attr("y1", function(d) { return d; })
-                .attr("x2", width)
-                .attr("y2", function(d) { return d; })
-                .style("stroke-width", 1)
-                .attr("shape-rendering", "crispEdges");
-
             // categories
-            chart
+            var categories = chart
                 .selectAll("text.category")
                 .data(function(d, i) {
                     return _.range(1, _.max(_(dataSource.getData()).map(function(it) {
@@ -135,33 +198,61 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                 .attr("y", height - 2)
                 .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth + (columnWidth / 2) - 5; });
 
-            layers = chart
-                .selectAll("g.layer")
-                .data(dataSource.getSeries())
-                .enter()
+            var layers = 
+                 d3.select(element)
+                    .selectAll("g.layer")
+                    .data(dataSource.getSeries());
+
+            layers.enter()
                 .append("g")
                 .attr("class", function(d) {
                     return "layer " + d;
                 });
 
-            layers
-                .selectAll("rect")
-                .data(function(d) {
-                    return series[d]; 
-                })
-                .enter()
-                .append("rect")
-                .on("click", onclickdelegate)
-                .attr("title", function(d) {
-                    return d;
-                })
-                .attr("y", newyCoordFn(total))
-                .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth; })
-                .attr("width", columnWidth - columnGap)
-                .attr("height", newHeightFn(total))
-                .each(function() {
-                    $(this).tipsy({ gravity: 's' });
-                });
+            layers.exit().remove();
+            
+            d3.select(element).selectAll("g.layer").each(function(name) {
+                var data = series[name];
+                if (typeof data[0] !== "number") {
+                    return;
+                }
+
+                var rect = d3.select(this)
+                            .selectAll("rect")
+                            .data(data);
+
+                rect.enter()
+                    .append("rect")
+                    .attr("y", newyCoordFn(data))
+                    .attr("x", function(d, i) {
+                        return paddingLeft + 10 + i * columnWidth; })
+                    .attr("width", columnWidth - columnGap)
+                    .attr("height", newHeightFn(data));
+
+
+                rect.exit().remove();
+
+                rect.on("click", onclickdelegate)
+                    .attr("title", function(d) {
+                        return d;
+                    })
+                    .transition()
+                    .duration(500)
+                    .attr("y", newyCoordFn(data))
+                    .attr("x", function(d, i) {
+                        return paddingLeft + 10 + i * columnWidth; 
+                    })
+                    .attr("width", columnWidth - columnGap)
+                    .attr("height", newHeightFn(data))
+                    .attr("class", function(d) {
+                        return d < 0 ? "negative": "";
+                    }).each(function() {
+                        $(this).tipsy({ gravity: 's' });
+                    });
+            });
+
+            
+            drawValuelines(total);
 
             drawQuantiles(series.total);
 
@@ -169,9 +260,11 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
         };
 
         this.redraw = function() {
-            var series = dataSource.getData();
+            this.draw();
+/*            var series = dataSource.getData();
             var data = series.total;
 
+            drawValuelines(series.total, true);
             drawQuantiles(series.total);
 
             layers.selectAll("rect")
@@ -181,11 +274,14 @@ define(["underscore", "d3", "jquery", "tipsy"], function(_, d3, $) {
                  })
                  .transition()
                  .duration(500)
+                 .attr("class", function(d) {
+                    return d < 0 ? "negative": "";
+                 })
                  .attr("height", newHeightFn(data))
                  .attr("y", newyCoordFn(data))
                  .attr("title", function(d) {
                     return Math.round(d) + 'kWh';
-                });
+                });*/
         };
     };
 });
