@@ -13,10 +13,14 @@ describe('multiseriesdatasource', function() {
     var dataFn = function() { return data; };
 
     it('should return list of series', function() {
-        assert.deepEqual(new MultiSeriesDataSource(dataFn).getSeries(), ['total', 'water']);
+        assert.deepEqual(new MultiSeriesDataSource({
+            data: dataFn
+        }).getSeries(), ['total', 'water']);
     });
 
     it('should count max datapoint length from series', function() {
-        assert.equal(new MultiSeriesDataSource(dataFn).numDataPoints(), 6);
+        assert.equal(new MultiSeriesDataSource({
+            data: dataFn
+        }).numDataPoints(), 6);
     });
 });

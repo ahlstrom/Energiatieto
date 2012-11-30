@@ -146,4 +146,10 @@ describe('chart.utils', function() {
             Utils.heights([300, 0, -300, -900], 100));
     });
 
+    it('calculates value per pixel', function() {
+        assert.equal(2, Utils.perPixelValue([50, 100, 150, 200], 100));
+        assert.equal(1, Utils.perPixelValue([-50, 50], 100));
+        assert.equal(0.25, Utils.perPixelValue([-10, 15], 100));
+    });
+
 });

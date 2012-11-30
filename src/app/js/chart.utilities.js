@@ -41,9 +41,9 @@ define([
 
                 return offset;
             };
-            this.zeroPointOffset = function(series, height) {
-                var max = _.max(series),
-                    min = _.min(series);
+            this.zeroPointOffset = function(series, height, maximum, minimum) {
+                var max = def(maximum) ? maximum : _.max(series),
+                    min = def(minimum) ? minimum :_.min(series);
                 if (min >= 0 && max >= 0) {
                     return height;
                 } else if (min <= 0 && max <= 0) {
@@ -52,15 +52,8 @@ define([
                     return this.offset(0, height, max, min);
                 }
             };
-            this.quantiles = function(series, num) {
-                if (series.length === 0) {
-                    return [];
-                }
-                var max  = _.max(series),
-                    min  = _.min(series),
-                    start = (min <= 0 && max <= 0) ? 0 : max,
-                    end   = (min >= 0 && max >= 0) ? 0 : min,
-                    diff = start - end,
+            this.quantilesBetween = function(start, end, num) {
+                var diff = start - end,
                     step = -(diff / (num));
 
                 return _.filter(
@@ -69,6 +62,17 @@ define([
                                 return it !== 0;
                             }
                     );
+            };
+            this.quantiles = function(series, num) {
+                if (series.length === 0) {
+                    return [];
+                }
+                var max  = _.max(series),
+                    min  = _.min(series),
+                    start = (min <= 0 && max <= 0) ? 0 : max,
+                    end   = (min >= 0 && max >= 0) ? 0 : min;
+
+                return this.quantilesBetween(start, end, num);
             };
             this.height = function(val, maxHeight, max, min) {
                 var biggest,
@@ -88,6 +92,15 @@ define([
                 return _.map(series, function(it) {
                     return self.heightOfElement(series, it, maxHeight);
                 });
+            };
+            this.perPixelValue = function(series, height) {
+                var max  = _.max(series),
+                    min  = _.min(series);
+                if ((max * min) >= 0) {
+                    return _.max([max, min], Math.abs) / height;
+                } else {
+                    return (Math.abs(max) + Math.abs(min)) / height;
+                }
             };
         };
 

@@ -62,11 +62,30 @@ define([
                 });
             }
         },
+        rangeFn: function(opts) {
+            var charts = this.charts;
+            var withRanges = function(prop) {
+                return _[prop](_.map(charts, function(it) {
+                    return it.view.dataSource.getDataRange()[prop];
+                }));
+            };
+            return function() {
+                var max = withRanges("max"),
+                    min = withRanges("min");
+                return {
+                    max: max,
+                    min: typeof opts.chartMin !== "undefined" ? opts.chartMin : min
+                };
+            };
+        },
         initViewInChart: function(opts) {
-            var clk = opts.clickHandler;
+            var clk = opts.clickHandler,
+                self = this;
             opts.view = new ChartView({
-                model        : this.model,
-                propertyName : opts.propertyName
+                model         : this.model,
+                propertyName  : opts.propertyName,
+                rangeFn       : this.rangeFn(opts),
+                chartOptions  : opts.chartOptions
             });
             if (opts.sumElement) {
                 this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement));
@@ -149,22 +168,32 @@ define([
                 electricityConsumption: {
                     propertyName: "electricityConsumption",
                     clickHandler: this.additionalInfo(this.firstAdditionalInfo),
-                    sumElement  : ".electricity-consumption-total"
+                    sumElement  : ".electricity-consumption-total",
+                    chartMin    : 0
                 },
                 heatingConsumption: {
                     propertyName: "heatingConsumption",
                     clickHandler: this.additionalInfo(this.firstAdditionalInfo),
-                    sumElement  : ".heating-consumption-total"
+                    sumElement  : ".heating-consumption-total",
+                    chartMin    : 0,
+                    chartOptions: {
+                        showQuantiles: true
+                    }
                 },
                 electricityProduction: {
                     propertyName: "electricityProduction",
                     clickHandler: this.additionalInfo(this.secondAdditionalInfo),
-                    sumElement  : ".electricity-production-total"
+                    sumElement  : ".electricity-production-total",
+                    chartMin    : 0
                 },
                 heatingProduction: {
                     propertyName: "hotWaterHeatingEnergyProduction",
                     clickHandler: this.additionalInfo(this.secondAdditionalInfo),
-                    sumElement  : ".heating-production-total"
+                    sumElement  : ".heating-production-total",
+                    chartMin    : 0,
+                    chartOptions: {
+                        showQuantiles: true
+                    }
                 },
                 electricityBalance: {
                     propertyName: "electricityBalance",
@@ -172,7 +201,10 @@ define([
                 },
                 heatingBalance: {
                     propertyName: "hotWaterHeatingEnergyBalance",
-                    clickHandler: this.additionalInfo(this.thirdAdditionalInfo)
+                    clickHandler: this.additionalInfo(this.thirdAdditionalInfo),
+                    chartOptions: {
+                        showQuantiles: true
+                    }
                 }
             };
             this.initViewsInCharts(this.charts);

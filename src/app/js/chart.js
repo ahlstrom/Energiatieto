@@ -31,67 +31,50 @@ define([
             return chartHeight - paddingTop;
         };
 
-        var chartSizeNormalizedValue = function(data, d) {
-            var maxHeight = Math.max.apply(this, data);
-            if (maxHeight === 0) {
-                return 0;
-            } else {
-                var height = (d / maxHeight) * getColumnMaxHeight();
-                return isNaN(height) ? 0 : height;
-            }
-        };
-
-        var datumHeight = function(data, d) {
-            var height = Utils.heightOfElement(data, d, getColumnMaxHeight());
+        var datumHeight = function(data, d, range) {
+            var height = Utils.height(d, getColumnMaxHeight(), range.max, range.min);
+            //var height = Utils.heightOfElement(data, d, getColumnMaxHeight());
             return (isNaN(height) ? 0 : height);
         };
 
-        var newHeightFn = function(data) {
+        var newHeightFn = function(data, range) {
             return function(d) {
-                return datumHeight(data, d);
+                return datumHeight(data, d, range);
             };
         };
 
-        var newyCoordFn = function(data) {
+        var newyCoordFn = function(data, range) {
             return function(d) {
-                var zeroPoint = Utils.zeroPointOffset(data, getColumnMaxHeight()) + paddingTop + 1;
+                var zeroPoint = Utils.zeroPointOffset(data, getColumnMaxHeight(), range.max, range.min) + paddingTop + 1;
                 if (d < 0) {
                     return zeroPoint;
                 } else {
-                    return zeroPoint - datumHeight(data, d) - 1;
+                    return zeroPoint - datumHeight(data, d, range) - 1;
                 }
             };
         };
 
-        var createHorizLines = function (series, count, paddingTop) {
-            var quant   = Utils.quantiles(series, count),
-                offsets = Utils.offsetsAgainstSeries(quant, chartHeight - paddingTop, series);
+        var createHorizLines = function (range, count, paddingTop) {
+            var lines   = Utils.quantilesBetween(range.max, range.min, horizLinesCount),
+                offsets = Utils.offsets(lines, chartHeight - paddingTop, range.max, range.min);
 
             return _.map(offsets, function(it) {
                 return it + paddingTop;
             });
         };        
 
-        var formatValue = function(value) {
-            if (value <= 0)
-                return "";
-            else {
-                return Math.round(value / 1000);
-            }
-        };
-
-        var drawQuantiles = function(series) {
+        var drawQuantiles = function(range) {
             var quantileText = function(d,i) {
                 return Math.round(d);
             };
 
             var i = 0,
                 lines = _.filter(
-                    Utils.quantiles(series, horizLinesCount), 
+                    Utils.quantilesBetween(range.max, range.min, horizLinesCount), 
                     function(it) {
                         return (i++ % quantileCount === 0);
                     }),
-                offsets = Utils.offsetsAgainstSeries(lines, chartHeight - paddingTop, series);
+                offsets = Utils.offsets(lines, chartHeight - paddingTop, range.max, range.min);
 
             var quants = 
                 d3.select(element)
@@ -99,9 +82,9 @@ define([
                     .data(lines);
 
             quants
-                .attr("x", paddingLeft-2)
+                .attr("x", paddingLeft-20)
                 .attr("y", function(d, i) {
-                    return offsets[i];
+                    return offsets[i] + 8;
                  })
                 .text(quantileText);
 
@@ -109,8 +92,8 @@ define([
                 .append("text")
                 .text(quantileText)
                 .attr("class", "quantile")
-                .attr("text-anchor", "end")
-                .attr("x", paddingLeft-2)
+                .attr("text-anchor", "middle")
+                .attr("x", paddingLeft-20)
                 .attr("y", function(d, i) { 
                     return offsets[i] + 8;
                 });
@@ -122,13 +105,16 @@ define([
             self.onclick.apply(self.onclick, arguments);
         };
 
-        var drawValuelines = function(series, transition) {
-           // zero point
+        var drawValuelines = function(range) {
+            // zero point
+            var zeroPoint = getColumnMaxHeight() + paddingTop;
+            if (range.max !== range.min) {
+                zeroPoint = Utils.offset(0, getColumnMaxHeight(), range.max, range.min) + paddingTop;
+            }
+            var zeroLine = d3.select(element)
+                                .selectAll("line.zero")
+                                .data([ zeroPoint ]);
 
-            var zeroPoint = Utils.zeroPointOffset(series, getColumnMaxHeight()) + paddingTop;
-            var zeroLine = chart
-                        .selectAll("line.zero")
-                        .data([ zeroPoint ]);
         
             zeroLine
                 .enter()
@@ -151,7 +137,7 @@ define([
 
             var valueLines = d3.select(element)
                         .selectAll("line.value")
-                        .data(createHorizLines(series, horizLinesCount, paddingTop));
+                        .data(createHorizLines(range, horizLinesCount, paddingTop));
 
             valueLines
                 .enter()
@@ -176,8 +162,9 @@ define([
         this.onclick = function() {};
 
         this.draw = function() {
-            var series = dataSource.getData();
-            var total = series.total;
+            var series = dataSource.getData(),
+                total = series.total,
+                range = dataSource.getRange();
 
             //var columnAreaWidth = width - paddingLeft;
             var columnAreaHeight = height - paddingTop;
@@ -223,11 +210,11 @@ define([
 
                 rect.enter()
                     .append("rect")
-                    .attr("y", newyCoordFn(data))
+                    .attr("y", newyCoordFn(data, range))
                     .attr("x", function(d, i) {
                         return paddingLeft + 10 + i * columnWidth; })
                     .attr("width", columnWidth - columnGap)
-                    .attr("height", newHeightFn(data));
+                    .attr("height", newHeightFn(data, range));
 
 
                 rect.exit().remove();
@@ -238,12 +225,12 @@ define([
                     })
                     .transition()
                     .duration(500)
-                    .attr("y", newyCoordFn(data))
+                    .attr("y", newyCoordFn(data, range))
                     .attr("x", function(d, i) {
                         return paddingLeft + 10 + i * columnWidth; 
                     })
                     .attr("width", columnWidth - columnGap)
-                    .attr("height", newHeightFn(data))
+                    .attr("height", newHeightFn(data, range))
                     .attr("class", function(d) {
                         return d < 0 ? "negative": "";
                     }).each(function() {
@@ -252,36 +239,17 @@ define([
             });
 
             
-            drawValuelines(total);
+            drawValuelines(range);
 
-            drawQuantiles(series.total);
+            if (options.showQuantiles) {
+                drawQuantiles(range);
+            }
 
             return this;
         };
 
         this.redraw = function() {
             this.draw();
-/*            var series = dataSource.getData();
-            var data = series.total;
-
-            drawValuelines(series.total, true);
-            drawQuantiles(series.total);
-
-            layers.selectAll("rect")
-                 .on("click", onclickdelegate)
-                 .data(function(d) {
-                    return series[d];
-                 })
-                 .transition()
-                 .duration(500)
-                 .attr("class", function(d) {
-                    return d < 0 ? "negative": "";
-                 })
-                 .attr("height", newHeightFn(data))
-                 .attr("y", newyCoordFn(data))
-                 .attr("title", function(d) {
-                    return Math.round(d) + 'kWh';
-                });*/
         };
     };
 });
