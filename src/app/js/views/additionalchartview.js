@@ -20,10 +20,14 @@ define([
             this.chart.show(new ChartView({
                 model: this.model,
                 series: function() {
-                    return {
-                        total: self.model.get("data")[self.options.opts.propertyName].averages[self.options.categoryIndex]
-                    };
+                    var ser = self.options.series(),
+                        ret = {};
+                    _.each(ser, function(month, key) {
+                        ret[key] = month[self.options.categoryIndex];
+                    });
+                    return ret;
                 },
+                propertyName  : this.options.propertyName,
                 chartOptions: {
                     width: 550
                 }

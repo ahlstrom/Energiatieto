@@ -5,6 +5,7 @@ if (typeof define !== 'function') {
 define([
         "SystemElectricityConsumption",
         "HotWaterHeatingEnergyProfile",
+        "SystemHotWaterHeatingEnergyConsumption",
         "SystemSpaceHeatingEnergyConsumption",
         "SystemHotWaterHeatingEnergyProduction",
         "SystemSpaceHeatingEnergyProduction",
@@ -17,6 +18,7 @@ define([
     function(
         SystemElectricityConsumption,
         HotWaterHeatingEnergyProfile,
+        SystemHotWaterHeatingEnergyConsumption,
         SystemSpaceHeatingEnergyConsumption,
         SystemHotWaterHeatingEnergyProduction,
         SystemSpaceHeatingEnergyProduction,
@@ -29,6 +31,8 @@ define([
         return {
             SystemElectricityConsumption     : SystemElectricityConsumption,
             HotWaterHeatingEnergyProfile      : HotWaterHeatingEnergyProfile,
+            SystemHotWaterHeatingEnergyConsumption
+                                              : SystemHotWaterHeatingEnergyConsumption,
             SystemSpaceHeatingEnergyConsumption
                                               : SystemSpaceHeatingEnergyConsumption,
             SystemHotWaterHeatingEnergyProduction

@@ -410,11 +410,11 @@ form.search input[name=search] {
 
 /* SVG graphs */
 
-.chart g.total {
+.chart g.total, .chart g.water {
     fill: rgb(245, 216, 65);
  }
-.chart g.water {
-    fill: orange;
+.chart g.space {
+    fill: rgb(225, 196, 45);
  }
  .chart rect {
     transition: fill 0.5s;
@@ -424,5 +424,5 @@ form.search input[name=search] {
     fill: rgb(225, 196, 45);
  }
  .chart rect.negative {
-    fill: rgb(225, 196, 45);
+    fill: rgb(205, 176, 25);
  }

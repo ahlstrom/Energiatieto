@@ -21,8 +21,27 @@ define([
             });
         };
 
+        var empty = {
+            total: arrayWith(0, 12),
+            averages: arrayWith(0, 30)
+        };
+
         this.empty = {
-            total: arrayWith(0, 12)
+            heatingConsumption: {
+                space: empty,
+                water: empty
+            },
+            electricityConsumption: empty,
+            heatingProduction: {
+                space: empty,
+                water: empty
+            },
+            electricityProduction: empty,
+            heatingBalance: {
+                space: empty,
+                water: empty
+            },
+            electricityBalance: empty
         };
 
         this.randomizeData = function() {
@@ -63,28 +82,42 @@ define([
                     var valuesFor = function(profile) {
                         var constants   = profiles.Constants,
                             calculatedProfile = profile(system, constants);
-
                         return {
                             total: this.monthly(calculatedProfile),
                             averages: this.monthlyAverages(calculatedProfile, constants)
                         };
                     };
 
+                    var pivot = function(obj) {
+                        var args = ["total", "averages"];
+                            ret = {};
+                        _.each(args, function(value) {                            
+                            _.map(obj, function(val, key) {
+                                if (!ret[value]) {
+                                    ret[value] = {};
+                                }
+                                ret[value][key] = obj[key][value];
+                            });
+                        });
+                        return obj;
+                    };
                     callback({
-                        heatingConsumption
-                                    : valuesFor(profiles.SystemSpaceHeatingEnergyConsumption),
+                        heatingConsumption: pivot({
+                            space: valuesFor(profiles.SystemSpaceHeatingEnergyConsumption),
+                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyConsumption)
+                        }),
                         electricityConsumption
                                     : valuesFor(profiles.SystemElectricityConsumption),
-                        hotWaterHeatingEnergyProduction
-                                    : valuesFor(profiles.SystemHotWaterHeatingEnergyProduction),
-                        spaceHeatingEnergyProduction
-                                    : valuesFor(profiles.SystemSpaceHeatingEnergyProduction),
+                        heatingProduction: pivot({
+                            space: valuesFor(profiles.SystemSpaceHeatingEnergyProduction),
+                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyProduction)
+                        }),
                         electricityProduction
                                     : valuesFor(profiles.SystemElectricityProduction),
-                        hotWaterHeatingEnergyBalance
-                                    : valuesFor(profiles.SystemHotWaterHeatingEnergyBalance),
-                        spaceHeatingEnergyBalance
-                                    : valuesFor(profiles.SystemSpaceHeatingEnergyBalance),
+                        heatingBalance: pivot({
+                            space: valuesFor(profiles.SystemSpaceHeatingEnergyBalance),
+                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyBalance)
+                        }),
                         electricityBalance
                                     : valuesFor(profiles.SystemElectricityBalance)
                     });

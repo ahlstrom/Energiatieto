@@ -38,18 +38,26 @@ define([
         };
 
         var newHeightFn = function(data, range) {
-            return function(d) {
+            return function(d, index) {
                 return datumHeight(data, d, range);
             };
         };
 
-        var newyCoordFn = function(data, range) {
-            return function(d) {
+        var newyCoordFn = function(data, range, series, layerIndex) {
+            return function(d, i) {
+                var index = 0,
+                    offset = _.reduce(_.keys(series), function(memo, value) {
+                        if (index++ < layerIndex) {
+                            return memo + series[value][i];
+                        } else {
+                            return memo;
+                        }
+                    }, 0);
                 var zeroPoint = Utils.zeroPointOffset(data, getColumnMaxHeight(), range.max, range.min) + paddingTop + 1;
                 if (d < 0) {
                     return zeroPoint;
                 } else {
-                    return zeroPoint - datumHeight(data, d, range) - 1;
+                    return zeroPoint - datumHeight(data, d + offset, range) - 1;
                 }
             };
         };
@@ -163,7 +171,6 @@ define([
 
         this.draw = function() {
             var series = dataSource.getData(),
-                total = series.total,
                 range = dataSource.getRange();
 
             //var columnAreaWidth = width - paddingLeft;
@@ -188,7 +195,9 @@ define([
             var layers = 
                  d3.select(element)
                     .selectAll("g.layer")
-                    .data(dataSource.getSeries());
+                    .data(dataSource.getSeries(), function(d) {
+                        return d;
+                    });
 
             layers.enter()
                 .append("g")
@@ -197,7 +206,8 @@ define([
                 });
 
             layers.exit().remove();
-            
+
+            var layerIndex = 0;
             d3.select(element).selectAll("g.layer").each(function(name) {
                 var data = series[name];
                 if (typeof data[0] !== "number") {
@@ -210,7 +220,7 @@ define([
 
                 rect.enter()
                     .append("rect")
-                    .attr("y", newyCoordFn(data, range))
+                    .attr("y", newyCoordFn(data, range, series, layerIndex))
                     .attr("x", function(d, i) {
                         return paddingLeft + 10 + i * columnWidth; })
                     .attr("width", columnWidth - columnGap)
@@ -225,7 +235,7 @@ define([
                     })
                     .transition()
                     .duration(500)
-                    .attr("y", newyCoordFn(data, range))
+                    .attr("y", newyCoordFn(data, range, series, layerIndex++))
                     .attr("x", function(d, i) {
                         return paddingLeft + 10 + i * columnWidth; 
                     })
@@ -238,7 +248,6 @@ define([
                     });
             });
 
-            
             drawValuelines(range);
 
             if (options.showQuantiles) {

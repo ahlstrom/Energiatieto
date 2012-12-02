@@ -40,6 +40,9 @@ require.config({
             ],
             exports: 'SystemElectricityConsumption'
         },
+        'SystemHotWaterHeatingEnergyConsumption': {
+            exports: 'SystemHotWaterHeatingEnergyConsumption'
+        },
         'SystemSpaceHeatingEnergyConsumption': {
             deps: [
                 'SpaceHeatingEnergyProfile'
@@ -130,6 +133,7 @@ require.config({
 
         'SystemElectricityConsumption'                                 : '../calculation/SystemElectricityConsumption',
         'SystemSpaceHeatingEnergyConsumption'                          : '../calculation/SystemSpaceHeatingEnergyConsumption',
+        'SystemHotWaterHeatingEnergyConsumption'                       : '../calculation/SystemHotWaterHeatingEnergyConsumption',
 
         'SystemHotWaterHeatingEnergyProduction'                        : '../calculation/SystemHotWaterHeatingEnergyProduction',
         'SystemSpaceHeatingEnergyProduction'                           : '../calculation/SystemSpaceHeatingEnergyProduction',

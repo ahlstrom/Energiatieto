@@ -78,6 +78,23 @@ define([
                 };
             };
         },
+        seriesFn: function(opts, prop) {
+            var self = this;
+            return function() {
+                var series = self.model.get("data")[opts.propertyName],
+                    ret    = {};
+                if (series[prop]) {
+                    return {
+                        total: series[prop]
+                    };
+                } else {
+                    _.each(series, function(it, key) {
+                        ret[key] = it[prop];
+                    });
+                    return ret;
+                }
+            };
+        },
         initViewInChart: function(opts) {
             var clk = opts.clickHandler,
                 self = this;
@@ -85,7 +102,8 @@ define([
                 model         : this.model,
                 propertyName  : opts.propertyName,
                 rangeFn       : this.rangeFn(opts),
-                chartOptions  : opts.chartOptions
+                chartOptions  : opts.chartOptions,
+                series        : this.seriesFn(opts, "total")
             });
             if (opts.sumElement) {
                 this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement));
@@ -120,8 +138,9 @@ define([
             return function(opts, categoryIndex) {
                 var view = new AdditionalChartView({
                     model: self.model,
-                    opts: opts,
-                    categoryIndex: categoryIndex
+                    chartOptions: opts.chartOptions,
+                    categoryIndex: categoryIndex,
+                    series : self.seriesFn(opts, "averages")
                 });
                 self.bindTo(view, "click:close", function() {
                     region.slideUp(function() {
@@ -187,7 +206,7 @@ define([
                     chartMin    : 0
                 },
                 heatingProduction: {
-                    propertyName: "hotWaterHeatingEnergyProduction",
+                    propertyName: "heatingProduction",
                     clickHandler: this.additionalInfo(this.secondAdditionalInfo),
                     sumElement  : ".heating-production-total",
                     chartMin    : 0,
@@ -200,7 +219,7 @@ define([
                     clickHandler: this.additionalInfo(this.thirdAdditionalInfo)
                 },
                 heatingBalance: {
-                    propertyName: "hotWaterHeatingEnergyBalance",
+                    propertyName: "heatingBalance",
                     clickHandler: this.additionalInfo(this.thirdAdditionalInfo),
                     chartOptions: {
                         showQuantiles: true
