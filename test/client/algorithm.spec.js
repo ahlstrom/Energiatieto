@@ -14,7 +14,7 @@ var Algorithm = require(basedir + 'facade'),
 describe('facade', function() {
     it('should give twelve datapoints', function(done) {
         Algorithm.calculate({}, function(res) {
-            assert.equal(res.total.length, 12);
+            assert.equal(res.heatingConsumption.space.total.length, 12);
             done();
         }, {});
     });
