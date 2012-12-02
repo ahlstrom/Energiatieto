@@ -35,7 +35,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['lib/**/*.js', 'test/**/*.js', 'src/**/*.js', 'public/js/**/*.js'],
-      tasks: 'test'
+      tasks: 'lint simplemocha:client'
     },
     jshint: {
       options: {
