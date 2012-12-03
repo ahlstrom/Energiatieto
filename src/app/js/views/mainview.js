@@ -11,7 +11,11 @@ define([
         "../models/chartareamodel",
         "./helptext",
         "./map/mapview",
-        "../models/mapposition"
+        "../models/mapposition",
+        "../helpers/helptextvent",
+
+        "text!./helptexts/buildinginfo.txt",
+        "text!./helptexts/production.txt"
     ], 
     function(
         Backbone,
@@ -26,7 +30,10 @@ define([
         ChartAreaModel,
         HelpTextView,
         MapView,
-        MapPosition
+        MapPosition,
+        HelpText,
+        BuildingHelpText,
+        ProductionHelpText
     ) {
 
     var viewTypes = {
@@ -84,6 +91,7 @@ define([
             });
         },
         showBuildingInfoForm: function() {
+            HelpText.trigger("change", BuildingHelpText);
             var model = this.buildings.getSelected();
             if (!model) {
                 this.form.close();
@@ -94,6 +102,7 @@ define([
             }
         },
         showProductionForm: function() {
+            HelpText.trigger("change", ProductionHelpText);
             var model = this.producers.getSelected();
             if (!model) {
                 this.form.close();
@@ -116,7 +125,8 @@ define([
             this.helptext.show(new HelpTextView({
                 model: new Backbone.Model()
             }));
-
+            HelpText.trigger("change", BuildingHelpText);
+            
             this.producers.fetch();
             this.buildings.fetch();
         }
