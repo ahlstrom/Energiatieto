@@ -40,7 +40,7 @@ define([
                     return ( this.heatingSystem === "4" && this.buildingType === "1" );
                 },
                 heatingEnergyConsumptionEstimatedNOT: function() {
-                    return ( this.heatingEnergyConsumptionEstimated === false || this.heatingEnergyConsumptionEstimated === undefined );
+                    return ( this.spaceHeatingEnergyEstimated === false || this.spaceHeatingEnergyEstimated === undefined );
                 },
                 electricityConsumption: function() {
                     return this.buildingType === "1" ;

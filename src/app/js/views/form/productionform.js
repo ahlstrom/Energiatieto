@@ -15,7 +15,7 @@ define([
                     if (this.type === "solarpanel") {
                         return ("Aurinkokeräin : " + this.solarInstallationName);
                     } else {
-                        return "Lämpökaivo";
+                        return ("Lämpökaivo : " + this.boreholeName);
                     }
                 },
                 typeIsSolar: function() {
@@ -23,8 +23,16 @@ define([
                         return true;
                     }
                 },
-                showBackgroundDataIsTrue: function() {
-                    return ( this.showBackgroundData === true );
+                typeIsGeothermal: function() {
+                    if (this.type === "geothermal") {
+                        return true;
+                    }
+                },
+                showSolarInstallationDataIsTrue: function() {
+                    return ( this.showSolarInstallationData === true );
+                },
+                showBoreholeDataIsTrue: function() {
+                    return ( this.showBoreholeData === true );
                 },
                 roofArea: function() {
                     return Number(this.roofArea);
