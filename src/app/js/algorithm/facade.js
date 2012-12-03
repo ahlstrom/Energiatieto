@@ -28,18 +28,18 @@ define([
 
         this.empty = {
             heatingConsumption: {
-                space: empty,
-                water: empty
+                water: empty,
+                space: empty
             },
             electricityConsumption: empty,
             heatingProduction: {
-                space: empty,
-                water: empty
+                water: empty,
+                space: empty
             },
             electricityProduction: empty,
             heatingBalance: {
-                space: empty,
-                water: empty
+                water: empty,
+                space: empty
             },
             electricityBalance: empty
         };
@@ -103,20 +103,20 @@ define([
                     };
                     callback({
                         heatingConsumption: pivot({
-                            space: valuesFor(profiles.SystemSpaceHeatingEnergyConsumption),
-                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyConsumption)
+                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyConsumption),
+                            space: valuesFor(profiles.SystemSpaceHeatingEnergyConsumption)
                         }),
                         electricityConsumption
                                     : valuesFor(profiles.SystemElectricityConsumption),
                         heatingProduction: pivot({
-                            space: valuesFor(profiles.SystemSpaceHeatingEnergyProduction),
-                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyProduction)
+                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyProduction),
+                            space: valuesFor(profiles.SystemSpaceHeatingEnergyProduction)
                         }),
                         electricityProduction
                                     : valuesFor(profiles.SystemElectricityProduction),
                         heatingBalance: pivot({
-                            space: valuesFor(profiles.SystemSpaceHeatingEnergyBalance),
-                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyBalance)
+                            water: valuesFor(profiles.SystemHotWaterHeatingEnergyBalance),
+                            space: valuesFor(profiles.SystemSpaceHeatingEnergyBalance)
                         }),
                         electricityBalance
                                     : valuesFor(profiles.SystemElectricityBalance)

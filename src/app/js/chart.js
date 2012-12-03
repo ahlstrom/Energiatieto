@@ -55,9 +55,17 @@ define([
                     }, 0);
                 var zeroPoint = Utils.zeroPointOffset(data, getColumnMaxHeight(), range.max, range.min) + paddingTop + 1;
                 if (d < 0) {
-                    return zeroPoint;
+                    if (offset >= 0) {
+                        return zeroPoint;
+                    } else {
+                        return zeroPoint + datumHeight(data, d - offset, range);
+                    }
                 } else {
-                    return zeroPoint - datumHeight(data, d + offset, range) - 1;
+                    if (offset <= 0) {
+                        return zeroPoint - datumHeight(data, d, range) - 1;
+                    } else {
+                        return zeroPoint - datumHeight(data, offset + d, range) - 1;
+                    }
                 }
             };
         };
