@@ -20,6 +20,8 @@ define([
         return function(map, collection, buildingLayer) {
             var self = this;
 
+            var geoEnergyOverlay = new GeoEnergyMapType(map);
+
             this.modeselector = new EnergyLayerModeSelector();
             this.controls = new SolarMapControls();
             this.markerStore = new MarkerStore();
@@ -113,20 +115,28 @@ define([
             };
 
             this.addGeoThermalWell = function(event) {
-                var loc = event.latLng,
-                    well = new GeoThermalWell({
-                            loc: {
-                                lat: loc.lat(),
-                                lng: loc.lng()
-                            }
-                        });
+                geoEnergyOverlay.getData(event.latLng, function(data) {
+                    var loc = event.latLng,
+                        well = new GeoThermalWell({
+                                loc: {
+                                    lat: loc.lat(),
+                                    lng: loc.lng()
+                                }
+                            });
+                        if (data.type) {
+                            well.set({
+                                "bedrockType": data.type,
+                                "bedrockTypeId": data.typeid
+                            });
+                        }
 
-                collection.add(well);
-                collection.trigger("select", well);
+                    collection.add(well);
+                    collection.trigger("select", well);
+                });
             };
 
             this.selectGeoEnergy = function() {
-                self.replaceOverlay(new GeoEnergyMapType(map));
+                self.replaceOverlay(geoEnergyOverlay);
 
                 buildingLayer.setOptions({
                     clickable: false

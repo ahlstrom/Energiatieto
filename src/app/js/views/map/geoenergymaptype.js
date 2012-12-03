@@ -1,6 +1,8 @@
-define([], function() {
+define(["jquery"], function($) {
     return function(map) {
-        return new google.maps.ImageMapType({
+        var queryUrl = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT%20type,%20typeid%20FROM%201Sr5yGr8Mx8SniwKxpU5YA1YHli46VGIGLH8KD9Q%20WHERE%20ST_INTERSECTS(geometry,CIRCLE(LATLNG({{lat}},{{lng}}),10))&key=" + window.googleMapsApiKey
+
+        var mapType = new google.maps.ImageMapType({
             getTileUrl: function (coord, zoom) {
                 var proj = map.getProjection();
                 var zfactor = Math.pow(2, zoom);
@@ -37,5 +39,26 @@ define([], function() {
             isPng: true,
             opacity: 0.5
         });
+        mapType.getData = function(latLng, callback) {
+                var url = queryUrl
+                            .replace("{{lat}}", latLng.lat())
+                            .replace("{{lng}}", latLng.lng());
+
+                $.get(url)
+                    .success(function(data) {
+                        if (data.rows) {
+                            callback({
+                                type: data.rows[0][0],
+                                typeid: data.rows[0][1]
+                            });
+                        } else {
+                            callback({});
+                        }
+                    })
+                    .error(function() {
+                        callback({});
+                    });
+            };
+        return mapType;
     };
 });
