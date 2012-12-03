@@ -90,6 +90,13 @@ define([
                             }
                         });
 
+                _.each(_.keys(panel.defaults), function(key) {
+                    var capKey = key.charAt(0).toUpperCase() + key.substring(1);
+                    if (event.row[capKey]) {
+                        panel.set(key, parseFloat(event.row[capKey].value));
+                    }
+                });
+                
                 collection.add(panel);
                 collection.trigger("select", panel);
             };
