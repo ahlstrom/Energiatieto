@@ -8,6 +8,24 @@ define([
         "./additionalchartview"
     ], function($, _, Marionette, tmpl, ChartView, BuildingInfoModel, AdditionalChartView) {
 
+        if (!_.sum) {
+            _.mixin({
+              sum : function(list) {
+                return _.reduce(list, function(memo, num) { return memo + num; }, 0);
+              }
+            });
+        }
+        if (!_.positive) {
+            _.mixin({
+                positive: function(it) { return it > 0 }
+            });
+        }
+        if (!_.negative) {
+            _.mixin({
+                negative: function(it) { return it < 0 }
+            });
+        }
+
     return Marionette.Layout.extend({
         template: {
             type: 'handlebars',
@@ -106,7 +124,7 @@ define([
                 series        : this.seriesFn(opts, "total")
             });
             if (opts.sumElement) {
-                this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement));
+                this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement, opts.sumFunction));
             }
             if (typeof clk === "function") {
                 opts.clickHandler = function() {
@@ -114,16 +132,24 @@ define([
                 };
             }
         },
-        newSumCounter: function(propertyName, sumElement) {
+        nestedSums: function(dataSets) {
+
+            if (dataSets.total) {
+                return Math.round(_.sum(dataSets.total));
+            } else {
+                return Math.round(_.sum(_.map(dataSets, function(val, key) {
+                    return _.sum(val.total);
+                })));
+            }
+        },
+        newSumCounter: function(propertyName, sumElement, sumFunction) {
             var self = this;
             return function(model) {
                 var dataSets = model.get("data")[propertyName],
-                    sumReduce = function(memo, num) { return memo + num; },
-                    sum = 0;
-                if (typeof dataSets !== "undefined") {
-                    sum = Math.round(_.reduce(dataSets.total, sumReduce, 0));
-                }
-                if (sum > 0) {
+                    sumFn = sumFunction || self.nestedSums,
+                    sum = sumFn(dataSets);
+
+                if ('' + sum) {
                     self.$(sumElement).text(sum + " kWh");
                 } else {
                     self.$(sumElement).text("");
@@ -216,10 +242,32 @@ define([
                 },
                 electricityBalance: {
                     propertyName: "electricityBalance",
+                    sumElement  : ".electricity-balance-total",
+                    sumFunction : function(dataSets) {
+                        var values = function(list, filter) {
+                                return Math.round(_.chain(list).filter(filter).sum().value());
+                            },
+                            pos = values(dataSets.total, _.positive),
+                            neg = values(dataSets.total, _.negative);
+                        
+                        return pos + " / " + Math.abs(neg);
+                    },
                     clickHandler: this.additionalInfo(this.thirdAdditionalInfo)
                 },
                 heatingBalance: {
                     propertyName: "heatingBalance",
+                    sumElement  : ".heating-balance-total",
+                    sumFunction : function(dataSets) {
+                        var values = function(list, filter) {
+                                return Math.round(_.chain(list).filter(filter).sum().value());
+                            },
+                            pos = values(dataSets.water.total, _.positive) +
+                                    values(dataSets.space.total, _.positive),
+                            neg = values(dataSets.water.total, _.negative) +
+                                    values(dataSets.space.total, _.negative);
+
+                        return pos + " / " + Math.abs(neg);
+                    },
                     clickHandler: this.additionalInfo(this.thirdAdditionalInfo),
                     chartOptions: {
                         showQuantiles: true

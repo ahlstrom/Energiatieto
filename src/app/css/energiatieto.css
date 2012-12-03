@@ -420,6 +420,9 @@ form.search input[name=search] {
 .chart g.water {
     fill: rgb(225, 196, 45);
  }
+.chart rect.negative {
+    fill: rgb(194, 185, 163);
+ }
  .chart rect {
     transition: fill 0.5s;
     -webkit-transition: fill 0.5s;
