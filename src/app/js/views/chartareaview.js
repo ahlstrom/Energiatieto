@@ -17,12 +17,12 @@ define([
         }
         if (!_.positive) {
             _.mixin({
-                positive: function(it) { return it > 0 }
+                positive: function(it) { return it > 0; }
             });
         }
         if (!_.negative) {
             _.mixin({
-                negative: function(it) { return it < 0 }
+                negative: function(it) { return it < 0; }
             });
         }
 
