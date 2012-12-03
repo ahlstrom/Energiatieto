@@ -331,6 +331,10 @@ span.brand-header {
     margin-top: 0.3em;
 }
 
+select.input-medium, select.input-mini, select.et-input-mini, select.input-small {
+   padding: 0 !important;
+}
+
 .chart line.value {
     stroke: rgb(220,220,220);
 }
