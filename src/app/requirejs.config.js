@@ -36,7 +36,8 @@ require.config({
         },
         'SystemElectricityConsumption': {
             deps: [
-                'ElectricityConsumptionProfile'
+                'ElectricityConsumptionProfile',
+                'BoreholeEnergyProductionAndConsumption'
             ],
             exports: 'SystemElectricityConsumption'
         },
@@ -88,6 +89,9 @@ require.config({
         'ReferenceYearCalendar': {
             exports: 'ReferenceYearCalendar'
         },
+        'BedrockThermalConductivity': {
+            exports: 'BedrockThermalConductivity'
+        },
         'ElectricityConsumptionProfile': {
             deps: [
                 'Profile'
@@ -103,7 +107,8 @@ require.config({
                 'heatingDemandProfileHelsinkiKaisaniemiReferenceYear',
                 'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014',
                 'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017',
-                'ReferenceYearCalendar'
+                'ReferenceYearCalendar',
+                'BedrockThermalConductivity'
             ],
             exports: 'Constants'
         },
@@ -124,12 +129,15 @@ require.config({
         'ReferenceYearCalendar'                                        : '../calculation/tables/referenceYearCalendar',
         'DomesticElectricityConsumptionWeekValues'                     : '../calculation/tables/domesticElectricityConsumptionWeekValues',
         'DomesticElectricityConsumptionHourValues'                     : '../calculation/tables/domesticElectricityConsumptionHourValues',
+        'BedrockThermalConductivity'                                   : '../calculation/tables/bedrockThermalConductivity',
 
         'SpaceHeatingEnergyProfile'                                    : '../calculation/SpaceHeatingEnergyProfile',
         'HotWaterHeatingEnergyProfile'                                 : '../calculation/HotWaterHeatingEnergyProfile',
         'ElectricityConsumptionProfile'                                : '../calculation/ElectricityConsumptionProfile',
         'SolarHeatingEnergyProductionProfile'                          : '../calculation/SolarHeatingEnergyProductionProfile',
         'SolarElectricityProductionProfile'                            : '../calculation/SolarElectricityProductionProfile',
+
+        'BoreholeEnergyProductionAndConsumption'                       : '../calculation/BoreholeEnergyProductionAndConsumption',
 
         'SystemElectricityConsumption'                                 : '../calculation/SystemElectricityConsumption',
         'SystemSpaceHeatingEnergyConsumption'                          : '../calculation/SystemSpaceHeatingEnergyConsumption',
