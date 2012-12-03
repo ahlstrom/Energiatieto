@@ -57,6 +57,7 @@ define(["backbone"], function(Backbone) {
 
             this.on("change", sync);
             this.on("reset", sync);
+            this.on("remove", sync);
             sync();
         }
     });
