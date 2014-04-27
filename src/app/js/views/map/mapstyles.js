@@ -2,7 +2,7 @@ define([], {
     options: function() {
       return {
         zoom: 11,
-        maxZoom: 17,
+        maxZoom: 20,
         center: new google.maps.LatLng(60.2, 24.7),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,

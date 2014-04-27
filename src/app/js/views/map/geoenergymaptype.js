@@ -1,7 +1,6 @@
 define(["jquery"], function($) {
     return function(map) {
         var queryUrl = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT%20type,%20typeid%20FROM%201Sr5yGr8Mx8SniwKxpU5YA1YHli46VGIGLH8KD9Q%20WHERE%20ST_INTERSECTS(geometry,CIRCLE(LATLNG({{lat}},{{lng}}),10))&key=" + window.googleMapsApiKey;
-
         var mapType = new google.maps.ImageMapType({
             getTileUrl: function (coord, zoom) {
                 var proj = map.getProjection();
